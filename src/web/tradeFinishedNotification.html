@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>AlecaFrame relic</title>
+
+    <!-- JS files -->
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+
+
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>
+
+    <!--<script src="assets/js/vue.global.prod.js"></script>
+
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/external/popper.min.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>-->
+    <!-- CSS files -->
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/tradeFinishedNotification/base.css" />
+</head>
+
+
+<body style="user-select: none;">
+    <div class="content">
+        <main id="vueContainer" onmousemove="tradeApp.mouseMoved=true">
+            <div class="loadingBar" :style="{width: loadingBarProgress + '%'}"></div>
+            <div class="title">Trade with <span>{{data.remoteUsername}}</span> complete <div id="closeIcon" class="closeIcon" onmousedown="closeNow();"></div><div class="closeIcon tick" @mousedown="finishOK();"></div></div>
+            <div class="mainContainer">
+                <div class="topContainer">
+                    <div class="subtitle">The following items will be <span>marked as sold</span> in WFMarket:</div>
+                    <div class="itemsContainer">
+                        <div class="item">
+                            <div class="itemAmount">{{data.itemAmount}}x</div>
+                            <div class="itemImage" :style="{ backgroundImage: 'url(&quot;' + data.image + '&quot;)' }"></div>
+                            <div class="itemName">{{data.itemName}}</div>
+                        </div>
+                    </div>
+                </div>
+              
+                <div v-if="!textEditing" class="buttonsActions">
+                    <button class="giveRep" @click="currentAction='reputation'; textEditing=true">Give reputation to user</button>
+                    <!--<button class="report" @click="currentAction='report'; textEditing=true">Report user in WFM</button>-->
+                </div>
+                <div v-if="textEditing" class="buttonsActions">
+                    <button class="goBack" @click="textEditing=false">Back</button>
+                    <button class="giveRep" @click="submitClicked()">Send {{currentAction=='report'?'report':'positive review'}}</button>
+                </div>
+
+                <textarea v-if="textEditing" type="text" v-model="freeText" placeholder="Enter message here (optional)"></textarea>
+
+            </div>
+            <div class="footer">Press Ctrl + Tab to interact with the overlay</div>
+
+            <Transition name="fade">
+                <div v-if="tickVisible" class="tickOverlay"></div>
+            </Transition>
+            <Transition name="fade">
+                <div v-if="errorVisible" class="errorOverlay">
+                    <div class="errorImage"></div>
+                    {{lastError}}
+                </div>
+            </Transition>
+            <Transition name="fade">
+                <div v-if="loadingVisible" class="loadingOverlay"></div>
+            </Transition>
+        </main>
+    </div>
+
+    <!-- Post JS files -->
+    <script src="assets/js/tradeFinishedNotification/main.js"></script>
+    
+</body>
+
+
+
+</html>

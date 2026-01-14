@@ -1,0 +1,1537 @@
+﻿.foundryObjectContainer.veiledRivens {
+    padding: 7px;
+    gap: 18px;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    overflow: auto;
+    height: auto;
+    position: relative;
+    overflow-x: hidden;
+    padding-top: 3px;
+    display: flex;
+}
+
+    .foundryObjectContainer.veiledRivens.unveiled {
+        display: grid;
+        gap: 15px;
+        padding-top: 3px;
+        justify-content: unset;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        margin-bottom: 5px;
+    }
+
+.itemGroup {
+}
+
+.unveiled > .veiledItem {
+    cursor: pointer;
+    width: unset;
+}
+
+.itemGroupName {
+    font-size: 18px;
+    font-weight: 400;
+    /* background-color: #c1c1c124; */
+    padding: 4px 7px;
+}
+
+.itemGroupNameDescription {
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 16px;
+}
+
+.itemGroupItems {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.veiledItem {
+    /* width: 290px; */
+    /* flex-grow: 1; */
+    /* border: 3px solid #ff56ff; */
+    text-align: -webkit-center;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* background-image: url('https://cdn.alecaframe.com/warframeData/img/kitgun-riven-mod.png?0'); */
+    background-size: 50%;
+    background-position: 50% 15px;
+    background-repeat: no-repeat;
+    /* background-color: #352735; */
+    background-blend-mode: overlay;
+    position: relative;
+    transition: 0.10s linear;
+    /* cursor:pointer; */
+}
+
+.unveiled > .veiledItem:hover {
+    transform: scale(1.05);
+}
+
+.itemGroupSeparator {
+    width: 100%;
+    border-bottom: 1px solid #ffffff4a;
+    /* margin-top: 4px; */
+    margin-bottom: 12px;
+}
+
+.veiledRivenName {
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #372D52;
+    padding-top: 3px;
+    padding-bottom: 2px;
+    display: flex;
+    align-items: center;
+    height: 31px;
+    justify-content: center;
+}
+
+.veiledRivenChallenge {
+    font-weight: 300;
+    font-size: 13px;
+    flex-grow: 1;
+    height: 75px;
+    max-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    overflow: hidden;
+    padding: 3px 15px;
+}
+
+    .veiledRivenChallenge.unveiled {
+        display: flex;
+        flex-direction: column;
+        height: 85px;
+        max-height: 87px;
+        padding: 5px 4px;
+        padding-bottom: 2px;
+    }
+
+.veiledProgressSection {
+    display: flex;
+    gap: 36px;
+    justify-content: space-between;
+    padding-bottom: 9px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    align-items: center;
+}
+
+.veiledProgressBar {
+    width: 68%;
+    border: 2px solid #b33ab3;
+}
+
+.veiledProgressNumber {
+    font-weight: 300;
+    font-size: 14px;
+    display: flex;
+    gap: 11px;
+    margin-left: 15px;
+}
+
+    .veiledProgressNumber.amount {
+        font-weight: 400;
+    }
+
+    .veiledProgressNumber.unveiled {
+        margin-left: 9px;
+    }
+
+.veiledProgressBarInner {
+    height: 100%;
+    float: left;
+    background-color: #f6caff;
+}
+
+.rivenVeiledOverlay {
+    /* background-color: green; */
+    /* background-image: url('../../img/mod_riven_ale.png?0'); */
+    /* background-size: 100% 100%; */
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    pointer-events: none;
+}
+
+.rivenVeiledContent {
+    display: flex;
+    flex-direction: column;
+    /* gap: 7px; */
+    background-color: #28203E;
+    color: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.inventoryItemButtonPostSell.riven {
+    font-size: 14px;
+    height: 26px;
+    justify-content: space-between;
+    /* padding: 3px 7px; */
+    left: 0;
+    right: 0;
+    width: 114px;
+    margin: auto;
+    position: absolute;
+    color: var(--color-text);
+}
+
+    .inventoryItemButtonPostSell.riven.unveiled {
+        max-width: 53px;
+        height: 22px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        color: var(--color-text);
+    }
+
+.riven > .inventoryItemSellRight > .inventorySellPrice {
+    font-size: 16px;
+}
+
+.riven > .inventoryItemSellRight {
+}
+
+
+    .riven > .inventoryItemSellRight > .inventoryItemSellPlatIcon {
+        height: 17px;
+        width: 17px;
+    }
+
+.rivenTrait {
+    font-weight: 400;
+    max-width: 95%;
+    /* or in-line block according to your requirement */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.rivenPositiveTrait {
+    color: #4bd24b;
+}
+
+.rivenNegativeTrait {
+    color: #ff5555;
+}
+
+.unveiledRivenCostGroup {
+    display: flex;
+    gap: 2px;
+}
+
+.unveiledMR {
+    margin-right: 6px;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.rivenWeaponNameWeapon {
+    margin-right: 6px;
+    color: #cda9ff;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+
+.innerModal.rivenDetails {
+    width: min(90%,875px);
+    max-height: 92%;
+    min-height: 320px;
+}
+
+.rivenDetailsTop {
+    display: flex;
+    gap: 18px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.rivenDetailsImage {
+    width: 120px;
+    height: 120px;
+    border: 3px solid #e252e2;
+    border-radius: 100px;
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-color: #f583f547;
+}
+
+.rivenDetailsTopRight {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.rivenDetailsName {
+    font-size: 35px;
+    font-weight: 400;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.rivenWeaponNameWeapon {
+}
+
+.rivenDetailsTopGrid {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    flex-grow: 1;
+    margin: 10px 0px;
+    max-width: 253px;
+}
+
+.rivenDetailsTopGridItem {
+    display: flex;
+    align-self: center;
+    gap: 4px;
+    font-weight: 300;
+    font-size: 17px;
+}
+
+.rivenDetailsTopGridItemHighlight {
+    font-weight: 400;
+}
+
+.rivenDetailsSeparator {
+    border-bottom: 1px solid #ffffff52;
+    border-left: 1px solid #ffffff52;
+}
+
+.rivenDetailsMiddle {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    flex-grow: 1;
+}
+
+.rivenDetailsHeader {
+    font-size: 18px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rivenDetailesModifierList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 300;
+}
+
+.rivenDetailsStat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: var(--color-bg-3);
+    border-radius: 20px;
+}
+
+    .rivenDetailsStat.positive {
+        /* background-color: #174017; */
+        background-image: linear-gradient(0deg, #89ff7480, #73ff7482);
+        background-blend-mode: color;
+    }
+
+    .rivenDetailsStat.negative {
+        background-image: linear-gradient(0deg, #ff000094, #ff000091);
+        background-blend-mode: color;
+    }
+
+.rivenDetailsStatText {
+    max-width: 285px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.rivenDetailsBarGroup {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.rivenDetailsBarGroupSide {
+    min-width: 35px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.rivenDetailsBar {
+    width: 210px;
+    background-color: #0000009e;
+    height: 14px;
+    border: 1px solid white;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.rivenDetailsBarInner {
+    width: 14px;
+    border-radius: 18px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: var(--color-background-controls);
+    height: 100%;
+    margin-left: -1px;
+    margin-right: -1px;
+    position: absolute;
+}
+
+.rivenDetailsBottom {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.rivenDetails > .innerModalContent {
+    gap: 16px;
+}
+
+.rivenDetailsHeaderRight {
+    display: flex;
+    gap: 25px;
+}
+
+
+.rivenSelectGroup {
+    display: flex;
+    gap: 7px;
+    font-size: 15px;
+    align-items: center;
+}
+
+.rivenSelect {
+    padding: 1px 2px;
+}
+
+
+.rivenDetailsListLine {
+    display: flex;
+    justify-content: space-between;
+    gap: 37px;
+}
+
+.inventoryBuySellInput.rivenWindow {
+    padding: 2px 4px;
+    width: 63px;
+}
+
+.textInput.rivenWindow {
+    background-color: var(--color-bg-3);
+    border-radius: 20px;
+    border: 1px solid #436ea145;
+    padding: 4px 10px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+    /* border: none; */
+    flex-shrink: 1;
+}
+
+.rivenExplorerFinalButton {
+    background-color: var(--color-tab);
+    border-radius: 19px;
+    font-weight: 400;
+    font-size: 16px;
+    align-self: center;
+    padding: 6px 14px;
+    transition: 0.15s linear;
+    cursor: pointer;
+}
+
+    .rivenExplorerFinalButton:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+
+.inventoryItemSellPlatIcon.rivenExplorer {
+    width: 20px;
+    height: 18px;
+    margin-left: 0px;
+    margin-right: -5px;
+}
+
+
+.settingsCheckBoxHolder.rivenExplorer {
+    font-size: 15px;
+    display: none;
+}
+
+
+    .settingsCheckBoxHolder.rivenExplorer > .settingsCheckBoxHolderBox {
+        width: 14px;
+        height: 14px;
+        margin-right: 5px;
+    }
+
+
+.wfmExplorerBottom {
+    display: flex;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.rivenExplorerFinalButton.wfmExplorer {
+    padding: 4px 12px;
+    font-size: 15px;
+}
+
+#WFMexplorerTab {
+    font-size: 17px;
+    display: flex;
+    font-weight: 400;
+    gap: 13px;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    padding: 0px 6px;
+    margin-top: 8px;
+    padding-right: 2px;
+}
+
+.tabHeaderIcon {
+    width: 20px;
+    height: 20px;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    background-color: white;
+}
+
+    .tabHeaderIcon.veiled {
+        -webkit-mask-image: url(../../img/eyeLine.png);
+    }
+
+    .tabHeaderIcon.orders {
+        -webkit-mask-image: url(../../img/market.png);
+    }
+
+    .tabHeaderIcon.contracts {
+        -webkit-mask-image: url(../../img/icon-contract.png);
+        width: 24px;
+    }
+
+
+    .tabHeaderIcon.unveiled {
+        -webkit-mask-image: url(../../img/eye.png);
+    }
+
+    .tabHeaderIcon.WFMexplorer {
+        -webkit-mask-image: url('../../img/wfMarketIcon.png');
+        -webkit-mask-size: 108%;
+        background-position: 0px 0px;
+        width: 25px;
+    }
+
+.rivenDispositionContainer {
+    position: absolute;
+    top: 6px;
+    left: 9px;
+    padding: 2px 6px;
+    font-size: 13px;
+    background-color: #6d4f94;
+}
+
+
+.positive > div > div > .rivenDetailsBarInner {
+    background-color: #11A64F;
+}
+
+.negative > div > div > .rivenDetailsBarInner {
+    background-color: #ca2b2b;
+}
+
+.positive > .rivenDetailsStatText {
+    color: #37c773;
+}
+
+.negative > .rivenDetailsStatText {
+    color: #ff8282;
+}
+
+button.buttonSettingsTest.importCode {
+    /* position: absolute; */
+    /* right: 19px; */
+    /* top: 19px; */
+    margin: inherit;
+    font-size: 16px;
+    padding: 9px 14px;
+}
+
+.inventoryItemButtonPostSell.riven.unveiled.disabled {
+    filter: brightness(0.55);
+}
+
+
+.similarRiven {
+    display: flex;
+    height: 114px;
+    flex-direction: column;
+    border-radius: 15px;
+    background-color: #2b2146;
+    overflow: hidden;
+    /* width: 150px; */
+    position: relative;
+    cursor: pointer;
+}
+
+.similarRivenContainers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(151px, 1fr));
+    gap: 10px;
+    position: relative;
+    min-height: 32px;
+}
+
+.similarHeader {
+    background-color: #ffffff17;
+    padding: 3px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    padding-bottom: 4px;
+    padding-left: 7px;
+    font-weight: 400;
+}
+
+.similarFooter {
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 10px;
+    background-color: #00000061;
+}
+
+.similarBody {
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    background-color: #00000017;
+    padding: 2px;
+}
+
+.similarPrice {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+span.similarRivenAttr {
+    font-size: 14px;
+    text-align: center;
+}
+
+.similarRivenAttrHolder {
+    display: flex;
+    flex-direction: column;
+}
+
+.similarRivenSourceIcon {
+    width: 22px;
+    height: 22px;
+    /* background-color: red; */
+}
+
+    .similarRivenSourceIcon.WFMarket {
+        background-image: url('../../img/wfMarketIcon.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .similarRivenSourceIcon.RivenMarket {
+        background-image: url('../../img/rivenmarket.png');
+        background-size: 90%;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 20px;
+    }
+
+.similarRivenAttr {
+    font-size: 14px;
+    align-self: center;
+    white-space: nowrap;
+    text-align: center;
+    font-weight: 300;
+    color: #ff6f6f;
+}
+
+.similarRivenSourceIcon.Trade {
+    background-image: url('../../img/trade.png');
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 20px;
+}
+
+.similarRivenAttr.positive {
+    color: #3bda3b;
+}
+
+.topSettingIcon.wfmarket {
+    background-image: url(../../img/wfMarketIcon.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: initial;
+}
+
+.newEasyFilterIcon.topSettingIcon.rivenmarket {
+    background-image: url(../../img/rivenmarket.png);
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: initial;
+    border-radius: 29px;
+}
+
+.newEasyFilterIcon.topSettingIcon.trade {
+    background-image: url(../../img/trade.png);
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: initial;
+}
+
+.rivenGradeSmall {
+    width: 18px;
+    height: 18px;
+    border-radius: 30px;
+}
+
+    .rivenGradeSmall.Bad {
+        /* background-color: red; */
+        background-image: url(../../img/gradeRed.png);
+    }
+
+    .rivenGradeSmall.Good {
+        /* background-color: #13d547; */
+        background-image: url(../../img/gradeGreen.png);
+    }
+
+    .rivenGradeSmall.Perfect {
+        /* background-color: #405f2c; */
+        background-image: url(../../img/gradePerfect.png);
+    }
+
+    .rivenGradeSmall.HasPotential {
+        /* background-color: #f2dc32; */
+        background-image: url(../../img/gradeYellow.png);
+    }
+
+    .rivenGradeSmall.explorer {
+        position: absolute;
+        right: 2px;
+        width: 35px;
+        top: 6px;
+        height: 35px;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .rivenGradeSmall.NotHelping {
+        background-color: var(--color-tab-hover);
+        height: 2px;
+    }
+
+.rivenGradeDescripitionHolder {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rivenRollGrade {
+    width: 20px;
+    height: 20px;
+}
+
+    .rivenRollGrade.Decisive {
+        background-image: url(../../img/gradePerfect.png);
+        background-size: 88%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .rivenRollGrade.Good {
+        background-image: url(../../img/gradeGreen.png);
+        background-size: 88%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .rivenRollGrade.NotHelping {
+        height: 2px;
+        background-color: white;
+        width: 16px;
+        margin-left: 0px;
+        margin-right: 3px;
+    }
+
+    .rivenRollGrade.Bad {
+        background-image: url(../../img/gradeRed.png);
+        background-size: 88%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+.rivenGradeSmall.modalView {
+    margin-left: auto;
+    width: 58px;
+    height: 58px;
+    right: 10px;
+    top: 13px;
+    position: absolute;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.similarRivenAttr.notMatching {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.similarRivenOverlayLinks {
+    position: absolute;
+    height: 34px;
+    background-color: #462670cf;
+    width: 100%;
+    opacity: 0;
+    bottom: -34px;
+    transition: 0.15s linear;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.similarRiven:hover > .similarRivenOverlayLinks {
+    bottom: 0px;
+    opacity: 1;
+}
+
+.similarLink {
+    width: 26px;
+    height: 26px;
+    background-color: #262626;
+    border-radius: 7px;
+    transition: 0.12s linear;
+}
+
+    .similarLink:hover {
+        width: 26px;
+        height: 26px;
+        background-color: #3b3b3b;
+        border-radius: 7px
+    }
+
+
+    .similarLink.af {
+        background-image: url(../../img/alecaframe.png);
+        background-position: center;
+        background-size: 95%;
+        background-repeat: no-repeat;
+    }
+
+    .similarLink.web {
+        background-image: url(../../img/world.png);
+        background-position: center;
+        background-size: 70%;
+        background-repeat: no-repeat;
+    }
+
+.rivenGradeSmall.similar {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 35px;
+    left: 5px;
+    width: 25px;
+    height: 25px;
+}
+
+
+
+.goodAttrMandatory {
+    padding: 2px 4px;
+    /* border: 1px solid #ffffffa3; */
+    background-color: var(--color-tab-hover);
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.goodAttrItem {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    white-space: nowrap;
+}
+
+.bestAttributesContainer {
+    display: flex;
+    justify-content: flex-start;
+    padding: 5px 4px;
+    background-color: #00000042;
+    overflow: auto;
+    gap: 5px;
+    border-radius: 6px;
+    flex-grow: 1;
+    width: 100px;
+}
+
+.goodAttrItemOptionalGroup {
+    background-color: #ffffff26;
+    text-align: center;
+    padding: 2px 4px;
+    border-radius: 4px;
+    height: min-content;
+    font-size: 14px;
+}
+
+
+.goodAttrLegend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rivenDetailsHeader {
+    font-size: 17px;
+    padding: 0px 3px;
+}
+
+
+.rivenDetailesModifierList {
+    gap: 4px;
+}
+
+.goodAttrsBody {
+    display: flex;
+    gap: 5px;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+.badAttributesContainer {
+    background-color: #ff000040;
+    padding: 4px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: stretch;
+    border-radius: 6px;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.rivenDetailsMiddle.goodAttributes {
+    flex-direction: revert;
+    gap: 4px;
+}
+
+.goodAttributesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-grow: 1;
+    font-weight: 300;
+}
+
+.badAttributesContainer > .goodAttrsBody {
+    align-items: center;
+    overflow-y: auto;
+    max-width: 99px;
+    width: 99px;
+    text-overflow: ellipsis;
+}
+
+.badAttrItem {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 92px;
+}
+
+.goodAttrItem:first-of-type {
+    margin-left: auto;
+}
+
+.goodAttrItem:last-of-type {
+    margin-right: auto;
+}
+
+.goodAttrOptional.matches {
+    color: #75cbec;
+    font-weight: 600;
+}
+
+.goodAttrMandatory.matches {
+    color: #75cbec;
+    font-weight: 600;
+}
+
+.badAttrItem.matches {
+    color: #75cbec;
+    font-weight: 600;
+}
+
+.rivenFinderSearchContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+    gap: 0px;
+    cursor: pointer;
+    background-color: var(--color-bg-3);
+    border-radius: 9px;
+    padding: 1px 11px;
+    padding-right: 3px;
+    transition: 0.12s linear;
+    font-weight: 400;
+    min-width: 192px;
+    flex-grow: 1;
+}
+
+.rivenFinderSearchIcon {
+    width: 30px;
+    height: 30px;
+    -webkit-mask-image: url(../../img/search.png);
+    -webkit-mask-size: 62%;
+    -webkit-mask-repeat: no-repeat;
+    background-color: var(--color-icons);
+    -webkit-mask-position: center;
+}
+
+.rivenFinderSelectOverlay {
+    position: absolute;
+    top: 31px;
+    /* width: 229px; */
+    overflow: hidden;
+    left: 0px;
+    right: 0px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0px 0px 9px 9px;
+    gap: 2px;
+    padding: 3px 4px;
+    background-color: var(--color-bg-1);
+    z-index: 1;
+}
+
+.rivenFinderLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: max(min(350px, 43%),273px);
+    align-items: stretch;
+    padding: 3px 3px;
+    padding-bottom: 0px;
+}
+
+.rivenFinderDetailsTop {
+    display: flex;
+    flex-direction: initial;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+div#rivenFinderTab {
+    flex-direction: row;
+    gap: 10px;
+    padding-top: 4px;
+}
+
+.rivenFinderSuggestions {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    max-height: 156px;
+    background-color: var(--color-bg-2);
+    border-radius: 7px;
+    padding: 3px 3px;
+}
+
+    .rivenFinderSuggestions > div {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        font-size: 15px;
+        font-weight: 400;
+        transition: 0.12s linear;
+        padding: 3px 10px;
+        cursor: pointer;
+        border-radius: 6px;
+    }
+
+        .rivenFinderSuggestions > div:hover {
+            background-color: var(--color-card-hover);
+        }
+
+.rivenFinderSearchBar {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+    .rivenFinderSearchBar > input {
+        flex-grow: 1;
+        background-color: var(--color-card-hover);
+        border: none;
+        outline: none;
+        padding: 4px 12px;
+        border-radius: 12px;
+        color: var(--color-text);
+        width: 19px;
+        font-weight: 300;
+        font-size: 15px;
+        display: flex;
+        flex-grow: 1;
+        line-break: anywhere;
+    }
+
+.rivenFinderSearchIcon.dropdown {
+    -webkit-mask-image: url(../../img/arrow-small.png);
+    transform: rotate(90deg);
+    -webkit-mask-size: 50%;
+}
+
+.rivenFinderSearchTopPart {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.rivenFinderSearchContainer.open {
+    border-radius: 9px 9px 0px 0px;
+    background-color: var(--color-bg-1);
+}
+
+.rivenFinderSearchContainer:hover:not(.open) {
+    background-color: var(--color-card-hover);
+}
+
+.rivenFinderValuedAttrs {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background-color: var(--color-bg-3);
+    border-radius: 10px;
+    padding: 8px 9px;
+    font-size: 14px;
+    font-weight: 300;
+    gap: 5px;
+}
+
+.rivenFinderValuedAttrsContainer > div {
+    display: grid;
+    grid-template-columns: 3fr 1.5fr 0.75fr;
+    justify-items: center;
+    align-items: center;
+}
+
+span.attrName {
+    justify-self: baseline;
+    font-weight: 400;
+}
+
+.rivenFinderDetailsTop > .rivenDetailsImage {
+    width: 55px;
+    height: 55px;
+    border: 2px solid #e252e2;
+    border: none;
+    background-size: 100%;
+    border-radius: 13px;
+}
+
+.rivenFinderLeftOther > .statsChart {
+    background-color: var(--color-bg-3);
+    width: auto;
+    height: 215px;
+}
+
+.rivenFinderHeader {
+    font-size: 17px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rivenFinderValuedAttrsContainer {
+    gap: 3px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.rivenFinderAttrSelectAttr {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    padding: 3px 4px;
+    justify-content: space-between;
+    border-radius: 16px;
+    padding-right: 8px;
+}
+
+.rivenFinderAttrRight {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+}
+
+.rivenFinderRight {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0px 3px;
+    padding-bottom: 0px;
+    gap: 7px;
+    position: relative;
+}
+
+.rivenFinderAttrLeft > select {
+    width: auto;
+    padding: 3px 5px;
+    font-size: 13px;
+    font-weight: 400;
+    min-width: 172px;
+}
+
+.rivenFinderAttrSelection {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rivenFinderAttrSelectAttr.positive {
+    background-color: #217c21ba;
+}
+
+.rivenFinderAttrSelectAttr.negative {
+    background-color: #7d3c3c;
+}
+
+.rivenFinderRightTop {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.rivenFinderStatRange > span {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+
+.rivenFinderAttrLeft {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    justify-content: space-between;
+}
+
+.rivenFinderAttrSelectAttr.header {
+    margin-bottom: -5px;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.header > .rivenFinderAttrLeft {
+    width: 232px;
+}
+
+.similarRivenContainers.scroll {
+    flex-grow: 1;
+    height: 1px;
+    overflow-y: auto;
+    padding-right: 7px;
+    grid-auto-rows: min-content;
+    position: relative;
+}
+
+.rivenFinderSearchGroup {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 15px;
+    font-weight: 300;
+    margin-top: 3px;
+}
+
+    .rivenFinderSearchGroup > input {
+        width: 63px;
+    }
+
+.rivenFinderSearchFilterContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 3px;
+    font-size: 15px;
+    font-weight: 300;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.rivenFinderAddToSniper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+}
+
+    .rivenFinderAddToSniper > .rivenExplorerFinalButton {
+        padding: 5px 10px;
+        font-size: 15px;
+    }
+
+span.rivenFinderSlotsUsed {
+    font-weight: 400;
+}
+
+.rivenFinderLeftOther {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 2px;
+    margin-top: -2px;
+    overflow: hidden;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.removeSniperButton {
+    width: 24px;
+    height: 24px;
+    background-color: var(--color-sell-hover);
+    background-image: url(../../img/delete.png);
+    background-size: 77%;
+    position: absolute;
+    bottom: 0px;
+    right: 2px;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 9px;
+    cursor: pointer;
+    border: 1px solid #ffffffab;
+    transition: 0.12s linear;
+}
+
+    .removeSniperButton:hover {
+        background-color: var(--color-sell-active);
+    }
+
+.sniperNotificationSlot {
+    display: flex;
+    gap: 10px;
+    background-color: var(--color-bg-2);
+    border-radius: 10px;
+    padding: 6px;
+    overflow: hidden;
+}
+
+.sniperWeapon {
+    position: relative;
+}
+
+    .sniperWeapon > .rivenDetailsImage {
+        width: 82px;
+        height: 82px;
+    }
+
+.sniperNotificationContainer {
+    display: grid;
+    gap: 7px;
+    grid-template-columns: repeat(auto-fill, minmax(465px,1fr));
+    grid-auto-rows: min-content;
+    flex-grow: 1;
+    padding: 7px;
+    background-color: var(--color-bg-1);
+    border-radius: 10px;
+    overflow-y: auto;
+    height: 10px;
+    position: relative;
+}
+
+.rivenDetailsMiddle.dontGrow {
+    flex-grow: 0;
+}
+
+div#rivenSniperTab {
+    gap: 9px;
+    padding: 1px;
+    padding-top: 5px;
+    overflow: hidden;
+}
+
+.similarBody.sniperAttrs {
+    border-radius: 10px;
+    width: 155px;
+    flex-grow: 0;
+}
+
+.sniperEnableSwitch {
+    position: absolute;
+    bottom: 3px;
+    left: 5px;
+    /* background-color: #ffffff63; */
+    border-radius: 10px;
+    padding: 0px;
+    /* border: 1px solid #ffffffa3; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 3px 1px #ffffffde;
+}
+
+span.sniperWeaponName {
+    font-size: 18px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 400;
+    overflow: hidden;
+    margin-bottom: 2px;
+    color: var(--color-tab-lighter);
+}
+
+.sniperNotifGroup {
+    font-size: 15px;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+    .sniperNotifGroup > span {
+        font-size: 15px;
+        font-weight: 400;
+    }
+
+.sniperText {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    flex-shrink: 1;
+    width: 44px;
+    flex-grow: 1;
+    gap: 2px;
+}
+
+.sniperWeaponName > span {
+    font-weight: 300;
+    color: white;
+}
+
+.rivenSniperSettingsGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    font-weight: 300;
+    font-size: 15px;
+    margin-left: 3px;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="text"], input[type="number"], input[type="password"] {
+    margin-left: 3px;
+    font-size: 14px;
+    padding: 1px 6px;
+    padding-top: 2px;
+    padding-right: 3px;
+    background-color: var(--color-bg-2);
+    color: var(--color-text);
+    border: 1px solid #ffffff30;
+    border-radius: 7px;
+    outline: none;
+}
+
+.rivenSniperSettingsGroup > input {
+    flex-grow: 1;
+}
+
+    .rivenSniperSettingsGroup > input:not(:hover) {
+        -webkit-text-security: disc;
+    }
+
+.similarRivenAttr.none {
+    color: white;
+    font-weight: 600;
+}
+
+.similarRivensEmpty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-weight: 300;
+    font-size: 15px;
+    border-radius: 10px;
+    background-color: #00000085;
+}
+
+div#veiledStashTab {
+    position: relative;
+}
+
+.rivenFinderAddSniperGroup {
+    display: flex;
+    gap: 11px;
+}
+
+    .rivenFinderAddSniperGroup.left {
+        gap: 0px;
+    }
+
+.goodAttrItem:not(:last-child) {
+    padding-right: 5px;
+    border-right: 1px solid #ffffff82;
+}
+
+.inventoryItemSellPlatIcon.rivenFinder.small {
+    width: 15px;
+    height: 15px;
+    margin-left: 1px;
+    margin-bottom: 1px;
+}

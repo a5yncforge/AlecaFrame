@@ -1,0 +1,2397 @@
+﻿.modalSize {
+    position: absolute;
+    background-color: #000000d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding: 30px; */
+    z-index: 2;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    border-radius: 10px;
+}
+
+.modalFULLSize {
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+    background-color: #000000cf;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    z-index: 10;
+    border-radius: 10px;
+}
+
+.foundryDetailsCustomModTierDescription {
+    display: flex;
+    /* gap: 20px; */
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 8px;
+}
+
+.foundryDetailsCustomModTierDescriptionHolder {
+    flex-grow: 1;
+    overflow-y: hidden;
+    padding: 0px;
+}
+
+.modalSettings {
+}
+
+.foundryDetails > .innerModalContent {
+    padding: 11px;
+}
+
+.innerModal {
+    background-color: var(--color-bg-1);
+    display: flex;
+    flex-direction: column;
+    max-width: 97%;
+    max-height: 98%;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .innerModal.deltas {
+        max-width: min(93%,1500px);
+        max-height: 80%;
+        min-width: 530px;
+        min-height: 188px;
+    }
+
+    .innerModal.relicDetails {
+        width: 859px;
+        height: 418px;
+    }
+
+    .innerModal.settings {
+        max-width: 700px;
+        max-height: 450px;
+        min-width: 600px;
+        min-height: 450px;
+        width: 700px;
+        /* margin-left: 556px; */
+        /* margin-top: 491px; */
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .innerModal.helper {
+        max-height: 80%;
+    }
+
+.innerModalHeader {
+    height: 40px;
+    background-color: var(--color-bg-2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 8px 19px;
+}
+
+.innerModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    padding: 15px 15px;
+    overflow-y: auto;
+    flex: 1;
+    position: relative;
+    margin-bottom: 4px;
+    overflow: auto;
+}
+
+.deltas > .innerModalContent {
+    gap: 11px;
+}
+
+.settings > .innerModalContent {
+    gap: 1px;
+}
+
+.innerModalClose {
+    font-weight: 300;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    background-image: url(../../img/close.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: 69%;
+    background-position: center;
+    transition: 0.15s linear;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+    .innerModalClose:hover {
+        background-color: #ffffff40;
+    }
+
+.innerModalHeaderTitle {
+    font-size: 17px;
+    font-weight: 400;
+    position: relative;
+}
+
+
+.ftueImageShowerContainer {
+}
+
+.ftueImage {
+    width: 100%;
+    height: 343px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    .ftureText
+
+{
+}
+
+border: 3px solid white;
+}
+
+.ftueImageShower {
+    width: 701px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+    .ftueImageShower.s1 > .ftueImage {
+        background-image: url('../../img/ftue/Step1.jpg');
+    }
+
+    .ftueImageShower.s2 > .ftueImage {
+        background-image: url('../../img/ftue/Step2.jpg');
+    }
+
+    .ftueImageShower.s3 > .ftueImage {
+        background-image: url('../../img/ftue/Step3.jpg');
+    }
+
+    .ftueImageShower.s4 > .ftueImage {
+        background-image: url('../../img/ftue/Step4.jpg');
+    }
+
+    .ftueImageShower.s5 > .ftueImage {
+        background-image: url('../../img/ftue/Step5.jpg');
+    }
+
+    .ftueImageShower.s6 > .ftueImage {
+        background-image: url('../../img/ftue/Step6.jpg');
+    }
+
+    .ftueImageShower.sFinal > .ftueImage {
+        background-image: url('../../img/ftue/StepFinal.png??');
+        height: 35px;
+    }
+
+    .ftueImageShower.s9 > .ftueImage {
+        background-image: url('../../img/ftue/tradeNotification.png?');
+        height: 175px;
+    }
+
+.ftueImageControls {
+    display: flex;
+    justify-content: space-around;
+    margin-top: -12px;
+}
+
+.ftureText {
+    font-size: 17px;
+    font-weight: 300;
+    text-align: center;
+}
+
+
+.ftueControl {
+    max-width: 129px;
+    height: auto;
+    color: white;
+    border: 2px solid white;
+    border-radius: 20px;
+    background: #36366d;
+    padding: 7px 38px;
+    font-size: 16px;
+    cursor: pointer;
+    flex-grow: 0;
+}
+
+    .ftueControl:hover:not(:active):not(:disabled) {
+        background-color: #505092;
+    }
+
+..ftueControl:active:not(:disabled) {
+    background-color: #6d6dbd;
+}
+
+.ftueControl.next {
+}
+
+.ftueControl.prev {
+}
+
+.ftueControl:disabled {
+    background: black;
+    border-color: #8b8787;
+    color: #afafaf;
+}
+
+.ftureTextBig {
+    font-size: 40px;
+    font-weight: 200;
+}
+
+.ftueIcon {
+    width: 150px;
+    height: 124px;
+    background-image: url('../../img/AlecaFrame.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.closeConfirmHolder {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 354px;
+    margin: 5px;
+}
+
+.closeAnywayButtons {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}
+
+.dontShowAgainHolder {
+    display: flex;
+    justify-content: center;
+    gap: 0px;
+    align-items: center;
+    align-items: center;
+}
+
+
+.closeAnyway.goBack {
+    background-color: var(--color-card);
+}
+
+    .closeAnyway.goBack:hover {
+        background-color: var(--color-card-hover);
+    }
+
+.dontShowAgainText {
+    margin-left: -4px;
+}
+
+.ftue > .innerModalContent {
+    overflow: auto;
+}
+
+.helpModalContainer {
+    width: 523px;
+}
+
+.helpModalOKText {
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.helpModalOKButton {
+    padding: 5px 10px;
+    border: 2px solid white;
+    width: auto;
+    height: auto;
+    background: green;
+    border-radius: 20px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+    .helpModalOKButton:hover {
+        background: #0a990a;
+    }
+
+.modalHelpTitle {
+    font-size: 23px;
+    font-weight: 400;
+}
+
+.modalHelpChecklistContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modalHelpChecklistItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 45px;
+    align-items: center;
+    border-radius: 31px;
+    padding: 10px 15px;
+    background-color: var(--color-bg-3);
+    padding-right: 6px;
+}
+
+.modalHelpItemName {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.modalHelpItemCurrentStatus {
+    width: 34px;
+    height: 34px;
+    /* border: 1px solid white; */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+    .modalHelpItemCurrentStatus.OK {
+        /* background-color: #20a020; */
+        background-image: url(../../img/tick.png);
+    }
+
+    .modalHelpItemCurrentStatus.ERROR {
+        /* background-color: #9e3535; */
+        background-image: url('../../img/error.png');
+    }
+
+    .modalHelpItemCurrentStatus.NA {
+        /* background-color: #cdcd51; */
+        background-image: url(../../img/question.png);
+        background-size: 79%;
+    }
+
+.helpModalChecklistGlobalContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modalHelpBottomText {
+    text-align: center;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+    .modalHelpBottomText > a {
+        color: #8dc0ff;
+    }
+
+
+.helpModalOKHolder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.errorBoxSubText {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+
+
+.foundryDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.foundryDetailsTop {
+    display: flex;
+    gap: 14px;
+}
+
+.foundryDetailsImage {
+    width: 236px;
+    height: 272px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+    border-radius: 30px;
+}
+
+.foundryDetailsTopRight {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.foundryDetailsTopTop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.foundryDetailsTopTopTitle {
+    font-size: 34px;
+    font-weight: 300;
+    margin-right: 5px;
+}
+
+.foundryDetailsTopRightAlignGroup {
+    display: flex;
+    gap: 11px;
+    margin-left: auto;
+}
+
+.foundryDetailsTopTopLink {
+    height: 27px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    border: solid 1px white;
+    transition: 0.15s linear;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.foundryDetailsTopTopUsedInOthers {
+    height: 27px;
+    width: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    /* border: solid 2px white; */
+    background-color: #553e8c;
+    background-image: url(../../img/ingredient.png?a);
+    background-size: 62%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+
+
+.foundryDetailsTopTopLink:hover {
+    background: var(--color-card-hover);
+}
+
+.foundryDetailsTopTopLink > a {
+    color: white;
+    font-weight: 300;
+}
+
+.foundryDetailsTopDescription {
+    font-size: 15px;
+    font-weight: 300;
+    max-height: 42px;
+    overflow-y: auto;
+}
+
+.foundryDetailsTopCustom {
+    flex-grow: 1;
+    background-color: var(--color-bg-2);
+    max-height: 194px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.foundryDetailsBottom {
+    display: flex;
+    flex-direction: row;
+    /* background-color: #7a6767; */
+    height: 230px;
+    gap: 12px;
+    border-top: 1px solid #ffffff54;
+    padding-top: 13px;
+}
+
+.foundryDetailsBottomLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 242px;
+    gap: 6px;
+    min-width: 242px;
+}
+
+.foundryDetailsBottomLeftTitle {
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.foundryDetailsBottomLeftList {
+    background-color: var(--color-bg-2);
+    width: 100%;
+    flex-grow: 1;
+    border-radius: 20px;
+    display: flex;
+    padding: 3px;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: scroll;
+    padding-bottom: 3px;
+    position: relative;
+    display: flex;
+    overflow-x: hidden;
+    gap: 3px;
+}
+
+.foundryDetailsBottomLeftListItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: var(--color-bg-3);
+    cursor: pointer;
+    padding: 3px 7px;
+    transition: 0.15s linear;
+    font-weight: 400;
+    position: relative;
+    border-radius: 20px;
+}
+
+    .foundryDetailsBottomLeftListItem:hover {
+        background-color: var(--color-card-hover);
+    }
+
+    .foundryDetailsBottomLeftListItem.selected {
+        background-color: var(--color-card-active);
+        /* font-weight: 400; */
+    }
+
+    .foundryDetailsBottomLeftListItem.required {
+        background-color: #307130c4;
+    }
+
+        .foundryDetailsBottomLeftListItem.required:hover {
+            background-color: #438c43c4;
+        }
+
+        .foundryDetailsBottomLeftListItem.required.selected {
+            background-color: #55a555c4;
+        }
+
+
+    .foundryDetailsBottomLeftListItem.isSet {
+        background-color: var(--color-tab);
+    }
+
+        .foundryDetailsBottomLeftListItem.isSet.selected {
+            background-color: var(--color-tab-active);
+        }
+
+        .foundryDetailsBottomLeftListItem.isSet:hover {
+            background-color: var(--color-tab-hover);
+        }
+
+.foundryDetailsComponentImage {
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.foundryDetailsComponentName {
+    font-size: 14px;
+    flex-grow: 1;
+    text-align: center;
+    font-weight: 400;
+    /* max-height: 36px; */
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+}
+
+.foundryDetailsBottomRight {
+    display: flex;
+    flex-grow: 1;
+    padding: 5px;
+    gap: 7px;
+    background-color: var(--color-bg-2);
+    position: relative;
+    border-radius: 20px;
+}
+
+.foundryDetailsBottomRightData {
+    width: 192px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.foundryDetailsComponentDataImage {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 100px;
+    flex-grow: 1;
+    transform: scale(0.85);
+}
+
+.foundryDetailsComponentDataDescription {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 0px 1px;
+    max-height: 92px;
+    overflow-y: auto;
+    margin-bottom: 4px;
+}
+
+.foundryDetailsComponentPriceHolder {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    font-size: 15px;
+    font-weight: 400;
+    gap: 6px;
+}
+
+.foundryDetailsComponentPriceSell {
+    gap: 13px;
+    display: flex;
+    align-items: center;
+    padding: 0px 7px;
+    background-color: var(--color-sell);
+    border-radius: 15px;
+    flex-grow: 1;
+    transition: 0.15s linear;
+    cursor: pointer;
+    padding-right: 4px;
+    width: 1px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+    .foundryDetailsComponentPriceSell:hover {
+        background-color: var(--color-sell-hover);
+    }
+
+    .foundryDetailsComponentPriceSell:active {
+        background-color: var(--color-sell-active);
+    }
+
+
+foundryDetailsComponentPriceIcon {
+}
+
+.foundryDetailsComponentPriceBuy {
+    gap: 13px;
+    display: flex;
+    align-items: center;
+    padding: 0px 7px;
+    background-color: var(--color-buy);
+    border-radius: 15px;
+    flex-grow: 1;
+    cursor: pointer;
+    transition: 0.15s linear;
+    padding-right: 4px;
+    width: 1px;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+    .foundryDetailsComponentPriceBuy:hover {
+        background-color: var(--color-buy-hover);
+    }
+
+    .foundryDetailsComponentPriceBuy:active {
+        background-color: var(--color-buy-active);
+    }
+
+.foundryDetailsComponentPricePrice {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-left: -9px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.foundryDetailsComponentPriceIcon {
+    width: 20px;
+    height: 20px;
+    background-image: url('../../img/platinum.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.foundryDetailsBottomRightDropColumnHolder {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    margin-top: -2px;
+}
+
+    .foundryDetailsBottomRightDropColumnHolder.nomargina {
+        margin-top: 4px;
+    }
+
+.foundryDetailsBottomRightDropColumnTitle {
+    font-size: 17px;
+    font-weight: 400;
+    margin-bottom: -5px;
+}
+
+.foundryDetailsBottomRightDropColumnListContainer {
+    flex-grow: 1;
+    background-color: var(--color-bg-2);
+    width: 100%;
+    padding: 3px 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: scroll;
+    padding-bottom: 0px;
+    position: relative;
+    border-radius: 15px;
+}
+
+.foundryDetailsBottomRightDropItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 7px;
+    background-color: var(--color-bg-3);
+    transition: 0.15s linear;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+    .foundryDetailsBottomRightDropItem:hover {
+        background-color: var(--color-card-hover);
+    }
+
+
+    .foundryDetailsBottomRightDropItem.required {
+        background-color: #307130c4;
+    }
+
+        .foundryDetailsBottomRightDropItem.required:hover {
+            background-color: #438c43c4;
+        }
+
+.foundryDetailsBottomRightDropItemPicture {
+    color: black;
+    display: flex;
+    flex-direction: row;
+    width: 30px;
+    height: 30px;
+    margin: -5px -4px;
+    margin-top: -6px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-left: -4px;
+    margin-right: 0px;
+}
+
+.foundryDetailsBottomRightDropItemDropName {
+    font-size: 13px;
+    font-weight: 500;
+    width: 149px;
+    text-align: center;
+}
+
+.isNormalDrop > .foundryDetailsBottomRightDropItemDropName {
+    width: 260px;
+}
+
+.isMarketDrop > .foundryDetailsBottomRightDropItemDropName {
+    width: 275px;
+}
+
+.isNormalDrop > .foundryDetailsBottomRightDropItemPicture {
+    background-size: 74%;
+}
+
+.isMarketDrop > .foundryDetailsBottomRightDropItemPicture {
+    background-size: 74%;
+}
+
+.foundryDetailsBottomRightDropItemDropPercent {
+    font-weight: 500;
+    font-size: 14px;
+    width: 50px;
+    text-align: end;
+}
+
+.foundryDetailsBottomRightDropItemDropOwned {
+    display: flex;
+    gap: 8px;
+    font-weight: 400;
+    justify-content: center;
+    width: 67px;
+}
+
+.foundryDetailsBottomRightDropItemDropOwnedIcon {
+    background-image: url(../../img/treasure.png);
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+}
+
+.foundryDetailsBottomRightDropItemDropOwnedNumber {
+}
+
+.innerModal.foundryDetails {
+    width: 875px;
+    height: 584px;
+}
+
+.foundryDetailsDescriptionHolder {
+    /* flex-grow: 10; */
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.backdropNoInfo {
+    position: absolute;
+    /* background-color: var(--color-bg-3); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: -webkit-center;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    font-size: 16px;
+    bottom: 0px;
+    font-weight: 300;
+    border-radius: 20px;
+}
+
+.foundryDetailsCustomWarframeContainer {
+    display: flex;
+    height: 100%;
+    position: relative;
+}
+
+.foundryDetailsCustomGeneralEntry {
+    display: flex;
+    gap: 8px;
+    align-content: center;
+    align-items: center;
+}
+
+    .foundryDetailsCustomGeneralEntry.mode {
+        justify-content: center;
+        align-items: center;
+    }
+
+        .foundryDetailsCustomGeneralEntry.mode.shotType {
+            grid-column: 1/3;
+        }
+
+.foundryDetailsCustomWarframeAbilitiesHolder {
+    min-width: 170px;
+    max-width: 170px;
+    justify-content: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0px;
+    border-left: 1px solid #ffffff4f;
+    background: var(--color-bg-2);
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+}
+
+    .foundryDetailsCustomWarframeAbilitiesHolder.mod {
+        min-width: 360px;
+        max-width: none;
+    }
+
+.foundryDetailsCustomWarframeAbility {
+    padding: 0px 6px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 400;
+    /* margin-left: 6px; */
+    transition: 0.15s linear;
+    cursor: pointer;
+    align-self: center;
+    place-content: center;
+    width: 100%;
+}
+
+    .foundryDetailsCustomWarframeAbility:hover {
+        background-color: var(--color-card-hover);
+    }
+
+.foudnryDetailsCustomGeneralContainer {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 2.5fr;
+    grid-template-columns: 1fr 1.5fr;
+    padding: 10px 12px;
+    align-items: center;
+    flex-grow: 1;
+    column-gap: 6px;
+}
+
+    .foudnryDetailsCustomGeneralContainer.mod {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        justify-items: center;
+        min-width: 230px;
+    }
+
+.foundryDetailsCustomWarframePassive {
+    grid-column: 1/3;
+}
+
+.foundryDetailsCustomGeneralEntryKey {
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.foundryDetailsCustomGeneralEntryValue {
+    font-weight: 300;
+    font-size: 15px;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+    .foundryDetailsCustomGeneralEntryValue.disposition {
+        color: #9da2ff;
+    }
+
+    .foundryDetailsCustomGeneralEntryValue.health {
+        color: #fd5454;
+    }
+
+    .foundryDetailsCustomGeneralEntryValue.shield {
+        color: #9c9cff;
+    }
+
+    .foundryDetailsCustomGeneralEntryValue.passive {
+        font-size: 13px;
+        font-weight: 300;
+    }
+
+    .foundryDetailsCustomGeneralEntryValue.armor {
+        color: #f1bb6a;
+    }
+
+    .foundryDetailsCustomGeneralEntryValue.energy {
+        color: #98f1ff;
+    }
+
+.foundryDetailsCustomGeneralEntryValueIcon {
+    width: 18px;
+    height: 18px;
+    /* filter: invert(100%); */
+    margin-left: 0px;
+    background-size: 100%;
+}
+
+    .foundryDetailsCustomGeneralEntryValueIcon.aura {
+        /* border-right:2px solid black; */
+        /* border: 1px solid black; */
+        background-repeat: no-repeat;
+        background-position: center;
+        /* background-color: #4d84ff1c; */
+        margin-left: -5px;
+        margin-right: -6px;
+        cursor: pointer;
+    }
+
+
+    .foundryDetailsCustomGeneralEntryValueIcon.auraSeparator {
+        width: 3px;
+        height: 22px;
+        margin: 0px 2px;
+        filter: none;
+        font-weight: 400;
+    }
+
+    .foundryDetailsCustomGeneralEntryValueIcon.whitespace {
+        width: 0px;
+    }
+
+
+.foudnryDetailsCustomGeneralContainerWeaponShoot {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    padding: 10px 12px;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.foudnryDetailsCustomGeneralContainerWeaponMelee {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    padding: 10px 12px;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.foudnryDetailsCustomGeneralContainerWeaponShootRight {
+    width: 326px;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #ffffff33;
+    /* padding-left: 11px; */
+}
+
+.foundryDetailsWeaponShootModesHeader {
+    display: flex;
+    justify-content: space-between;
+    gap: 1px;
+    overflow-x: auto;
+}
+
+.foundryDetailsAttackModeListItem {
+    padding: 15px 7px;
+    flex-grow: 1;
+    background-color: var(--color-tab);
+    cursor: pointer;
+    transition: 0.15s linear;
+    /* width: 1px; */
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+    .foundryDetailsAttackModeListItem:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+    .foundryDetailsAttackModeListItem.selected {
+        background-color: var(--color-tab-active);
+        /* font-weight: 400; */
+    }
+
+.foundryDetailsWeaponShootModesBodyContainer {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1.7fr;
+    grid-template-columns: 1fr 1fr;
+    padding: 8px;
+    padding-top: 6px;
+    font-size: 14px;
+    height: 100%;
+    background-color: var(--color-bg-3);
+}
+
+.foundryDetailsWeaponShootModesBodyDamageContainer {
+    display: flex;
+    grid-column: 1/3;
+    justify-content: center;
+    align-items: center;
+    gap: 19px;
+}
+
+.foundryDetailsWeaponShootModesBody {
+    height: 100%;
+}
+
+.foundryDetailsWeaponShootModesBodyDamageContainerItemIcon {
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.foundryDetailsWeaponShootModesBodyDamageContainerItem {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-weight: 400;
+}
+
+.mode > .foundryDetailsCustomGeneralEntryKey {
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.foundryDetailsCustomGeneralEntryValue.weaponShoot {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    width: 99%;
+}
+
+.weaponTypeIcon {
+    background-size: cover;
+    width: 35px;
+    height: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+    .weaponTypeIcon.rifle {
+        background-image: url('../../img/weaponTypes/rifle.png');
+    }
+
+    .weaponTypeIcon.shotgun {
+        background-image: url('../../img/weaponTypes/shotgun.png');
+    }
+
+    .weaponTypeIcon.pistol {
+        background-image: url('../../img/weaponTypes/pistol.png');
+        background-size: 68%;
+        margin-right: -5px;
+    }
+
+.weaponType {
+}
+
+.triggerType {
+    /* margin-left: 25px; */
+    color: #ffe182;
+    /* margin-right: 20px; */
+}
+
+.noiseType.noisy {
+    color: #ff8e8e;
+}
+
+.noiseType.silent {
+    color: #9bff64;
+}
+
+
+.extraWeaponShootDataTypeContainer {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.abilitiesTitle {
+    text-align: center;
+    /* height: 20px; */
+    padding: 5px;
+    font-weight: 500;
+    font-size: 18px;
+    background: var(--color-bg-3);
+    padding-top: 8px;
+}
+
+.foundryDetailsCustomGeneralEntryValue.blocking {
+    color: #ffa5a5;
+}
+
+.relicDetailsTopLeft {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-weight: 400;
+    font-size: 25px;
+    padding: 8px;
+}
+
+.relicDetailsTopLeftIcon {
+    width: 45px;
+    height: 45px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    background-size: 105%;
+    margin-right: -8px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.relicDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    height: 100%;
+}
+
+.relicDetailsBottom {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    gap: 16px;
+    height: 1px;
+}
+
+.relicDetailsBottomLeft {
+    width: 55%;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.relicDetailsBLTop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -2px;
+    margin-bottom: 4px;
+    gap: 12px;
+}
+
+.relicDetailsBLTopExpected {
+    display: flex;
+    /* flex-grow: 1; */
+    gap: 13px;
+    font-size: 15px;
+    font-weight: 500;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.relicDetailsBLTopSelected {
+    width: 130px;
+    padding: 2px 3px;
+    cursor: pointer;
+    border-radius: 7px;
+    color: var(--color-text);
+    background-color: var(--color-bg-3);
+}
+
+.relicDetailsBLTopExpectedCoins {
+    display: flex;
+    gap: 12px;
+    justify-self: right;
+}
+
+.relicDetailsBLTopExpectedCoinsCoin {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+.relicDetailsBLTopExpectedCoinsCoinIcon {
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+    .relicDetailsBLTopExpectedCoinsCoinIcon.plat {
+        background-image: url('../../img/platinum.png');
+    }
+
+    .relicDetailsBLTopExpectedCoinsCoinIcon.ducats {
+        background-image: url('../../img/ducats.png');
+    }
+
+.relicDetailsBLBottomItem {
+    display: flex;
+}
+
+.relicDetailsBLBottomTier {
+    flex-grow: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 2px;
+}
+
+.gold > .relicDetailsBLBottomItem {
+    background-color: #ffd70061;
+}
+
+.silver > .relicDetailsBLBottomItem {
+    background-color: #c0c0c054;
+}
+
+.bronze > .relicDetailsBLBottomItem {
+    background-color: #cd9b3f54;
+}
+
+.relicDetailsBLBottomItem {
+    font-weight: 400;
+    font-size: 16px;
+    gap: 5px;
+    justify-content: space-between;
+    padding: 6px 12px;
+    display: grid;
+    grid-template-columns: 5fr 3fr 1.5fr;
+    grid-template-rows: 1fr;
+    background-color: #ffffff1c;
+    position: relative;
+    border-radius: 20px;
+}
+
+    .relicDetailsBLBottomItem.owned {
+        box-shadow: inset 0px 0px 0px 2px #aeffae69;
+    }
+
+.relicDetailsBLBottom {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    padding: 5px;
+    border-radius: 20px;
+    margin-top: 3px;
+    background-color: var(--color-bg-2);
+}
+
+.relicDetailsBLBottomItemImage {
+}
+
+.relicDetailsBLBottomItemChance {
+    text-align: right;
+    align-self: center;
+    cursor: pointer;
+    width: min-content;
+    justify-self: right;
+}
+
+.relicDetailsBLBottomItemImage {
+    height: 27px;
+    width: 27px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    margin-left: -5px;
+    flex-shrink: 0;
+}
+
+.relicDetailsBLBottomItemName {
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+    font-size: 15px;
+    overflow: hidden;
+}
+
+.relicDetailsBLBottomItemNameName {
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.relicDetailsVaulted {
+    width: 30px;
+    height: 27px;
+    background-image: url(../../img/treasure.png);
+    margin-right: 10px;
+    background-size: 71%;
+    background-position: center;
+    background-color: #13202e;
+    border: 1px solid white;
+    border-radius: 4px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.relicDetailsTop {
+    display: flex;
+    background-color: var(--color-bg-3);
+    align-items: center;
+    justify-content: space-between;
+    /* border: 2px solid white; */
+    margin-bottom: 1px;
+    border-radius: 20px;
+    padding-right: 14px;
+}
+
+.relicDetailsBLTopSelected.squadSize {
+    width: 39px;
+}
+
+.relicDetailsTopMiniRow {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    gap: 6px;
+}
+
+.relicDetailsSelector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.foundryDetailsCustomModTierHeaderHolder {
+    display: flex;
+    justify-content: space-between;
+    gap: 1px;
+    margin-top: 1px;
+}
+
+.foundryDetailsCustomModTierHeader {
+    min-width: 27px;
+    height: 27px;
+    padding: 4px 0px;
+    text-align: center;
+    flex-grow: 1;
+    background: var(--color-tab);
+    transition: 0.15s linear;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+    .foundryDetailsCustomModTierHeader:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+    .foundryDetailsCustomModTierHeader.selected {
+        background-color: var(--color-tab-active);
+    }
+
+.foundryDetailsCustomModTierDescriptionBenefits {
+    font-weight: 300;
+    font-size: 15px;
+    text-align: center;
+    flex-grow: 1;
+    margin-top: 5px;
+}
+
+.foundryDetailsCustomModTierDescriptionTop {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    align-items: center;
+    gap: 10px;
+    font-weight: 300;
+}
+
+.foundryDetailsModEndoIcon {
+    width: 36px;
+    height: 25px;
+    background-image: url('../../img/endo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: -5px;
+}
+
+.foundryDetailsModArcaneIcon {
+    width: 31px;
+    height: 19px;
+    margin-top: 1px;
+    margin-bottom: 5px;
+    background-image: url('../../img/arcane.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: 4px;
+}
+
+
+.foundryDetailsModCreditsIcon {
+    width: 36px;
+    height: 25px;
+    background-image: url(../../img/credits.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: -5px;
+}
+
+.foundryDetailsCustomModTierDescriptionEndo {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    font-weight: 400;
+    font-size: 17px;
+}
+
+.settingsTab {
+    gap: 3px;
+    padding: 10px;
+}
+
+
+.deltaBottomRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.deltaTotals {
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 300;
+    gap: 6px;
+}
+
+
+.deltaComeBackLater {
+    flex-grow: 0;
+    padding: 4px 8px;
+}
+
+
+.deltaHarrow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 17px;
+    font-weight: 300;
+}
+
+.settingsColorPickerHolder {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+    width: 197px;
+}
+
+.colorPicker {
+    width: 40px;
+    height: 18px;
+    border-radius: 15px;
+    border: solid 1px white;
+    box-shadow: 0px 0px 1px 1px black;
+    cursor: pointer;
+}
+
+
+.buttonSettingsTest {
+    width: auto;
+    height: 31px;
+    background-color: var( --color-tab);
+    border-radius: 16px;
+    color: white;
+    cursor: pointer;
+    padding: 0px 14px;
+    margin: auto;
+}
+
+    .buttonSettingsTest:hover {
+        background-color: var( --color-tab-hover);
+    }
+
+
+div#colorPicker {
+    width: 180px;
+    height: 287px;
+    position: absolute;
+    right: 17px;
+}
+
+.themeButtons {
+    display: flex;
+    gap: 13px;
+}
+
+span.settingsTitle {
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 1px;
+    padding-top: 15px;
+    border-top: 1px solid white;
+}
+
+.settingsGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.settingsThemePresetHolder {
+    background-color: var(--color-bg-2);
+    border-radius: 21px;
+    padding: 7px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-height: 155px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+    .settingsThemePresetHolder > div {
+        background-color: var(--color-bg-1);
+        border-radius: 20px;
+        width: 200px;
+        align-items: center;
+        display: grid;
+        flex-direction: row;
+        grid-template-columns: 0.25fr 1fr;
+        grid-template-rows: 1.25fr 1fr;
+        padding: 0px;
+        height: 48px;
+        overflow: hidden;
+        transition: 0.15s linear;
+        cursor: pointer;
+    }
+
+        .settingsThemePresetHolder > div:hover > .themePresetName {
+            background-color: var(--color-card-hover);
+        }
+
+.themePresetImage {
+    width: 55px;
+    height: 35px;
+    min-width: 55px;
+    background-position: center;
+    background-size: 55%;
+    background-repeat: no-repeat;
+    grid-row: 1/3;
+}
+
+.themePresetName {
+    text-align: center;
+    width: 100%;
+    font-weight: 400;
+    padding: 0px 12px;
+    height: 100%;
+    padding-top: 4px;
+    background-color: var(--color-bg-3);
+    transition: 0.15s linear;
+}
+
+.settingsCustomHolder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+button.lw-ref {
+    border: 1px solid white;
+    border-radius: 7px;
+    box-shadow: 0px 0px 3px 1px black;
+    background-color: var(--lw-color);
+}
+
+.themesSupporterOnly {
+    position: absolute;
+    top: 48px;
+    left: 2px;
+    right: 3px;
+    bottom: 2px;
+    border-radius: 0px 0px 20px 20px;
+    background-color: #000000d6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.themesSupporterOnlyText {
+    font-weight: 400;
+    font-size: 18px;
+}
+
+
+.innerModal.loading {
+    padding: 18px;
+    padding-bottom: 25px;
+}
+
+.loadingModalSpinner {
+    background-image: url(../../img/loading.svg);
+    background-size: contain;
+    width: 67px;
+    height: 67px;
+    margin: auto;
+}
+
+.loadingModalText {
+    align-self: center;
+    margin-bottom: -5px;
+}
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+div#loadingScreen.hidden {
+    opacity: 0;
+    z-index: 3;
+    transition: 0.5s linear;
+}
+
+.loadingModalError {
+    background-image: url(../../img/error.png);
+    background-size: contain;
+    width: 67px;
+    height: 67px;
+    margin: auto;
+}
+
+    .loadingModalError.banned {
+        background-image: url(../../img/ban.png);
+        background-size: 95%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+.loadingModalText > a {
+    color: var(--color-text);
+}
+
+.themeExportGroup {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 12px;
+}
+
+input.themeExportInput {
+    width: 100px;
+    border-radius: 10px;
+    outline: none;
+    padding: 3px 6px;
+    padding-top: 4px;
+    background-color: var(--color-bg-3);
+    border: none;
+    color: var(--color-text);
+}
+
+.themePresetAuthor {
+    text-align: center;
+    width: 100%;
+    font-weight: 300;
+    padding: 0px 12px;
+    height: 100%;
+    padding-top: 1px;
+    font-size: 14px;
+    background-color: var(--color-card-active);
+    transition: 0.15s linear;
+}
+
+button.buttonSettingsTest.right {
+    margin-left: auto;
+}
+
+
+.themePresetImage.Logo {
+    -webkit-mask-position: center;
+    -webkit-mask-size: 65%;
+    -webkit-mask-repeat: no-repeat;
+    background-color: var(--color-icons-bg);
+}
+
+input.settingsCheckBoxHolderBox.settingsSelect.timers {
+    width: 48px;
+    padding: 12px 6px;
+    font-size: 15px;
+    padding-left: 6px;
+    background-color: var(--color-bg-3);
+    border-radius: 9px;
+    border: none;
+    filter: none;
+    color: var(--color-text);
+}
+
+
+span.rivenDetailsGrade {
+    width: 17px;
+    text-align: center;
+    font-weight: 500;
+    margin-right: 3px;
+}
+
+.autodetectScaleButton {
+    padding: 5px 8px;
+    border-radius: 11px;
+    background-color: var(--color-buy);
+    margin-left: 12px;
+    transition: 0.12s linear;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+    .autodetectScaleButton:hover {
+        background-color: var(--color-buy-hover);
+    }
+
+/* crafting tree */
+.craftingTreeContainer {
+    overflow-x: auto;
+    flex-grow: 1;
+    border: 1px solid #ffffff14;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg-2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.craftingTreeWrapper {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.crafting-tree-item-container {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid #fbfcf0; */
+    align-items: center;
+    gap: 10px;
+    padding: 9px;
+    width: fit-content;
+    padding-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.crafting-tree-item {
+    position: relative;
+    display: flex;
+    flex-direction: revert;
+    align-items: center;
+    padding: 7px;
+    gap: 10px;
+    font-weight: 300;
+    z-index: 1;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--color-card-active);
+    border-radius: 10px;
+    transition: 0.12s linear;
+}
+
+    .crafting-tree-item:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+.crafting-tree-item-presentation {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
+}
+
+.crafting-tree-item-container .crafting-tree-item-name {
+    font-size: .75rem;
+}
+
+.crafting-tree-item-container .crafting-tree-item-icon {
+    height: 2rem;
+    width: 2rem;
+    background-color: var(--color-bg-3);
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.25);
+    padding: 6px;
+    padding: .5remrem 2rem;
+    background-size: contain;
+    position: relative;
+}
+
+.crafting-tree-item-container .crafting-tree-requirements {
+    position: relative;
+    /*border: 1px solid #f06fFF; */
+    display: flex;
+    flex-direction: row;
+    --left: 0px;
+    --right: 0px;
+}
+
+.crafting-tree-tooltip {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -110%);
+    width: 100px;
+    background-color: var(--color-bg-1);
+    padding: 4px;
+    font-size: .75rem;
+    opacity: 0;
+    border-radius: 6px;
+    transition: 0.12s linear;
+    border: 1px solid #ffffff4f;
+}
+
+    .crafting-tree-tooltip::after {
+        z-index: -1;
+        position: absolute;
+        content: "";
+        bottom: -8px;
+        width: 15px;
+        height: 15px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        background-color: var(--color-bg-1);
+        border: 1px solid #ffffff6b;
+        border-top: none;
+        border-left: none;
+    }
+
+.crafting-tree-item.withTooltip:hover > .crafting-tree-tooltip {
+    display: block;
+    opacity: 1;
+}
+
+/* LINE MAGIC */
+
+.craftingTreeContainer .craftingTreeWrapper > .crafting-tree-item-container > .crafting-tree-item::before {
+    display: none;
+}
+
+.crafting-tree-item::before {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 8px;
+    background-color: #FFF;
+    top: -8px;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+}
+
+.crafting-tree-requirements::before {
+    position: absolute;
+    content: "";
+    height: 2px;
+    margin: 0 auto;
+    left: var(--left);
+    right: var(--right);
+    background-color: #FFF;
+}
+
+.crafting-tree-requirements::after {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 10px;
+    top: -10px;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+    background-color: #FFF;
+}
+
+.craftingTreeResourceContainer {
+    gap: 12px;
+    display: flex;
+    flex-direction: row;
+    font-weight: 400;
+    font-size: 18px;
+    /* border-top: 1px solid #ffffff52; */
+    /* padding-top: 13px; */
+    max-height: 30%;
+}
+
+.craftingTreeContainerResourceContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-left: 20px;
+}
+
+.craftingTreeSummaryComponent {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 15px;
+    font-weight: 300;
+    padding: 2px 7px;
+    padding-right: 10px;
+    background-color: var(--color-bg-3);
+    border-radius: 15px;
+    transition: 0.12s linear;
+    cursor: pointer;
+}
+
+    .craftingTreeSummaryComponent:hover {
+        background-color: var(--color-card-active);
+    }
+
+.craftingTree > .innerModalContent {
+    gap: 12px;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+
+.craftingTreeSummaryCompImage {
+    width: 23px;
+    height: 23px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.craftingTreeSummaryNeededAmount {
+    font-weight: 400;
+}
+
+.crafting-tree-item-icon-extra {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 15px;
+    right: -4px;
+    border-radius: 10px;
+}
+
+
+    .crafting-tree-item-icon-extra.gotEnough {
+        background-image: url(../../img/tick.png);
+        background-size: contain;
+    }
+
+    .crafting-tree-item-icon-extra.craftable {
+        background-size: 80%;
+        background-color: #2b1c72eb;
+        background-image: url(../../img/settings.png);
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+.crafting-tree-requirements.dim {
+    opacity: 0.23;
+}
+
+.crafting-tree-item.craftable {
+    background-color: #9d3df678;
+    border-radius: 10px;
+}
+
+    .crafting-tree-item.craftable:hover {
+        background-color: #a964e8a6;
+    }
+
+.crafting-tree-item.gotEnough {
+    background-color: #215a21;
+    border-radius: 10px;
+}
+
+    .crafting-tree-item.gotEnough:hover {
+        background-color: #2b7e2b;
+    }
+
+.craftingTreeSummaryMesssageNone {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.craftingTreeSummaryResourceGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 17px;
+}
+
+.crafting-tree-item-amount-needed {
+    font-size: 13px;
+}
+
+.crafting-tree-item-vertical-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: center;
+}
+
+.craftingTreeSummaryColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+    .craftingTreeSummaryColumn.right {
+        width: 185px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        font-size: 16px;
+        font-weight: 300;
+        justify-content: center;
+        background-color: var(--color-bg-2);
+        padding: 10px 7px;
+        border-radius: 10px;
+    }
+
+.craftingTreeSummarySpecialItem {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.craftingTreeSummaryCreditsIcon {
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(../../img/credits.png);
+}
+
+.craftingTreeSummarySeparator {
+    border-left: 1px solid #ffffff63;
+}
+
+.craftingTreeSummarySpecialItem > .amount {
+    font-weight: 500;
+}
+
+.craftingTreeSummaryData {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 7px;
+    flex-grow: 1;
+}
+
+.craftingTreeSummarySettings {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.craftingTreeTopPart {
+    display: flex;
+    gap: 10px;
+    flex-grow: 1;
+    height: 40px;
+    flex-shrink: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.craftingTreeRightDetails {
+    width: 268px;
+    min-width: 300px;
+    /* border-left: 1px solid #ffffff78; */
+    /* border-radius: 10px; */
+    background-color: var(--color-bg-2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-weight: 300;
+    position: absolute;
+    padding: 4px;
+    height: 100%;
+    /* border: 1px solid #ffffff85; */
+    z-index: 1;
+    right: 0px;
+    top: 0%;
+    box-shadow: 0px 0px 11px 0px #000000e3;
+    transform: translate(311px, 00px);
+    transition: 0.15s ease-in-out;
+}
+
+.craftingTreeDetailsImage {
+    width: 40px;
+    height: 40px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-width: 40px;
+}
+
+.craftingTreeDetailsTop {
+    display: flex;
+    overflow: hidden;
+    gap: 6px;
+    background-color: var(--color-bg-1);
+    border-radius: 7px;
+    padding: 4px;
+    flex-shrink: 0;
+}
+
+.craftingTreeDetailsNameCombo {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 4px;
+    overflow: hidden;
+}
+
+.craftingTreeDetailsTopButtom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 14px;
+    align-items: center;
+}
+
+.craftingTreeDetailsOwnership {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.craftingTreeDetailsItemOwnedIcon {
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.craftingTreeDetailsItem {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    font-size: 14px;
+    align-items: center;
+}
+
+.craftingTreeDetailsDropLocations {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-grow: 1;
+    gap: 8px;
+    background-color: var(--color-bg-1);
+    border-radius: 10px;
+    padding: 6px;
+}
+
+.owned > .craftingTreeDetailsItemOwnedIcon {
+    background-image: url(../../img/tick.png);
+}
+
+.missing > .craftingTreeDetailsItemOwnedIcon {
+    background-image: url(../../img/error.png);
+}
+
+.craft > .craftingTreeDetailsItemOwnedIcon {
+    background-image: url(../../img/settings.png);
+    background-color: #432977;
+    border-radius: 10px;
+    background-size: 85%;
+    background-position: center;
+}
+
+.craftingTreeDetailsName {
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 400;
+}
+
+.craftingTreeWikiButton {
+    background-color: #393978;
+    border-radius: 9px;
+    padding: 3px 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    /* border: solid 1px white; */
+    transition: 0.15s linear;
+    font-size: 14px;
+    cursor: pointer;
+    /* text-decoration: underline; */
+}
+
+    .craftingTreeWikiButton:hover {
+        background-color: #4a4aa1;
+    }
+
+.craftingTreeDetailsItem > .number {
+    font-weight: 400;
+}
+
+.craftingTreeRightDetails.shown {
+    transform: none;
+}
+
+.craftingTreeSettingsOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 8px;
+    background-color: var(--color-bg-3);
+    border-radius: 10px 0px 10px 0px;
+    z-index: 0;
+}
+
+.craftingAbsolutePanning {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.craftingTreeSummaryGroup {
+    display: flex;
+    gap: 6px;
+    flex-direction: column;
+}
+
+.craftingTreeRightDetails > .inventoryItemButtonPostSell {
+    flex-grow: 0;
+    width: 215px;
+    margin: auto;
+}
+
+.craftingTreeNotPurchasedFromWFMarket {
+    font-size: 14px;
+    text-align: center;
+    font-weight: 300;
+    padding: 4px 10px;
+    background-color: var(--color-card-hover);
+    width: max-content;
+    margin: auto;
+    border-radius: 10px;
+}
+
+span.bolderTooltip {
+    font-weight: 400;
+}

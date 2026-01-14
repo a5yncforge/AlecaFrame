@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+    <title>TennoFinder - In squad</title>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+    <script src="assets/js/external/jquery.min.js"></script>
+
+
+    <!-- JS files -->
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+    <script src="assets/js/squadmaking/signalr.js"></script>
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/main/foundry.css" />
+    <link rel="stylesheet" href="assets/css/main/inventory.css" />
+    <link rel="stylesheet" href="assets/css/main/modal.css" />
+    <link rel="stylesheet" href="assets/css/main/relicPlanner.css" />
+    <link rel="stylesheet" href="assets/css/main/rivenExplorer.css" />
+    <link rel="stylesheet" href="assets/css/main/wfmarket.css" />
+    <link rel="stylesheet" href="assets/css/public/stats.css" />
+
+    <link rel="stylesheet" href="assets/css/public/stats.css" />
+
+    <link rel="stylesheet" href="assets/css/squadmaking/shared.css" />
+    <link rel="stylesheet" href="assets/css/squadmaking/squad.css" />
+
+</head>
+
+
+<body style="user-select: none;">
+    <div class="content" id="vueMain">
+
+        <header class="thin" onmousedown="dragMove(event);">
+
+            <div class="alecaframeNameTop sideways">
+                <div class="showMenuButton"></div>
+                TennoFinder - In squad
+            </div>
+
+            <div class="topBarContainer" data-include="topBar"></div>
+
+
+            <div class="window-controls-group">
+
+                <a class="window-control discord-icon" target="_blank" href="https://discord.gg/Bc7PNNnnEZ">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/discord.svg#Layer_1" />
+                    </svg>
+                </a>
+
+                <button class="window-control" onclick="minimize()">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/sprite.svg#window-control_minimize" />
+                    </svg>
+                </button>
+
+                <button class="window-control window-control-close" onclick="closeWindow()">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/sprite.svg#window-control_close" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+
+        <main>
+            <div class="background">
+                <div v-if="squadData != undefined && squadData.squadInfo!= undefined" class="squadDetails">
+                    <div class="squadItemLine topLine">
+                        {{squadData.squadInfo.title}}
+
+                        <div class="squadMode">
+                            <div class="squadType" :class="[squadData.squadInfo.level]">{{squadData.squadInfo.level}}</div>
+                            <div class="squadModeIcon" :style="{ backgroundImage: 'url(&quot;' + getGameMode(squadData.squadInfo.gameMode).image + '&quot;)' }"></div>
+                            {{getDisplayGameModeName(squadData.squadInfo.gameMode)}}
+                        </div>
+                    </div>
+                    <div class="squadItemLine requirements">
+                        <div v-for="req in squadData.squadInfo.requirementsParsed" class="requirementItem mainList">
+                            <div class="reqImg" :style="{ backgroundImage: 'url(&quot;' + req.imageURL + '&quot;)' }"></div>
+                            {{req.name}}
+                        </div>
+                        <div v-if="squadData.squadInfo.requirementsParsed==undefined || squadData.squadInfo.requirementsParsed.length == 0" class="noExtraRequirementsText">
+                            No extra requirements
+                        </div>
+                    </div>
+                </div>
+                <div class="squadDown">
+                    <div class="squadMembers">
+                        Squad members:
+                        <div class="squadMemberHolder">
+                            <div v-for="member in squadData.users" class="squadMember">
+                                <div class="memberFull" v-if="member.isFull && member.isGuest">
+                                    <div class="leftThings">
+                                        <div class="memberIcon guest"></div>
+                                        <div class="squadMemberName">Guest by {{member.username}}</div>
+                                    </div>
+                                    <div class="rightThings">
+                                        <button v-if="member.username==this.username" class="memberButton quick" @click="removeGuest()">
+                                            <div></div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="memberFull" v-else-if="member.isFull" :class="{isMe:member.username==this.username}">
+                                    <div class="leftThings">
+                                        <div v-if="member.isOwner" class="memberIcon owner"></div>
+                                        <div v-if="member.isVRCuser" class="memberIcon vrc"></div>
+                                        <div v-if="!member.isVRCuser" class="memberIcon af"></div>
+                                        <div class="squadMemberReputation" :class="member.status">{{member.reputation>0?'+':''}}{{member.reputation}}</div>
+                                        <div class="squadMemberName">{{member.username}}</div>
+                                    </div>
+                                    <div class="rightThings">
+                                        <button v-if="hosting() && member.username!=this.username" class="memberButton quick" @click="kickPlayer(member.username)">
+                                            <div></div>
+                                        </button>
+                                        <button v-if="member.username!=this.username" class="memberButton invite" @click="invitePlayer(member.username)">
+                                            <div></div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div v-else class="memberNotFull">
+                                    <div class="leftThings">
+                                        <span>This slot is empty</span>
+                                    </div>
+                                    <div class="rightThings">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottomButtons">
+                            <button :disabled="!squadData?.users?.some(p=>!p.isFull)" class="buttonAddGuest" @click="addGuest()">+ Add guest</button>
+                        </div>
+                    </div>
+                    <div class="squadChat">
+                        Squad chat:
+                        <div class="squadChatHolder">
+                            <div v-for="message in squadData.messages" class="squadChatMessage" :class="{system:message.username=='[SYSTEM]'}" :key="message.id">
+                                <div class="squadChatMessageName">{{message.username}}: </div>
+                                <div class="squadChatMessageText">{{message.message}}</div>
+                            </div>
+                        </div>
+                        <div class="squadChatInput">
+                            <input type="text" v-model="chatInput" @keyup.enter="sendChatMessage" />
+                            <button class="buttonSendChatMessage" @click="sendChatMessage"></button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+            <div class="staticRightColumn">
+                <div id="mainAD" class="mainAD"></div>
+
+                <div class="subscribeButton GoPremiumCallout">
+                    <div>Remove ads and support the developement</div>
+                    <button onclick="subscribeClick()">Subscribe</button>
+                </div>
+            </div>
+        </main>
+
+
+        <div id="loadingScreen" onmousedown="dragMove(event);">
+            <div v-show="bigModalConnectingVisible || bigModalErrorVisible" class="modalFULLSize">
+                <div class="innerModal loading">
+                    <div class="innerModalContent">
+                        <div v-if="bigModalConnectingVisible" class="loadingContainer" id="loadingContainerloading">
+                            <div class="loadingModalSpinner"></div>
+                            <div class="loadingModalText">Connecting to the matchmaking servers...</div>
+                        </div>
+
+                        <div v-if="bigModalErrorVisible" class="loadingContainer" id="loadingContainerError">
+                            <div class="loadingModalError"></div>
+                            <div id="errorText1" class="loadingModalText">Failed to connect to the TennoFinder servers.</div>
+                            <div id="errorText2" class="loadingModalText">TennoFinder might be down for maintenance or an unexpected error occurred.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="squadDoneScreen" v-if="squadEnded" onmousedown="dragMove(event);">
+            <div class="modalFULLSize">
+                <div class="innerModal loading">
+                    <div class="innerModalContent">
+                        <div class="loadingContainer" id="loadingContainerSquad">
+                            <div class="loadingModalError"></div>
+                            <div class="loadingModalText">The host has disbanded this squad</div>
+                            <button class="disbandedCloseButton" @click="closeWindow()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="squadDoneScreen" v-if="kicked" onmousedown="dragMove(event);">
+            <div class="modalFULLSize">
+                <div class="innerModal loading">
+                    <div class="innerModalContent">
+                        <div class="loadingContainer" id="loadingContainerSquad">
+                            <div class="loadingModalError"></div>
+                            <div class="loadingModalText">You have been kicked from this squad</div>
+                            <button class="disbandedCloseButton" @click="closeWindow()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function dragResize(edge) {
+            overwolf.windows.getCurrentWindow(function (result) {
+                if (result.status == "success") {
+                    overwolf.windows.dragResize(result.window.id, edge);
+                }
+            });
+        };
+    </script>
+
+    <div class="resize horizontal top" onmousedown="dragResize('Top');"></div>
+    <div class="resize vertical left" onmousedown="dragResize('Left');"></div>
+    <div class="resize vertical right" onmousedown="dragResize('Right');"></div>
+    <div class="resize horizontal bottom" onmousedown="dragResize('Bottom');"></div>
+
+    <div class="resize corner top-left" onmousedown="dragResize('TopLeft');"></div>
+    <div class="resize corner top-right" onmousedown="dragResize('TopRight');"></div>
+    <div class="resize corner bottom-left" onmousedown="dragResize('BottomLeft');"></div>
+    <div class="resize corner bottom-right" onmousedown="dragResize('BottomRight');"></div>
+
+
+    <!-- Post JS files -->
+    <script src="assets/js/squadmaking/shared.js"></script>
+    <script src="assets/js/squadmaking/squad.js"></script>
+
+    <script src="https://content.overwolf.com/libs/ads/latest/owads.min.js" async onload="onOwAdReady()"></script>
+
+    <script src="assets/js/tilt.jquery.js"></script>
+</body>
+
+</html>

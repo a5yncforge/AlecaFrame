@@ -1,0 +1,177 @@
+<div class="proAnalyticsScrollingContainer">
+    <div class="proAnalyticsSection">
+        <div class="proAnalyticsTitle">Top Warframe.Market items (last 7 days)</div>
+        <div class="proAnalyticsContent">
+
+            <div class="proAnalyticsListWithPie">
+                <div class="proAnalyticsList">
+                    <div class="proAnalyticsBestTradingItem header">
+                        <span>Item</span>
+                        <span @click="filters.bestItemsOrder='unitPrice'; filtersChanged()" :class="{selected:filters.bestItemsOrder=='unitPrice'}">Unit price</span>
+                        <span @click="filters.bestItemsOrder='volume'; filtersChanged()" :class="{selected:filters.bestItemsOrder=='volume'}">Volume (Day)</span>
+                        <span @click="filters.bestItemsOrder='value'; filtersChanged()" :class="{selected:filters.bestItemsOrder=='value'}">Total value</span>
+                    </div>
+                    <div class="proAnalyticsBestTradingContainer">
+                        <div v-for="item in data?.bestItemsForTrading" class="proAnalyticsBestTradingItem" :key="item.name">
+                            <div class="proAnalyticsNameIconCombo">
+                                <div class="proAnalyticsIcon" :style="{ backgroundImage: 'url(&quot;' + item.image + '&quot;)' }"></div>
+                                {{item.name}}
+                            </div>
+
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.unitPrice)}}<div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.volume)}} <div class="inventoryItemSellPlatIcon amount proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.totalValue)}} <div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="proAnalyticsPie" id="proAnalyticsBestItemsPie">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="proAnalyticsSection">
+        <div class="proAnalyticsTitle">Your Trade history stats</div>
+
+        <div class="proAnalyticsContent">
+            <div class="proAnalyticsSmallThings">
+                <div class="proAnalyticSmallThing">
+                    Total revenue:
+                    <div class="proAnalyticSmallThingValue">{{toSI(data?.proAnalyticsStatement?.general.totalPlatReceived)}}</div>
+                    <div class="inventoryItemSellPlatIcon proAnalytics"></div>
+                </div>
+                <div class="proAnalyticSmallThing">
+                    Total expenses:
+                    <div class="proAnalyticSmallThingValue">{{toSI(data?.proAnalyticsStatement?.general.totalPlatSpent)}}</div>
+                    <div class="inventoryItemSellPlatIcon proAnalytics"></div>
+                </div>
+                <div class="proAnalyticSmallThing">
+                    Profit:
+                    <div class="proAnalyticSmallThingValue">{{toSI(data?.proAnalyticsStatement?.general.totalPlatinumProfits)}}</div>
+                    <div class="inventoryItemSellPlatIcon proAnalytics"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="proAnalyticsContent">
+            <div class="proAnalyticsListWithPie">
+                <div class="proAnalyticsList">
+                    <div class="proAnalyticsBestTradingItem header">
+                        <span>Type</span>
+                        <span @click="filters.statementSummaryOrder='revenue'; filtersChanged()" :class="{selected:filters.statementSummaryOrder=='revenue'}">Revenue</span>
+                        <span @click="filters.statementSummaryOrder='expenses'; filtersChanged()" :class="{selected:filters.statementSummaryOrder=='expenses'}">Expenses</span>
+                        <span @click="filters.statementSummaryOrder='profit'; filtersChanged()" :class="{selected:filters.statementSummaryOrder=='profit'}">Profit</span>
+                    </div>
+                    <div class="proAnalyticsBestTradingContainer">
+                        <div v-for="item in data?.proAnalyticsStatement?.statementByType" class="proAnalyticsBestTradingItem" :key="item.name">
+                            <div class="proAnalyticsNameIconCombo">
+                                <div class="proAnalyticsIcon" :class="[item.type]"></div>
+                                {{item.type}}
+                            </div>
+
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.totalPlatReceived)}}<div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.totalPlatSpent)}} <div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat" :class="{positive:item.totalPlatinumProfits>0, negative: item.totalPlatinumProfits<0}">{{toSI(item.totalPlatinumProfits)}} <div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="proAnalyticsPie" id="proAnalyticsStatementPie">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="proAnalyticsContent">
+            <div class="proAnalyticsDoubleList">
+                <div class="proAnalyticsList">
+                    <div class="proAnalyticsTableTitle">Sales</div>
+                    <div class="proAnalyticsBestTradingItem small header">
+                        <span>Item</span>
+                        <span @click="filters.topSalesOrder='volume'; filtersChanged()" :class="{selected:filters.topSalesOrder=='volume'}">Amount</span>
+                        <span @click="filters.topSalesOrder='value'; filtersChanged()" :class="{selected:filters.topSalesOrder=='value'}">Total value</span>
+                    </div>
+                    <div class="proAnalyticsBestTradingContainer">
+                        <div v-for="item in data?.mostSoldItems" class="proAnalyticsBestTradingItem small" :key="item.name">
+                            <div class="proAnalyticsNameIconCombo">
+                                <div class="proAnalyticsIcon" :style="{ backgroundImage: 'url(&quot;' + item.image + '&quot;)' }"></div>
+                                {{item.name}}
+                            </div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.volume)}} <div class="inventoryItemSellPlatIcon amount proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.totalValue)}} <div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="proAnalyticsList">
+                    <div class="proAnalyticsTableTitle">Purchases</div>
+                    <div class="proAnalyticsBestTradingItem small header">
+                        <span>Item</span>
+                        <span @click="filters.topPurchasesOrder='volume'; filtersChanged()" :class="{selected:filters.topPurchasesOrder=='volume'}">Amount</span>
+                        <span @click="filters.topPurchasesOrder='value'; filtersChanged()" :class="{selected:filters.topPurchasesOrder=='value'}">Total value</span>
+                    </div>
+                    <div class="proAnalyticsBestTradingContainer">
+                        <div v-for="item in data?.mostBoughtItems" class="proAnalyticsBestTradingItem small" :key="item.name">
+                            <div class="proAnalyticsNameIconCombo">
+                                <div class="proAnalyticsIcon" :style="{ backgroundImage: 'url(&quot;' + item.image + '&quot;)' }"></div>
+                                {{item.name}}
+                            </div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.volume)}} <div class="inventoryItemSellPlatIcon amount proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.totalValue)}} <div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="proAnalyticsContent">
+
+            <div class="proAnalyticsListSingle">
+                <div class="proAnalyticsList">
+                    <div class="proAnalyticsTableTitle">Top trading partners</div>
+                    <div class="proAnalyticsBestTradingItem trades header">
+                        <span>User</span>
+                        <span @click="filters.tradePartnersOrder='saleCount'; filtersChanged()" :class="{selected:filters.tradePartnersOrder=='saleCount'}">Sales</span>
+                        <span @click="filters.tradePartnersOrder='saleValue'; filtersChanged()" :class="{selected:filters.tradePartnersOrder=='saleValue'}">Sales</span>
+                        <span @click="filters.tradePartnersOrder='purchaseCount'; filtersChanged()" :class="{selected:filters.tradePartnersOrder=='purchaseCount'}">Purchases</span>
+                        <span @click="filters.tradePartnersOrder='purchaseValue'; filtersChanged()" :class="{selected:filters.tradePartnersOrder=='purchaseValue'}">Purchases</span>
+
+                        <span @click="filters.tradePartnersOrder='totalCount'; filtersChanged()" :class="{selected:filters.tradePartnersOrder=='totalCount'}">Total</span>
+                        <span @click="filters.tradePartnersOrder='totalValue'; filtersChanged()" :class="{selected:filters.tradePartnersOrder=='totalValue'}">Total</span>
+                    </div>
+                    <div class="proAnalyticsBestTradingContainer">
+                        <div v-for="item in data?.mostCommonTradePartners" class="proAnalyticsBestTradingItem trades" :key="item.name">
+                            <div class="proAnalyticsNameIconCombo">
+                                {{item.name}}
+                            </div>
+
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.saleCount)}} <div class="inventoryItemSellPlatIcon amount proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.saleValue)}} <div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.purchaseCount)}}<div class="inventoryItemSellPlatIcon amount proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.purchaseValue)}} <div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.totalCount)}} <div class="inventoryItemSellPlatIcon amount proAnalytics"></div></div>
+                            <div class="proAnalyticsBestTradingItemPlat">{{toSI(item.totalValue)}} <div class="inventoryItemSellPlatIcon proAnalytics"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="proAnalyticsPie" id="proAnalyticsBestItemsPie">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<Transition name="fade">
+    <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+</Transition>
+
+<div class="themesSupporterOnly" v-if="!unlocked">
+    <div class="themesSupporterOnlyText">Premium features are only available to Patreon T2+ supporters</div>
+    <div class="patreonCoverButtonRow">
+        <button class="patreonActionButton SeeWiki" onclick="overwolf.utils.openUrlInDefaultBrowser('https://docs.alecaframe.com/features/trading-analytics')">More info</button>
+        <button class="patreonActionButton Subscribe" onclick="PatreonApp.open()">Subscribe</button>
+    </div>
+</div>

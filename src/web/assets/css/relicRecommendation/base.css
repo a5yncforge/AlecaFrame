@@ -1,0 +1,275 @@
+﻿* {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    border: none;
+    margin: 0px;
+    background: none;
+}
+
+.relicRecommendationContainer {
+    color: var(--color-text);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg-2);
+    border: 2px solid #ffffff9e;
+    border-radius: 20px;
+}
+
+.recommendedRelicsContainer {
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    grid-gap: 5px;
+    padding: 5px;
+    min-height: 60px;
+    flex-grow: 1;
+    overflow-y: scroll;
+    background-color: var(--color-bg-1);
+}
+
+.recommendedRelicsTitle {
+    padding: 7px;
+    font-size: 21px;
+    height: 44px;
+    background-color: var(--color-bg-3);
+    width: 100%;
+    border-radius: 2px;
+    text-align: -webkit-center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.relicPlannerUpdateNeeded {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.relicPlannerLoadingOuterDiv {
+    transition: 0.2s linear;
+    border: 2px solid white;
+    width: 70%;
+    height: 23px;
+}
+
+.relicPlannerLoadingInnerDiv {
+    background-color: #4360a0;
+    height: 100%;
+}
+
+.inventoryBuySellTabOverlayLoading {
+    background: #1c1f2045;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background-image: url('../../img/loading.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60px;
+}
+
+.recommendedRelic {
+    flex-grow: 1;
+    /* margin: 5px; */
+    background-color: var(--color-card);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 5px;
+    justify-content: center;
+    min-height: 63px;
+    height: 63px;
+    border-radius: 15px;
+}
+
+.relicTop {
+    display: flex;
+    place-content: center;
+    font-size: 19px;
+    gap: 8px;
+    align-items: center;
+}
+
+
+
+.relicDetailsBLTopExpectedCoins {
+    display: flex;
+    gap: 14px;
+    justify-self: right;
+}
+
+.relicDetailsBLTopExpectedCoinsCoin {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+.relicDetailsBLTopExpectedCoinsCoinIcon {
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+    .relicDetailsBLTopExpectedCoinsCoinIcon.plat {
+        background-image: url('../../img/platinum.png');
+    }
+
+    .relicDetailsBLTopExpectedCoinsCoinIcon.ducats {
+        background-image: url('../../img/ducats.png');
+    }
+
+.relicCount {
+    font-weight: 300;
+    font-size: 17px;
+}
+
+.relicBottom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    justify-content: center;
+}
+
+.relicTitle {
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.footer {
+    /* margin-bottom: 5px; */
+    font-size: 16px;
+    /* margin-top: -5px; */
+    padding: 6px 8px;
+    flex-shrink: 0;
+}
+
+.closeIcon {
+    /* position: absolute; */
+    width: 28px;
+    height: 28px;
+    background-image: url('../../img/close.png');
+    background-size: 66%;
+    background-repeat: no-repeat;
+    background-position: center;
+    right: 8px;
+    top: 7px;
+    border-radius: 6px;
+    transition: 0.2s linear;
+    cursor: pointer;
+    z-index: 10;
+}
+
+    .closeIcon:hover {
+        background-color: #8babcc6b;
+    }
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 10px;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #98cff5;
+    }
+
+.relicVaulted {
+    width: 25px;
+    height: 24px;
+    border-radius: 3px;
+    background-color: var(--color-icons);
+    -webkit-mask-image: url('../../img/vaulted.png');
+    -webkit-mask-size: 130%;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+}
+
+.recommendedRelicsTitleTraces {
+    display: flex;
+    font-weight: 400;
+    font-size: 16px;
+    gap: 3px;
+    margin-left: 7px;
+    align-items: center;
+}
+
+.recommendedRelicsTitleTracesIcon {
+    width: 24px;
+    height: 24px;
+    background-image: url('../../img/trace.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.recommendedRelicsTitleText {
+    position: absolute;
+    width: 100%;
+    margin-top: -2px;
+}
+
+main {
+    height: 100%;
+}
+
+.recommendedRelic.fav {
+    box-shadow: inset 0px 0px 10px -1px #fcff45d6;
+}
+
+.inventoryBuySellTabOverlayLoading.error {
+    background-image: url(../../img/error.png);
+}
+
+.relicDetailsBLTopExpectedTitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

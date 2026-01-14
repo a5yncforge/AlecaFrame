@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>AlecaFrame relic</title>
+
+    <!-- JS files -->
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>
+
+    <!--<script src="assets/js/vue.global.prod.js"></script>
+
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/external/popper.min.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>-->
+    <!-- CSS files -->
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/main/rivenExplorer.css" />
+    <link rel="stylesheet" href="assets/css/overlays/rivenOverlay.css" />
+
+</head>
+
+
+<body style="user-select: none;">
+    <div class="content">
+        <main>
+            <div class="rivenOverlayExternal" id="vueContainer">
+                <div class="rivenOverlaySameHeightContainer">
+                    <div v-show="data?.rivenLeft?.show || true" class="rivenOverlayHalf left" :class="{shown:data?.rivenLeft?.show, loading:data?.rivenLeft?.loading}">
+                        <div class="rivenDetailsTop">
+                            <div class="rivenDetailsTopRight">
+                                <div class="rivenGradeSmall rivenOverlay" :class="[data?.rivenLeft?.data?.grade]"></div>
+                                <div class="rivenDetailsName">
+                                    <span class="rivenWeaponNameWeapon">{{data?.rivenLeft?.data?.weaponName}}</span>
+                                    <span class="rivenWeaponNameRivenName">{{data?.rivenLeft?.data?.name}}</span>
+                                </div>
+                            </div>
+                            <div class="closeOverlayButton" onclick="closeNow()"></div>
+                        </div>
+                        <div class="rivenDetailsSeparator"></div>
+                        <div class="rivenDetailsMiddle">
+                            <div v-if="data?.rivenLeft?.data?.statsPerWeapon!=undefined" class="rivenDetailesModifierList">
+                                <div class="rivenDetailsStat positive" v-for="stat in data?.rivenLeft?.data?.statsPerWeapon[selectedWeaponIndex]?.byLevel[selectedModLevel]?.positiveTraits">
+                                    <div class="rivenGradeDescripitionHolder">
+                                        <div class="rivenRollGrade" :class="[stat.rollGrade]"></div>
+                                        <div v-html="stat.description" class="rivenDetailsStatText"></div>
+                                    </div>
+                                    <div class="rivenDetailsBarGroup">
+                                        <span class="rivenDetailsGrade">{{stat.grade}}</span>
+                                        <div class="rivenDetailsBar">
+                                            <div class="rivenDetailsBarInner" :style="{ width: (stat.rawRandomValue*100)+'%' }"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rivenDetailsStat negative" v-for="stat in data?.rivenLeft?.data?.statsPerWeapon[selectedWeaponIndex]?.byLevel[selectedModLevel]?.negativeTraits">
+                                    <div class="rivenGradeDescripitionHolder">
+                                        <div class="rivenRollGrade" :class="[stat.rollGrade]"></div>
+                                        <div v-html="stat.description" class="rivenDetailsStatText"></div>
+                                    </div>
+                                    <div class="rivenDetailsBarGroup">
+                                        <span class="rivenDetailsGrade">{{stat.grade}}</span>
+                                        <div class="rivenDetailsBar">
+                                            <div class="rivenDetailsBarInner" :style="{ width: (stat.rawRandomValue*100)+'%' }"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rivenDetailsSeparator"></div>
+                        <div class="rivenDetailsMiddle similarRivens">
+                            <div class="rivenDetailsHeader">
+                                Similar rivens:
+                            </div>
+                            <div class="similarRivenContainers">
+                                <div v-for="similar in data?.rivenLeft?.data?.similarRivens?.filter(p=>p.source==similarMode || similarMode=='all')" class="similarRiven">
+                                    <div class="similarHeader">
+                                        <div class="similarRivenSourceIcon" :class="[similar.source]"></div>
+                                        <div class="similarPercentEqual">{{Math.round(similar.similarity*100)}}%</div>
+                                        <div class="similarPrice">{{similar.price}} <div class="inventoryItemSellPlatIcon rivenExplorer"></div></div>
+                                    </div>
+                                    <div class="similarBody">
+                                        <div class="similarRivenAttr" :class="{positive:attr.positive, notMatching: !attr.matches}" v-for="attr in similar.attrs" v-html="attr.text"></div>
+                                    </div>
+                                    <div v-if="similar.link!=''" class="similarRivenOverlayLinks">
+                                        <div class="similarLink af" v-if="similar.source=='WFMarket'" @click="openAFRivenClicked(similar.source, similar.link)"></div>
+                                        <div class="similarLink web" @click="openWebRivenClicked(similar.link)"></div>
+                                    </div>
+                                    <div class="rivenGradeSmall similar overlay" :class="[similar?.grade]"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rivenDetailsSeparator"></div>
+                        <div class="rivenDetailsMiddle goodAttributes">
+                            <div class="goodAttributesContainer">
+                                <div class="rivenDetailsHeader">
+                                    Best attributes:
+                                    <div class="goodAttrLegend">
+                                        <div class="goodAttrMandatory">Mandatory</div>
+                                        <div class="goodAttrItemOptionalGroup">Optional</div>
+                                    </div>
+                                </div>
+                                <div class="goodAttrsBody">
+                                    <div class="bestAttributesContainer">
+                                        <div v-for="goodRoll in data?.rivenLeft?.data?.goodRollData.goodAttrs" class="goodAttrItem">
+                                            <div v-for="mandatoryAttr in goodRoll.mandatory" class="goodAttrMandatory" :class="{matches:mandatoryAttr.matches}">{{mandatoryAttr.text}}</div>
+                                            <div v-if="goodRoll.optional?.length > 0" class="goodAttrItemOptionalGroup">
+                                                <div v-for="optionalAttr in goodRoll.optional" class="goodAttrOptional" :class="{matches:optionalAttr.matches}">{{optionalAttr.text}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="badAttributesContainer">
+                                        Best bad attrs:
+                                        <div class="goodAttrsBody">
+                                            <div class="goodAttrItemOptionalGroup">
+                                                <div class="badAttrItem" v-for="badAttrs in data?.rivenLeft?.data?.goodRollData.acceptedBadAttrs" :class="{matches:badAttrs.matches}">{{badAttrs.text}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tooltipOpenClose">Press <span>Ctr+Tab</span> to interact with the overlay</div>
+                        <div class="rivenDetailsSeparator adHideable"></div>
+                        <div id="mainAD" class="mainAD adAttr400x300 adHideable"></div>
+                        <div class="tooltipPremium adHideable">Remove ads and support the developement <div class="patreonBigIcon" href="http://patreon.com/AlecaFrame" onclick="openSubscriptionWindow()"></div></div>
+                        <Transition name="fade">
+                            <div v-if="data?.rivenLeft?.loading" class="inventoryBuySellTabOverlayLoading"></div>
+                        </Transition>
+                        <Transition name="fade">
+                            <div v-if="data?.rivenLeft?.errorHappened" class="rivenOverlayErrorOccurred">
+                                <div class="rivenOverlayErrorIcon"></div>
+                                <div class="rivenOverlayErrorText">{{data?.rivenLeft?.errorMessage}}</div>
+                                <div class="rivenOverlayErrorRetry" onclick="plugin.get().RetryLastRivenOverlayOCR()">Try again</div>
+                            </div>
+                        </Transition>
+                    </div>
+                    <div v-cloak v-show="(data?.rivenRight?.show ?? false) || true" class="rivenOverlayHalf right" :class="{shown:data?.rivenRight?.show && !shouldRightHide,loading:data?.rivenRight?.loading}">
+                        <div class="rivenDetailsTop">
+                            <div class="rivenDetailsTopRight">
+                                <div class="rivenGradeSmall rivenOverlay" :class="[data?.rivenRight?.data?.grade]"></div>
+                                <div class="rivenDetailsName">
+                                    <span class="rivenWeaponNameWeapon">{{data?.rivenRight?.data?.weaponName}}</span>
+                                    <span class="rivenWeaponNameRivenName">{{data?.rivenRight?.data?.name}}</span>
+                                </div>
+                            </div>
+                            <div class="closeOverlayButton" onclick="closeNow()"></div>
+                        </div>
+                        <div class="rivenDetailsSeparator"></div>
+                        <div class="rivenDetailsMiddle">
+                            <div v-if="data?.rivenRight?.data?.statsPerWeapon!=undefined" class="rivenDetailesModifierList">
+                                <div class="rivenDetailsStat positive" v-for="stat in data?.rivenRight?.data?.statsPerWeapon[selectedWeaponIndex]?.byLevel[selectedModLevel]?.positiveTraits">
+                                    <div class="rivenGradeDescripitionHolder">
+                                        <div class="rivenRollGrade" :class="[stat.rollGrade]"></div>
+                                        <div v-html="stat.description" class="rivenDetailsStatText"></div>
+                                    </div>
+                                    <div class="rivenDetailsBarGroup">
+                                        <span class="rivenDetailsGrade">{{stat.grade}}</span>
+                                        <div class="rivenDetailsBar">
+                                            <div class="rivenDetailsBarInner" :style="{ width: (stat.rawRandomValue*100)+'%' }"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rivenDetailsStat negative" v-for="stat in data?.rivenRight?.data?.statsPerWeapon[selectedWeaponIndex]?.byLevel[selectedModLevel]?.negativeTraits">
+                                    <div class="rivenGradeDescripitionHolder">
+                                        <div class="rivenRollGrade" :class="[stat.rollGrade]"></div>
+                                        <div v-html="stat.description" class="rivenDetailsStatText"></div>
+                                    </div>
+                                    <div class="rivenDetailsBarGroup">
+                                        <span class="rivenDetailsGrade">{{stat.grade}}</span>
+                                        <div class="rivenDetailsBar">
+                                            <div class="rivenDetailsBarInner" :style="{ width: (stat.rawRandomValue*100)+'%' }"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rivenDetailsSeparator"></div>
+                        <div class="rivenDetailsMiddle similarRivens">
+                            <div class="rivenDetailsHeader">
+                                Similar rivens:
+                            </div>
+                            <div class="similarRivenContainers">
+                                <div v-for="similar in data?.rivenRight?.data?.similarRivens?.filter(p=>p.source==similarMode || similarMode=='all')" class="similarRiven">
+                                    <div class="similarHeader">
+                                        <div class="similarRivenSourceIcon" :class="[similar.source]"></div>
+                                        <div class="similarPercentEqual">{{Math.round(similar.similarity*100)}}%</div>
+                                        <div class="similarPrice">{{similar.price}} <div class="inventoryItemSellPlatIcon rivenExplorer"></div></div>
+                                    </div>
+                                    <div class="similarBody">
+                                        <div class="similarRivenAttr" :class="{positive:attr.positive, notMatching: !attr.matches}" v-for="attr in similar.attrs" v-html="attr.text"></div>
+                                    </div>
+                                    <div v-if="similar.link!=''" class="similarRivenOverlayLinks">
+                                        <div class="similarLink af" v-if="similar.source=='WFMarket'" @click="openAFRivenClicked(similar.source, similar.link)"></div>
+                                        <div class="similarLink web" @click="openWebRivenClicked(similar.link)"></div>
+                                    </div>
+                                    <div class="rivenGradeSmall similar overlay" :class="[similar?.grade]"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rivenDetailsSeparator"></div>
+                        <div class="rivenDetailsMiddle goodAttributes">
+
+                            <div class="goodAttributesContainer">
+                                <div class="rivenDetailsHeader">
+                                    Best attributes:
+                                    <div class="goodAttrLegend">
+                                        <div class="goodAttrMandatory">Mandatory</div>
+                                        <div class="goodAttrItemOptionalGroup">Optional</div>
+                                    </div>
+                                </div>
+                                <div class="goodAttrsBody">
+                                    <div class="bestAttributesContainer">
+                                        <div v-for="goodRoll in data?.rivenRight?.data?.goodRollData.goodAttrs" class="goodAttrItem">
+                                            <div v-for="mandatoryAttr in goodRoll.mandatory" class="goodAttrMandatory" :class="{matches:mandatoryAttr.matches}">{{mandatoryAttr.text}}</div>
+                                            <div v-if="goodRoll.optional?.length > 0" class="goodAttrItemOptionalGroup">
+                                                <div v-for="optionalAttr in goodRoll.optional" class="goodAttrOptional" :class="{matches:optionalAttr.matches}">{{optionalAttr.text}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="badAttributesContainer">
+                                        Best bad attrs:
+                                        <div class="goodAttrsBody">
+                                            <div class="goodAttrItemOptionalGroup">
+                                                <div class="badAttrItem" v-for="badAttrs in data?.rivenRight?.data?.goodRollData.acceptedBadAttrs" :class="{matches:badAttrs.matches}">{{badAttrs.text}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tooltipOpenClose">Press <span>Ctr+Tab</span> to interact with the overlay</div>
+                        <div class="rivenDetailsSeparator"></div>
+                        <div class="rivenOverlayGradeDetails">
+                            <div class="rivenOverlayGradeGroup">
+                                <div class="rivenGradeSmall rivenOverlay legend Bad"></div>
+                                <div class="rivenOverlayGradeName">Bad</div>
+                            </div>
+                            <div class="rivenOverlayGradeGroup">
+                                <div class="rivenGradeSmall rivenOverlay legend HasPotential"></div>
+                                <div class="rivenOverlayGradeName">OK</div>
+                            </div>
+                            <div class="rivenOverlayGradeGroup">
+                                <div class="rivenGradeSmall rivenOverlay legend Good"></div>
+                                <div class="rivenOverlayGradeName">Good</div>
+                            </div>
+                            <div class="rivenOverlayGradeGroup">
+                                <div class="rivenGradeSmall rivenOverlay legend Perfect"></div>
+                                <div class="rivenOverlayGradeName">Great</div>
+                            </div>
+                        </div>
+                        <Transition name="fade">
+                            <div v-if="data?.rivenRight?.loading" class="inventoryBuySellTabOverlayLoading"></div>
+                        </Transition>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Post JS files -->
+    <script src="assets/js/overlays/rivenOverlay.js"></script>
+    <script src="https://content.overwolf.com/libs/ads/latest/owads.min.js" async onload="onOwAdReady()"></script>
+
+</body>
+</html>

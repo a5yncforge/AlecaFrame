@@ -1,0 +1,270 @@
+﻿.tab.relicPlanner {
+    display: flex;
+    flex-direction: column;
+}
+
+#relicPlannerSearch {
+    outline: none;
+    height: 26px;
+    margin-right: -8px;
+    padding: 6px;
+    width: 88px;
+    font-size: 14px;
+    font-weight: 100;
+    margin-right: 3px;
+    margin-left: -8px;
+    background: transparent;
+    border: none;
+    color: white;
+}
+
+
+.relicPlannerUpdateNeeded {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    align-items: center;
+    gap: 8px;
+    background-color: #000000d4;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+    .relicPlannerUpdateNeeded > div:not(.relicPlannerStartNowButton) {
+        font-size: 17px;
+        font-weight: 400;
+        border-radius: 15px;
+        overflow: hidden;
+        text-align: center;
+        /* padding: 3px 8px; */
+    }
+
+.relicPlannerStartNowButton {
+    padding: 8px 15px;
+    background: var(--color-tab);
+    font-weight: 400;
+    font-size: 20px;
+    margin-top: 12px;
+    /* border: 1px solid #ffffff96; */
+    cursor: pointer;
+    transition: 0.1s linear;
+    border-radius: 25px;
+}
+
+    .relicPlannerStartNowButton:hover {
+        background: var(--color-tab-hover);
+    }
+
+.relicPlannerLoadingOuterDiv {
+    height: 24px;
+    width: 282px;
+    background-color: var(--color-bg-2);
+    /* border: 2px solid white; */
+    margin-top: 0px;
+    box-shadow: 0px 0px 2px 1px #ffffffad;
+}
+
+.relicPlannerLoadingInnerDiv {
+    height: 100%;
+    background-color: var(--color-tab);
+    margin-top: 0px;
+    transition: 0.2s ease-in-out;
+    box-shadow: -1px 0px 5px 2px #ffffff5e;
+}
+
+.inventoryObject.relicPlanner {
+    width: auto;
+    height: 100px;
+    gap: 11px;
+    justify-content: space-around;
+    flex-grow: 1;
+}
+
+.relicPlanner > .inventoryItemName {
+    grid-column: 2;
+    grid-row: 1;
+    padding-top: 2px;
+}
+
+.relicPlanner > .relicDetailsBLTopExpected {
+    grid-column: 2;
+    grid-row: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.relicPlannerRewardContainer {
+    grid-row: 1/3;
+    width: 100%;
+    height: 100%;
+    grid-column: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 0px;
+    width: 120px;
+    min-width: 127px;
+}
+
+.relicPlanner > .relicDetailsBLTopExpected {
+    padding: 0px 10px;
+    background: #1B1A23;
+}
+
+.relicPlannerReward {
+    height: 37px;
+    width: 37px;
+    border: 1px solid white;
+    position: relative;
+}
+
+.relicPlannerRewardInnerImage {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.relicPlannerReward.owned > .relicPlannerRewardInnerImage {
+    box-shadow: inset 0px 0px 4px 1px #46d234;
+    background-color: #76c76b82;
+}
+
+.relicPlannerReward.search > .relicPlannerRewardInnerImage {
+    box-shadow: inset 0px 0px 4px 1px #fff82f;
+    background-color: #b7bc848a;
+}
+
+
+
+#relicPlannerSquadSize {
+    margin-left: 5px;
+}
+
+
+.relicDetailsBuySell {
+    display: flex;
+    width: 81%;
+    height: 30px;
+    margin-bottom: 3px;
+    gap: 13px;
+}
+
+.relicPLannerMiniRewardParentOwned {
+    width: 44%;
+    height: 44%;
+    /* background-color: green; */
+    position: absolute;
+    background-image: url('../../img/tick.png');
+    bottom: 4px;
+    left: 1px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+    .relicPLannerMiniRewardParentOwned.fav {
+        background-image: url(../../img/star2.png);
+        right: 0px;
+        top: 17px;
+        left: auto;
+    }
+
+
+
+    .relicPLannerMiniRewardParentOwned.big {
+        width: 13px;
+        height: 13px;
+        bottom: 5px;
+        left: 8px;
+    }
+
+        .relicPLannerMiniRewardParentOwned.big.foundryDetails {
+            width: 14px;
+            height: 14px;
+        }
+
+
+.relicPlannerMiniIcons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+    position: absolute;
+}
+
+.relicPlanner > .inventoryItemImage {
+    height: 100%;
+    width: 80px;
+    min-width: 80px;
+    flex-grow: 0;
+}
+
+.relicPlannerMiddle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    flex-grow: 0;
+    width: 175px;
+    gap: 3px;
+}
+
+
+
+.relicDetailsBuySell > .inventoryItemButtonPostSell {
+    height: auto;
+}
+
+.relicDetailsBuySell > .inventoryItemButtonInstaSell {
+    height: auto;
+}
+
+.relicItemBestForPlat {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+    .relicItemBestForPlat > span {
+        font-weight: 400;
+    }
+
+.inventoryObject.relicPlanner.fav {
+    box-shadow: inset 0px 0px 8px -1px #ffe318;
+}
+
+.inventoryItemImage > .foundryObjectTopIcon.vaulted {
+    position: absolute;
+    bottom: 0px;
+    left: 4px;
+}
+
+.relicPlannerMiddle > .relicDetailsTop {
+    padding-right: 0px;
+    background-color: unset;
+}
+
+.relicDetailsBLTopExpectedTitle {
+    font-weight: 300;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* max-width: 85px; */
+    overflow: hidden;
+}
+
+.relicDetailsBLTopExpected.relicPlanner.smallText {
+    font-size: 13px;
+}

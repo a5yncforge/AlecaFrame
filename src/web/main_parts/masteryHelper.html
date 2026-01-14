@@ -1,0 +1,171 @@
+﻿<div class="masteryHelperTop">
+    <div class="masteryHelperLevel">{{data?.lvl}}</div>
+    <div class="masteryHelperIcon" :style="{ backgroundImage: 'url(&quot;' + data?.iconurl + '&quot;)' }"></div>
+    <div class="masteryHelperBar">
+        <div class="masteryHelperBarTop">
+            <div>{{data?.percent}}%</div>
+            <div>{{data?.currentLevelXp}} / {{data?.nextLevelXp}} XP</div>
+            <div></div>
+        </div>
+        <div class="masteryHelperBarBar">
+            <div class="masteryHelperBarInner" :style="{ width: data?.percent+'%'}"></div>
+            <div class="masteryHelperBarInner fav" :style="{ width: 'calc('+favExtraPercent + '% + 10px)'}"></div>
+            <div class="masteryHelperBarInner hover" :style="{ width: 'calc('+hoveringExtraPercent + '% + 10px)'}"></div>
+        </div>
+    </div>
+</div>
+
+<div class="masteryHelperMid">
+    <div class="masteryHelperMidRect">
+        <div class="masteryHelperMidTop">
+            <div class="masteryHelperMidIcon contentIcon"></div>
+            Game content
+            <div class="masteryHelperMidPercent">{{data?.summary?.contentPercent}}%</div>
+        </div>
+        <div class="masteryHelperMidBottom">
+
+                <div class="masteryHelperMidItemTitle">Warframes / Archwings:</div>
+                <div>{{data?.summary?.cont_warframes?.percent}}%</div>
+                <div>{{data?.summary?.cont_warframes?.current}}/{{data?.summary?.cont_warframes?.max}}</div>
+
+                <div class="masteryHelperMidItemTitle">Weapons:</div>
+                <div>{{data?.summary?.cont_weapons?.percent}}%</div>
+                <div>{{data?.summary?.cont_weapons?.current}}/{{data?.summary?.cont_weapons?.max}}</div>
+
+                <div class="masteryHelperMidItemTitle">Companions:</div>
+                <div>{{data?.summary?.cont_companions?.percent}}%</div>
+                <div>{{data?.summary?.cont_companions?.current}}/{{data?.summary?.cont_companions?.max}}</div>
+
+        </div>
+    </div>
+    <div class="masteryHelperMidRect">
+        <div class="masteryHelperMidTop">
+            <div class="masteryHelperMidIcon starChart"></div>
+            Star chart
+            <div class="masteryHelperMidPercent">{{data?.summary?.starPercent}}%</div>
+        </div>
+        <div class="masteryHelperMidBottom">
+
+            <div class="masteryHelperMidItemTitle">Normal:</div>
+            <div>{{data?.summary?.star_normal?.percent}}%</div>
+            <div>{{data?.summary?.star_normal?.current}}/{{data?.summary?.star_normal?.max}}</div>
+
+
+            <div class="masteryHelperMidItemTitle">Junctions:</div>
+            <div>{{data?.summary?.star_junctions?.percent}}%</div>
+            <div>{{data?.summary?.star_junctions?.current}}/{{data?.summary?.star_junctions?.max}}</div>
+
+            <div class="masteryHelperMidItemTitle">Steel path:</div>
+            <div>{{data?.summary?.star_steel?.percent}}%</div>
+            <div>{{data?.summary?.star_steel?.current}}/{{data?.summary?.star_steel?.max}}</div>
+
+            <div class="masteryHelperMidItemTitle">Steel p. junctions:</div>
+            <div>{{data?.summary?.star_steel_junctions?.percent}}%</div>
+            <div>{{data?.summary?.star_steel_junctions?.current}}/{{data?.summary?.star_steel_junctions?.max}}</div>
+
+        </div>
+    </div>
+    <div class="masteryHelperMidRect">
+        <div class="masteryHelperMidTop">
+            <div class="masteryHelperMidIcon intrinsics"></div>
+            Intrinsics
+            <div class="masteryHelperMidPercent">{{data?.summary?.intrinsicPercent}}%</div>
+        </div>
+        <div class="masteryHelperMidBottom">
+            
+                <div class="masteryHelperMidItemTitle">Railjack:</div>
+                <div>{{data?.summary?.intrinsic_rail?.percent}}%</div>
+                <div>{{data?.summary?.intrinsic_rail?.current}}/{{data?.summary?.intrinsic_rail?.max}}</div>
+
+                <div class="masteryHelperMidItemTitle">Duviri:</div>
+                <div>{{data?.summary?.intrinsic_duviri?.percent}}%</div>
+                <div>{{data?.summary?.intrinsic_duviri?.current}}/{{data?.summary?.intrinsic_duviri?.max}}</div>
+
+        </div>
+    </div>
+</div>
+
+<div class="masteryHelperBottom">
+    <div class="masteryHelperBottomTopPart">
+        Best ways to level up mastery:
+
+        <div class="newEasyFilter">
+            <div class="newEasyFilterItem" :class="{selected:orderingMode=='normal'}" @click="selectOrderingMode('normal')">
+                <div class="newEasyFilterIcon topSettingIcon easy"></div>
+                Easy
+            </div>
+            <div class="newEasyFilterItem" :class="{selected:orderingMode=='relics'}" @click="selectOrderingMode('relics')">
+                <div class="newEasyFilterIcon topSettingIcon prime"></div>
+                From relics
+            </div>
+            <div class="newEasyFilterItem" :class="{selected:orderingMode=='platinum'}" @click="selectOrderingMode('platinum')">
+                <div class="newEasyFilterIcon topSettingIcon platinum"></div>
+                With platinum
+            </div>
+        </div>
+
+    </div>
+
+    <div class="masteryHelperBestItemsContainer">
+        <div v-for="item in data?.topItems" class="masteryHelperItem" @click="openDetails(item.internalName)" @mouseover="hoverStart(item.internalName, item.masteryViewData.potentialXPToGet, item.isFav)" @mouseleave="hoverStop(item.internalName)" :key="item.internalName">
+
+            <div class="masteryHelperItemImage" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)' }" :class="[item.type]">
+                <div class="masteryHelperPotentialXP">+{{item.masteryViewData.potentialXPToGet}} XP</div>
+                <!--<input v-model="item.selectedUI" type="checkbox" class="masterHelperCheckbox" onclick="event.stopPropagation()"/>-->
+            </div>
+            <div class="masteryHelperItemMid">
+                <div class="masteryHelperObjectName">
+                    <div v-if="item.type!='intrinsicDuviri' && item.type!='intrinsicRailjack'" class="foundryObjectTopIcon fav" :class="{yes:item.isFav}" @click.stop="item.isFav=!item.isFav; setFavStatus(item.internalName, item.masteryViewData.potentialXPToGet, item.isFav);"></div>
+                    <div>{{item.name}}</div>
+                </div>
+                <div class="masteryHelperIcons">
+
+                    <div v-if="item.owned && item.masteryViewData.maxLevel > 0" class="masteryHelperItemLevel">
+                        Level <span>{{item.masteryViewData.currentLevel}}/{{item.masteryViewData.maxLevel}}</span>
+                    </div>
+
+                    <div v-if="!item.owned" class="masteryHelperIconGroup">
+                        {{Math.round(item.masteryViewData.relicProbability*10000)/100}}%
+                        <div class="masteryHelperMiniIcon relic"></div>
+                    </div>
+
+                    <div v-if="!item.owned" class="masteryHelperIconGroup">
+                        {{item.masteryViewData.platinumNeededToBuyParts}}
+                        <div class="masteryHelperMiniIcon platinum"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="foundryImageComponentRow mastery">
+                <div v-if="item.components!=undefined && item.components.length>0 && !item.owned" class="foundryObjectComponents mastery">
+                    <div v-for="component in item.components" :data-tippy-content="component.name" :class="{gotNeccessaryComponents:component.recipeNeccessaryComponents}" class="foundryObjectComponentsComponent mastery" :style="{ backgroundImage: 'url(&quot;' + component.picture + '&quot;)' }"></div>
+                </div>
+                <div v-if="item.owned && item.type!='intrinsicDuviri' && item.type!='intrinsicRailjack'" class="foundryObjectOwned">
+                    <div class="foundryObjectOwnedIcon"></div>
+                    Owned
+                </div>
+            </div>
+        </div>
+
+
+        <Transition name="fade">
+            <div v-if="noItems || data==undefined || data.topItems.length == 0" class="inventoryNoItemShown masteryHelper">
+                <div>No ideas were found 😔. Try using other filters.</div>
+            </div>
+        </Transition>
+    </div>
+
+    <div class="inventorySummary" v-if="data?.summaryPlatinum > 0 && orderingMode=='platinum'">
+        <div class="inventorySummaryDatum">
+            Total:
+            {{data?.summaryPlatinum ?? 0}}
+            <div class="inventorySummaryPlatinumIcon"></div>
+        </div>
+    </div>
+
+    <Transition name="fade">
+        <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+    </Transition>
+
+
+</div>

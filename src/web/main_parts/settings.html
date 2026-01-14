@@ -1,0 +1,261 @@
+﻿<Transition name="fade">
+    <div v-show="visible" class="modalSize" @click.self="visible=false">
+        <div class="innerModal settings">
+            <div class="innerModalHeader">
+                <div class="innerModalHeaderTitle">Settings</div>
+                <div class="innerModalClose" @click="visible=false">
+                </div>
+            </div>
+            <div class="innerModalContent">
+
+                <div class="mainTabHeader">
+                    <div class="tabHeaderOption selected" tabid="generalSettingsTab" onclick="doTabHeaderWork(event)"><!--<div class="tabHeaderIcon veiled"></div>-->General</div>
+                    <div class="tabHeaderOption" tabid="relicOverlaySettingsTab" onclick="doTabHeaderWork(event)"><!--<div class="tabHeaderIcon unveiled"></div>-->Overlays</div>
+                    <div class="tabHeaderOption" tabid="otherSettingsTab" onclick="doTabHeaderWork(event)"><!--<div class="tabHeaderIcon WFMexplorer"></div>-->Notifications</div>
+                    <div class="tabHeaderOption" tabid="themesTab" onclick="doTabHeaderWork(event); settingsApp.loadAvailableThemes();"><!--<div class="tabHeaderIcon WFMexplorer"></div>-->Themes <div class="subscriberIcon"></div></div>
+                    <div class="tabHeaderOption" tabid="premiumTab" onclick="doTabHeaderWork(event);"><!--<div class="tabHeaderIcon WFMexplorer"></div>-->Premium <div class="subscriberIcon"></div></div>
+                </div>
+                
+                <div class="mainTabBody">
+                    <div id="generalSettingsTab" class="shown settingsTab">
+                        <div class="settingsCheckBoxHolder">
+                            <input id="showWarningCloseWindowSetting" class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()">
+                            Show warning when trying to close the main app window
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input id="hideFoundersProgramRewardsSetting" class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()">
+                            Hide Founders Program items (Excalibur Prime, Skana Prime and Lato Prime)
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="takeRankIntoAccount">
+                            Take mod rank into account for the WFM 'missing items' check
+                        </div>
+
+
+                        <div class="settingsCheckBoxHolder">
+                            <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="statsTabEnabled">
+                            Enable 'Stats' tab
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input id="autoKeepEnabled" class="settingsCheckBoxHolderBox" type="checkbox" v-model="autoKeepEnabled" onchange="onPersistentSettingChanged()">
+                            Remember WFM 'Auto' status when AlecaFrame is restarted
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input id="skipWarningAutoKeep" class="settingsCheckBoxHolderBox" type="checkbox" v-model="skipWarningAutoKeep" onchange="onPersistentSettingChanged()">
+                            Don't show "remember Auto status" window when changing 'Auto' mode
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="soundNotificationsEnabled">
+                            Enable notification sounds
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="fullInventoryExperienceEnabled">
+                            Show all items by default in the Foundry, Inventory and Relic tabs
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="moveAFToSecondary">
+                            Automatically move AlecaFrame to a secondary monitor on startup
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input id="includeFormaLevelMasteryHelper" class="settingsCheckBoxHolderBox" type="checkbox" v-model="includeFormaLevelMasteryHelper" onchange="onPersistentSettingChanged()">
+                            Include levels that need formas in the Mastery Helper
+                        </div>
+                    </div>
+
+                    <div id="relicOverlaySettingsTab" class="settingsTab">
+
+                        <div class="settingsCheckBoxHolder">
+                            <input id="showRelicOverlaySetting" class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()">
+                            Enable relic rewards overlay
+                        </div>
+                        <div class="settingsCheckBoxHolder">
+                            <input id="showRelicRecommendationSetting" class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()">
+                            Enable relic recommendations overlay
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="tradeFinishedOverlay">
+                            Enable trade finished detection/overlay
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input id="showPlatDucatsSetting" class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()">
+                            Show account ducats and platinum on relic overlay
+                        </div>
+                        <div class="settingsCheckBoxHolder">
+                            <input id="copyRewardDataSetting" class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()">
+                            Copy relic reward data to clipboard when a relic is opened
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <input id="enableRivenOverlays" class="settingsCheckBoxHolderBox" type="checkbox" v-model="enableRivenOverlay" onchange="onPersistentSettingChanged()">
+                            Enable riven overlays
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            Warframe "Menu Scale" settings:
+                            <select id="selectedWarframeScaling" class="settingsSelect" onchange="onPersistentSettingChanged()" v-model="scalingMode">
+                                <option value="full">Full (Best)</option>
+                                <option value="legacy">Legacy (ONLY <=1080p)</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <div class="autodetectScaleButton" @click="scaleAutodetect()" title="If you have changed any in-game settings recently, please restart the game before autodetecting">Autodetect</div>
+                        </div>
+                        <div v-if="scalingMode=='custom'" class="settingsCheckBoxHolder indent">
+                            "Custom Menu Scale" value:
+                            <input id="customScalingValue" class="settingsCheckBoxHolderBox numericValueSettings" v-model="customScale" type="number" onchange="onPersistentSettingChanged()">
+                        </div>
+                    </div>
+
+                    <div id="otherSettingsTab" class="settingsTab">
+
+                        <div class="settingsCheckBoxHolder">
+                            <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="windowsWFMessageEnabled">
+                            Send notifications through Windows
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            <!--settingsApp.discordWFMessageEnabled=settingsApp.discordWFMessageEnabled is a workaround for a stupid Vue thing with v-model-->
+                            <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged();" v-model="discordWFMessageEnabled">
+                            Send notifications through Discord
+                        </div>
+
+                        <div class="settingsCheckBoxHolder indent" v-if="discordWFMessageEnabled">
+                            Discord webhook URL:
+                            <input class="settingsTextField" type="text" onchange="onPersistentSettingChanged()" placeholder="Empty to disable" v-model="discordWFMessageWebhook">
+                        </div>
+
+                        <div class="settingsGroup">
+                            <span class="settingsTitle">Timer and Relic notifications:</span>
+                            <div class="settingsCheckBoxHolder indent">
+                                Minutes ahead of world cycle change to send the notifications:
+                                <input class="settingsCheckBoxHolderBox settingsSelect timers" type="number" onchange="onPersistentSettingChanged()" v-model="minutesAheadTimers">
+                            </div>
+                        </div>
+
+                        <div class="settingsGroup">
+                            <span class="settingsTitle">New Warframe conversation notifications:</span>
+
+                            <div class="settingsCheckBoxHolder indent">
+                                <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="onlyNotificationsBackground">
+                                Only send message notifications when Warframe is in the background
+                            </div>
+
+                            <div class="settingsCheckBoxHolder indent">
+                                Message template (accepts Discord pings):
+                                <input class="settingsTextField" type="text" onchange="onPersistentSettingChanged()" placeholder="Empty to disable" v-model="discordWFMessageTemplate">
+                            </div>
+
+                            <div class="settingsCheckBoxHolder indent small">
+                                Use &lt;PLAYER_NAME&gt; as the placeholder for the Warframe username
+                            </div>
+                        </div>
+
+                        <div class="settingsGroup">
+                            <span class="settingsTitle">Warframe.Market message notifications:</span>
+                            <div class="settingsCheckBoxHolder indent">
+                                Message template (accepts Discord pings):
+                                <input class="settingsTextField" type="text" onchange="onPersistentSettingChanged()" placeholder="Empty to disable" v-model="discordWarframeMarketTemplate">
+                            </div>
+
+                            <div class="settingsCheckBoxHolder indent small">
+                                Use &lt;WFM_MESSAGE&gt; as the placeholder for the WFMarket message content
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div id="themesTab" class="settingsTab">
+
+                        <div class="settingsGroup">
+                            <span class="settingsTitle">Community themes</span>
+                            <div class="settingsThemePresetHolder">
+                                <div @click="importColorString(defaultTheme.colorData,true)">
+                                    <div class="themePresetImage Logo" :style="{ webkitMaskImage: 'url(&quot;data:image/png;base64,' + defaultTheme.iconBase64 + '&quot;)' }"></div>
+                                    <div class="themePresetName">{{defaultTheme.name}}</div>
+                                    <div class="themePresetAuthor">{{defaultTheme.author}}</div>
+                                </div>
+                                <div v-for="preset in themePresets" @click="importColorString(preset.colorData,true)">
+                                    <div class="themePresetImage" :style="{ backgroundImage: 'url(&quot;data:image/png;base64,' + preset.iconBase64 + '&quot;)' }"></div>
+                                    <div class="themePresetName">{{preset.name}}</div>
+                                    <div class="themePresetAuthor">{{preset.author}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settingsGroup">
+                            <span class="settingsTitle">Theme customization</span>
+                            <div class="settingsCustomHolder">
+                                <div v-for="item in colorPickerData" class="settingsColorPickerHolder">
+                                    <div :colorName="item.internalName" :colorVue="item.color" class="colorPicker"></div> {{item.name}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settingsGroup">
+                            <span class="settingsTitle">Misc</span>
+                            <div class="settingsCheckBoxHolder">
+                                <input class="settingsCheckBoxHolderBox" type="checkbox" onchange="onPersistentSettingChanged()" v-model="applyThemesToOverlay">
+                                Apply themes to overlays
+                            </div>
+                        </div>
+
+                        <div class="settingsGroup">
+                            <span class="settingsTitle">Sharing</span>
+                            <div class="themeButtons">
+                                <button class="buttonSettingsTest" @click="copyCurrentThemeToClipboard()">Copy to clipboard</button>
+                                <button class="buttonSettingsTest" @click="importFromClipboard()">Import from clipboard</button>
+                                <button class="buttonSettingsTest right" @click="openThemesFolder()">Open themes folder</button>
+                            </div>
+                            <div class="themeButtons">
+                                <button class="buttonSettingsTest" @click="exportAsThemeFile()">Export as theme file</button>
+                                <div class="themeExportGroup">Theme name:<input v-model="exportName" class="themeExportInput" type="text" /></div>
+                                <div class="themeExportGroup">Theme author:<input v-model="exportAuthor" class="themeExportInput" type="text" /></div>
+                            </div>
+                        </div>
+
+                        <div class="themesSupporterOnly" v-if="!themesEnabled">
+                            <div class="themesSupporterOnlyText">Themes are only available to supporters</div>
+                            <button onclick="PatreonApp.open()">Subscribe</button>
+                        </div>
+
+                    </div>
+
+                    <div id="premiumTab" class="settingsTab">
+
+                        <div class="settingsCheckBoxHolder">
+                            Export all my data:
+                            <div class="autodetectScaleButton" @click="exportDataToDesktop()" title="If you have changed any in-game settings recently, please restart the game before autodetecting">Export to desktop</div>
+                        </div>
+
+                        <div class="settingsCheckBoxHolder">
+                            Release channel:
+                            <select id="selectedReleaseChannel" class="settingsSelect" onchange="releaseChannelChanged()" v-model="releaseChannel">
+                                <option value="">Normal</option>
+                                <option value="FastBeta">Beta</option>
+                            </select>
+                        </div>
+
+                        <div class="themesSupporterOnly" v-if="!premiumFeaturesEnabled">
+                            <div class="themesSupporterOnlyText">Premium features are only available to Patreon T2+ supporters</div>
+                            <button onclick="PatreonApp.open()">Subscribe</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                    
+            </div>
+        </div>
+
+    </div>
+</Transition>

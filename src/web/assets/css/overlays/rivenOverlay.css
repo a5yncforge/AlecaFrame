@@ -1,0 +1,418 @@
+﻿.rivenOverlayHalf {
+    width: 400px;
+    max-width: 400px;
+    background-color: #503c78;
+    padding: 7px;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 2px solid white;
+    position: relative;
+    overflow: hidden;
+    align-items: stretch;
+    max-height: calc(100vh - 40px);
+    max-height: 1px;
+    transition: 0.3s linear;
+    opacity: 0;
+}
+
+.mainAD {
+    width: 400px;
+    min-height: 300px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    /* position: absolute; */
+    /* transform: translate(-50%,-50%); */
+    z-index: 1;
+    background-color: var(--color-bg-1);
+    margin: 0px 0px;
+    margin-top: -1px;
+    border-radius: 5px;
+    background-image: url(../../img/alecaframe.png);
+    background-size: 26%;
+    background-position: center;
+    flex-shrink: 0;
+    background-repeat: no-repeat;
+}
+
+div#vueContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+html {
+    height: 100%;
+}
+
+main {
+    height: 100%;
+}
+
+.rivenDetailsTopGrid {
+    margin: 3px;
+    max-width: 180px;
+}
+
+.rivenDetailsImage {
+    height: 80px;
+    min-width: 80px;
+    width: 80px;
+}
+
+.rivenDetailsName {
+    font-size: 26px;
+    gap: 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    max-width: 307px;
+}
+
+.rivenDetailsTop {
+    position: relative;
+    flex-shrink: 0;
+    align-items: center;
+    height: 39px;
+}
+
+
+
+.rivenDetailsBar {
+    width: 85px;
+    min-width: 85px;
+    height: 11px;
+}
+
+span.rivenDetailsGrade {
+    min-width: 16px;
+    text-align: center;
+    font-weight: 400;
+}
+
+.rivenDetailsStat {
+    padding: 6px 12px;
+}
+
+body {
+    background-color: unset;
+}
+
+.rivenRollGrade {
+    width: 22px;
+    height: 22px;
+    margin-left: -3px;
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 10px;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #98cff5;
+    }
+
+.similarRivenContainers {
+    overflow: auto;
+    gap: 4px;
+    padding-right: 7px;
+    grid-template-columns: repeat(auto-fill, minmax(123px, 1fr));
+    min-height: 0px;
+    height: auto;
+    flex-shrink: 100;
+    flex-grow: 1;
+    max-height: 24vh;
+}
+
+.rivenDetailsStatText {
+    max-width: 213px;
+}
+
+.similarBody {
+    margin: 0px 4px;
+    overflow: hidden;
+    gap: 1px;
+}
+
+.similarRivenAttr {
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.similarRivenContainers {
+}
+
+span.rivenDetailsGrade {
+    min-width: 20px;
+}
+
+span.rivenDetailsGrade {
+    min-width: 20px;
+}
+
+.rivenDetailsMiddle.similarRivens {
+    height: 10px;
+    gap: 3px;
+    flex-basis: content;
+}
+
+.rivenGradeSmall.rivenOverlay {
+    width: 38px;
+    height: 38px;
+    position: static;
+    background-size: contain;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    margin: -25px 0px;
+    margin-top: -26px;
+    margin-left: 3px;
+}
+
+.rivenDetailsTopRight {
+    flex-direction: revert;
+    align-items: center;
+    justify-content: left;
+    overflow: visible;
+    gap: 2px;
+}
+
+
+.inventoryItemSellPlatIcon {
+    background-image: url(../../img/platinum.png);
+    background-size: 90%;
+    background-position: 0px 1px;
+    background-repeat: no-repeat;
+}
+
+.similarPrice {
+    gap: 2px;
+}
+
+.similarHeader {
+    padding-bottom: 3px;
+}
+
+.closeOverlayButton {
+    width: 28px;
+    height: 28px;
+    background-image: url(../../img/close.png);
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    transition: 0.12s linear;
+}
+
+    .closeOverlayButton:hover {
+        background-color: #ffffff24;
+    }
+
+.tooltipHolder {
+    display: flex;
+    height: 22px;
+    position: relative;
+}
+
+
+.tooltipOpenClose {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    background-color: #0000006b;
+    padding: 4px 0px;
+    margin: -2px 0px;
+    border-radius: 5px;
+}
+
+    .tooltipOpenClose > span {
+        color: var(--color-tab-lighter);
+        font-weight: 600;
+    }
+
+.tooltipPremium {
+    font-size: 15.5px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    gap: 8px;
+}
+
+.patreonBigIcon {
+    width: 86px;
+    height: 19px;
+    background-image: url(../../img/patreon.png);
+    background-size: 95%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #ff424d;
+    border-radius: 1px;
+}
+
+.similarRiven {
+    height: 104px;
+}
+
+
+
+span.rivenWeaponNameRivenName {
+    /* max-width: 134px; */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+
+.inventoryBuySellTabOverlayLoading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000d9;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    background-image: url(../../img/loading.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90px;
+}
+
+.rivenOverlayHalf.left {
+    margin-left: max(0px, calc((100vw - (1.7 * 100vh))/2) - 50px);
+}
+
+.rivenOverlayHalf.right {
+    margin-right: max(0px, calc((100vw - (1.7 * 100vh))/2) - 50px);
+    /* margin-top: -340px; */
+    margin-top: 6vh;
+}
+
+.rivenOverlayHalf.shown.loading {
+    animation: unset;
+    max-height: 600px;
+    opacity: 1;
+}
+
+.rivenOverlayHalf.shown {
+    animation: overlayEnter 0.3s linear;
+    max-height: calc(100vh - 80px);
+    opacity: 1;
+}
+
+.rivenOverlayGradeGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+}
+
+.rivenOverlayGradeDetails {
+    display: flex;
+    justify-content: space-around;
+    /* height: 49px; */
+    padding: 4px 0px;
+    padding-bottom: 0px;
+}
+
+.rivenGradeSmall.rivenOverlay.legend {
+    margin: initial;
+    background-position: center;
+}
+
+.rivenOverlaySameHeightContainer {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-items: center;
+}
+
+@keyframes overlayEnter {
+    0% {
+        opacity: 0;
+        max-height: 1px;
+    }
+
+    100% {
+        opacity: 1;
+        max-height: calc(100vh - 80px);
+    }
+}
+
+.rivenOverlayErrorText {
+    text-align: center;
+}
+
+.rivenOverlayErrorOccurred {
+    position: absolute;
+    /* width: 96%; */
+    /* height: 100%; */
+    background-color: #000000e0;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 22px;
+    gap: 12px;
+}
+
+.rivenOverlayErrorIcon {
+    width: 50px;
+    height: 50px;
+    background-image: url(../../img/error.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.rivenOverlayErrorRetry {
+    background-color: var(--color-card-hover);
+    padding: 4px 10px;
+    border-radius: 10px;
+    transition: 0.12s linear;
+    cursor: pointer;
+}
+
+    .rivenOverlayErrorRetry:hover {
+        background-color: var(--color-card-active);
+    }
+
+.rivenGradeSmall.similar.overlay {
+    width: 22px;
+    height: 22px;
+    top: 32px;
+    left: 4px;
+}

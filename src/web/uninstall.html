@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/OverwolfPlugin.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+
+    <script>
+        var plugin = new OverwolfPlugin("AlecaFrameWrapper", true);
+
+        plugin.initialize((success) => {
+            //For the analytics data
+            overwolf.profile.getCurrentUser((userProfile) => {
+                var owID = userProfile.userId;
+                if (owID == undefined) owID = "N/A";
+
+                var campaign = "none";
+                if (userProfile.installParams != undefined) campaign = userProfile.installParams.campaign;
+                if (campaign == undefined) campaign = "none";
+
+                plugin.get().SetAnalyticsData(owID, campaign, (a) => {
+                    setTimeout(() => {
+                        plugin.get().DoUninstallWork((te) => {
+                            console.log("Uninstall done. BYE :(");
+                            close();
+                        });
+                    }, 1000);
+                });
+            });
+
+
+        });
+
+        overwolf.utils.openUrlInDefaultBrowser("https://s.surveyplanet.com/oup1peta");
+
+
+    </script>
+</head>
+<body>
+</body>
+</html>

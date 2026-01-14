@@ -1,0 +1,417 @@
+{
+  "manifest_version": 1,
+  "type": "WebApp",
+  "meta": {
+    "name": "AlecaFrame",
+    "version": "2.6.82",
+    "minimum-overwolf-version": "0.135",
+    "author": "Alejandro Cabrerizo",
+    "icon": "IconMouseOver.png",
+    "icon_gray": "IconMouseNormal.png",
+    "description": "AlecaFrame is an app designed to make your life easier while playing Warframe. Manage your inventory, know the value of relic rewards and keep track of your unlocks.",
+    "launcher_icon": "icon.ico"
+  },
+  "permissions": [ "Hotkeys", "Extensions", "Streaming", "Profile", "GameInfo", "FileSystem", "DesktopStreaming", "Clipboard","Subscription" ],
+  "data": {
+    "protocol_override_domains": { "googlesyndication": "http" },
+    "externally_connectable": {
+      "matches": [
+        "https://*.google-analytics.com",
+        "http://www.google-analytics.com"
+      ]
+    },
+    "force_browser": "user",
+    "start_window": "BackGround",
+    "windows": {
+      "MainWindow": {
+        "size": {
+          "width": 1770,
+          "height": 800
+        },
+        "min_size": {
+          "width": 1200,
+          "height": 750
+        },
+        "start_position": {
+          "top": 200,
+          "left": 100
+        },
+        "dev_tools_window_style": true,
+        "file": "web/main.html",
+        "show_in_taskbar": true,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": false,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "desktop_only": true,
+        "disable_restore_animation": false,
+        "grab_keyboard_focus": false,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": true
+      },
+      "RelicOverlay": {
+        "size": {
+          "width": 1360,
+          "height": 750
+        },
+        "start_position": {
+          "top": 200,
+          "left": 100
+        },
+        "dev_tools_window_style": true,
+        "file": "web/relicOverlay.html",
+        "show_in_taskbar": false,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": false,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "in_game_only": true,
+        "desktop_only": false,
+        "disable_restore_animation": true,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": false,
+        "grab_focus_on_desktop": false,
+        "grab_keyboard_focus": false
+      },
+      "RelicRecommendation": {
+        "size": {
+          "width": 480,
+          "height": 220
+        },
+        "min_size": {
+          "width": 180,
+          "height": 120
+        },
+        "start_position": {
+          "top": 200,
+          "left": 100
+        },
+        "dev_tools_window_style": true,
+        "file": "web/relicRecommendation.html",
+        "show_in_taskbar": false,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": true,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "in_game_only": true,
+        "desktop_only": false,
+        "disable_restore_animation": true,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": false,
+        "grab_focus_on_desktop": false,
+        "grab_keyboard_focus": false
+      },
+      "RivenOverlay": {
+        "size": {
+          "width": 1000,
+          "height": 1000
+        },
+        "start_position": {
+          "top": 0,
+          "left": 0
+        },
+        "dev_tools_window_style": true,
+        "file": "web/rivenOverlay.html",
+        "show_in_taskbar": false,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": true,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "in_game_only": true,
+        "desktop_only": false,
+        "disable_restore_animation": true,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": false,
+        "grab_focus_on_desktop": false,
+        "grab_keyboard_focus": false
+      },
+      "InGameNotification": {
+        "size": {
+          "width": 280,
+          "height": 160
+        },
+        "start_position": {
+          "top": 200,
+          "left": 100
+        },
+        "dev_tools_window_style": true,
+        "file": "web/InGameNotification.html",
+        "show_in_taskbar": false,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": true,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "in_game_only": true,
+        "desktop_only": false,
+        "disable_restore_animation": true,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": false,
+        "grab_focus_on_desktop": false,
+        "grab_keyboard_focus": false
+      },
+      "TradeFinishedNotification": {
+        "size": {
+          "width": 320,
+          "height": 120
+        },
+        "min_size": {
+          "width": 320,
+          "height": 120
+        },
+        "start_position": {
+          "top": 200,
+          "left": 100
+        },
+        "dev_tools_window_style": true,
+        "file": "web/tradeFinishedNotification.html",
+        "show_in_taskbar": false,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": true,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "in_game_only": true,
+        "desktop_only": false,
+        "disable_restore_animation": true,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": false,
+        "grab_focus_on_desktop": false,
+        "grab_keyboard_focus": false
+      },
+      "BackGround": {
+        "file": "web/background.html",
+        "is_background_page": true,
+        "dev_tools_window_style": true,
+        "mute": true
+      },
+      "Uninstall": {
+        "file": "web/uninstall.html",
+        "is_background_page": true,
+        "dev_tools_window_style": true,
+        "mute": true
+      },
+      "AFBuilds": {
+        "size": {
+          "width": 1330,
+          "height": 750
+        },
+        "min_size": {
+          "width": 1330,
+          "height": 750
+        },
+        "start_position": {
+          "top": 200,
+          "left": 100
+        },
+        "dev_tools_window_style": true,
+        "file": "web/AFBuilds.html",
+        "show_in_taskbar": true,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": false,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "desktop_only": true,
+        "disable_restore_animation": false,
+        "grab_keyboard_focus": false,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": true
+      },
+      "SquadMakingMain": {
+        "size": {
+          "width": 1300,
+          "height": 600
+        },
+        "min_size": {
+          "width": 1130,
+          "height": 650
+        },
+        "start_position": {
+          "top": 200,
+          "left": 100
+        },
+        "dev_tools_window_style": true,
+        "file": "web/SquadMakingMain.html",
+        "show_in_taskbar": true,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": false,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "desktop_only": true,
+        "disable_restore_animation": false,
+        "grab_keyboard_focus": false,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": true
+      },
+      "SquadMakingSquad": {
+        "size": {
+          "width": 1275,
+          "height": 405
+        },
+        "min_size": {
+          "width": 1160,
+          "height": 405
+        },
+        "max_size": {
+          "width": 1375,
+          "height": 405
+        },
+        "start_position": {
+          "top": 200,
+          "left": 100
+        },
+        "dev_tools_window_style": true,
+        "file": "web/SquadMakingSquad.html",
+        "show_in_taskbar": true,
+        "transparent": true,
+        "override_on_update": true,
+        "resizable": false,
+        "show_minimize": false,
+        "clickthrough": false,
+        "disable_rightclick": false,
+        "forcecapture": false,
+        "show_only_on_stream": false,
+        "ignore_keyboard_events": false,
+        "desktop_only": true,
+        "disable_restore_animation": false,
+        "grab_keyboard_focus": false,
+        "disable_hardware_acceleration": false,
+        "block_top_window_navigation": true,
+        "keep_window_location": true,
+        "use_os_windowing": false,
+        "background_optimization": false,
+        "mute": true,
+        "popup_blocker": true,
+        "show_maximize": true,
+        "disable_blur": false,
+        "native_window": true
+      }
+    },
+    "extra-objects": {
+      "AlecaFrameWrapper": {
+        "file": "NET/AlecaFrameClientLib.dll",
+        "class": "AlecaFrameClientLib.OverwolfWrapper"
+      }
+    },
+    "game_events": [ 8954 ],
+    "game_targeting": {
+      "type": "dedicated",
+      "game_ids": [ 8954 ]
+    },
+    "launch_events": [
+      {
+        "event": "GameLaunch",
+        "event_data": {
+          "game_ids": [ 8954 ]
+        }
+      }
+    ],
+    "uninstall_window": {
+      "file": "web/uninstall.html",
+      "required_runtime": 7500
+    }
+  }
+
+}

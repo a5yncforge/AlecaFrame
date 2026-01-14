@@ -1,0 +1,361 @@
+.staticRightColumn {
+    border-radius: 0px 0px 20px 20px;
+}
+
+.window-controls-group {
+    min-width: 90px;
+}
+
+
+.squadItemLine.topLine {
+    font-weight: 300;
+}
+
+.squadDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 7px 15px;
+    border-radius: 20px;
+    background-color: var(--color-bg-2);
+}
+
+.background {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    overflow: hidden;
+}
+
+.squadMembers {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 9px 15px;
+    border-radius: 20px;
+    background-color: var(--color-bg-2);
+    width: 350px;
+    overflow: hidden;
+    min-width: 350px;
+}
+
+.squadChat {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 9px 12px;
+    border-radius: 20px;
+    background-color: var(--color-bg-2);
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+
+.squadMember {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 35px;
+    flex-shrink: 0;
+}
+
+.memberIcon {
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: -1px;
+    margin-left: -2px;
+}
+
+    .memberIcon.owner {
+        background-image: url(../../img/star2.png);
+        background-size: 69%;
+    }
+
+    .memberIcon.vrc {
+        background-image: url(../../img/axi-intact.png);
+    }
+
+    .memberIcon.af {
+        background-image: url(../../img/alecaframe.png);
+    }
+
+.squadMemberReputation {
+    font-weight: 400;
+    font-size: 15px;
+    margin-left: 2px;
+}
+
+.squadMemberHolder {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    flex-shrink: 1;
+    overflow-y: scroll;
+    padding-right: 8px;
+}
+
+.squadDown {
+    display: flex;
+    flex-direction: revert;
+    flex-grow: 1;
+    gap: 10px;
+    overflow: hidden;
+}
+
+button.buttonSendChatMessage {
+    width: 26px;
+    height: 26px;
+    margin-right: 0px;
+    -webkit-mask-image: url(../../img/arrow-small.png);
+    -webkit-mask-size: 68%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    background-color: var(--color-icons);
+    cursor: pointer;
+}
+
+.squadChatInput {
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+}
+
+.squadChatHolder {
+    flex-grow: 1;
+    background-color: var(--color-bg-1);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 12px;
+    overflow-y: auto;
+    height: 100px;
+    overflow-x: hidden;
+}
+
+.squadChatMessage {
+    display: flex;
+    gap: 5px;
+    font-size: 14px;
+    user-select: text;
+}
+
+.squadChatMessageName {
+    font-weight: 500;
+    color: var(--color-tab-hover);
+    filter: brightness(1.75);
+}
+
+.system > .squadChatMessageName {
+    font-weight: 400;
+    color: var(--color-navigation);
+    filter: brightness(1.2);
+}
+
+.squadChatMessageText {
+    font-weight: 300;
+    overflow-wrap: anywhere;
+}
+
+.squadChatInput > input[type="text"] {
+    background-color: var(--color-card-active);
+    color: var(--color-text);
+    outline: none;
+    border: none;
+    border-radius: 14px;
+    padding: 3px 11px;
+}
+
+.memberNotFull {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    border-radius: 15px;
+    background-color: var(--color-bg-1);
+    padding: 2px 7px;
+    flex-grow: 1;
+    height: 100%;
+}
+
+button.buttonAddGuest {
+    width: auto;
+    background-color: var(--color-tab);
+    border-radius: 20px;
+    padding: 5px 13px;
+    height: auto;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+    button.buttonAddGuest:not(:disabled):hover {
+        background-color: var(--color-tab-hover);
+    }
+
+    button.buttonAddGuest:not(:disabled):active {
+        background-color: var(--color-tab-active);
+    }
+
+    button.buttonAddGuest:disabled {
+        filter: brightness(0.5);
+    }
+
+.memberNotFull > span {
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.memberFull {
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+    align-items: center;
+    border-radius: 15px;
+    background-color: var(--color-bg-3);
+    padding: 2px 7px;
+    flex-grow: 1;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.bottomButtons {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* background-color: var(--color-bg-1); */
+    border-top: 1px solid var(--color-card-active);
+    padding-top: 7px;
+    margin: 0px 2px;
+}
+
+.leftThings {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+button.memberButton {
+    width: 25px;
+    height: 25px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.memberIcon.guest {
+    background-image: url(../../img/user.png);
+    background-size: 76%;
+}
+
+.squadMemberName {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.leftThings > span {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.memberFull.isMe {
+    box-shadow: inset 0 0 2px 0px var(--color-text);
+}
+
+div#squadDoneScreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+button.disbandedCloseButton {
+    width: 99px;
+    height: 33px;
+    background-color: var(--color-tab);
+    border-radius: 20px;
+    margin: auto;
+    color: var(--color-text);
+    margin-top: 10px;
+    margin-bottom: -11px;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: 0.12s linear;
+}
+
+    button.disbandedCloseButton:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+.rightThings {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+button.memberButton.report {
+    background-color: var(--color-sell-hover);
+    color: var(--color-text);
+    font-weight: 500;
+    font-size: 16px;
+}
+
+
+    button.memberButton.report > div {
+        background-color: var(--color-icons);
+        -webkit-mask-image: url('../../img/kick.png');
+        -webkit-mask-size: 76%;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+    }
+
+button.memberButton.quick {
+    background-color: var(--color-sell-hover);
+}
+
+    button.memberButton.quick:hover {
+        background-color: var(--color-sell-active);
+    }
+
+    button.memberButton.quick > div {
+        -webkit-mask-image: url('../../img/kick.png');
+        -webkit-mask-size: 67%;
+        -webkit-mask-position: center;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-icons);
+        -webkit-mask-repeat: no-repeat;
+    }
+
+button.memberButton.invite {
+    background-color: var(--color-bg-1);
+}
+
+    button.memberButton.invite:hover {
+        background-color: var(--color-bg-2);
+    }
+
+    button.memberButton.invite > div {
+        -webkit-mask-image: url('../../img/copy.png');
+        -webkit-mask-size: 67%;
+        -webkit-mask-position: center;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-icons);
+        -webkit-mask-repeat: no-repeat;
+    }
+
+.squadChatMessage.system {
+    color: var(--color-navigation);
+    font-size: 14px;
+}
+
+.squadType {
+    margin-right: 25px;
+}

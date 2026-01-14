@@ -1,0 +1,743 @@
+.createSquadButton {
+    position: absolute;
+    right: 421px;
+    font-size: 15px;
+    top: 11px;
+    padding: 6px 13px;
+    background-color: var(--color-tab);
+    border-radius: 17px;
+    transition: 0.12s linear;
+    cursor: pointer;
+    width: auto;
+    color: var(--color-text);
+}
+
+    .createSquadButton:not(.disabled):hover {
+        background-color: var(--color-tab-hover);
+    }
+
+    .createSquadButton:not(.disabled):active {
+        background-color: var(--color-tab-active);
+    }
+
+button.createSquadButton.rules {
+    right: 132px;
+    background-color: var(--color-card);
+    padding: 2px 9px;
+    height: 24px;
+    top: 13px;
+    font-size: 14px;
+}
+
+.createSquadButton.rules:hover {
+    background-color: var(--color-card-hover);
+}
+
+.createSquadButton.rules:active {
+    background-color: var(--color-card-active);
+}
+
+main#vueMain {
+    margin-left: 9px;
+    overflow: hidden;
+}
+
+span.squadTypeTitle {
+}
+
+.squadCreationEntry {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+    align-items: center;
+}
+
+input.squadCreationInput {
+    background-color: var(--color-card-active);
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding: 4px 8px;
+    color: white;
+    width: 250px;
+}
+
+    input.squadCreationInput[type=number] {
+        width: 69px;
+    }
+
+.squadCreateButton {
+    all: unset;
+    padding: 5px 10px;
+}
+
+input.squadCreationInput[type=number] {
+    width: 69px;
+}
+
+.squadCreateButton {
+    all: unset;
+    padding: 9px 6px;
+    background-color: var(--color-tab);
+    border-radius: 31px;
+    width: auto;
+    width: 121px;
+    font-weight: 400;
+    text-align: center;
+    margin-left: calc(100%/2 - 60px);
+    cursor: pointer;
+    transition: 0.15s linear;
+}
+
+    .squadCreateButton:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+    .squadCreateButton:active {
+        background-color: var(--color-tab-active);
+    }
+
+span.squadCreationTitle {
+    font-weight: 300;
+}
+
+.createSquad > .innerModalContent {
+    gap: 15px;
+    overflow-x: hidden;
+}
+
+.squadListItem {
+    width: 386px;
+    background-color: var(--color-card);
+    border-radius: 15px;
+    color: var(--color-text);
+    padding: 6px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 300;
+    font-size: 14px;
+    height: 104px;
+    justify-content: space-between;
+}
+
+.squadListContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 8px;
+    overflow-y: scroll;
+    justify-content: start;
+    align-content: flex-start;
+    flex-grow: 1;
+    margin-left: 6px;
+}
+
+.background {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+
+.squadItemJoin {
+    width: auto;
+    background-color: var(--color-buy);
+    color: var(--color-text);
+    border-radius: 15px;
+    padding: 4px 7px;
+    height: unset;
+    cursor: pointer;
+    transition: 0.12s linear;
+}
+
+    .squadItemJoin:not(.disabled):hover {
+        background-color: var(--color-buy-hover);
+    }
+
+    .squadItemJoin:not(.disabled):active {
+        background-color: var(--color-buy-active);
+    }
+
+.squadUsername {
+    font-size: 13px;
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.innerModal.createSquad {
+    max-width: min(96%, 729px);
+    max-height: 91%;
+    min-width: 550px;
+    min-height: 190px;
+}
+
+.requirementAddItem {
+    position: absolute;
+    background: var(--color-card-hover);
+    border-radius: 10px;
+    height: 102px;
+    width: 100%;
+    overflow-y: scroll;
+    padding: 5px;
+    top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    display: none;
+    left: 0px;
+    outline: none;
+    overflow-x: hidden;
+}
+
+
+.reqRemoveButton {
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.relicSelectionContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 10px;
+}
+
+.requirementAddItem > div {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* overflow-x: hidden; */
+    /* overflow-y: hidden; */
+}
+
+    .requirementAddItem > div:hover {
+        background-color: var(--color-card-active);
+    }
+
+.requirementItem > input[type="text"] {
+    width: 154px;
+    background-color: var(--color-card-hover);
+    border: none;
+    outline: none;
+    padding: 3px 8px;
+    padding-top: 4px;
+    border-radius: 12px;
+    color: var(--color-text);
+    font-weight: 300;
+    font-size: 14px;
+    display: flex;
+    flex-grow: 1;
+    line-break: anywhere;
+}
+
+.requirementItem:focus-within > input[type="text"] + .requirementAddItem {
+    display: flex;
+}
+
+
+
+.requirementItem.plus {
+    padding-right: 3px;
+    padding-left: 9px;
+    font-size: 20px;
+    gap: 6px;
+}
+
+.squadCreationEntryVertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.creationGameType {
+    width: 150px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.12s linear;
+    position: relative;
+}
+
+    .creationGameType:hover {
+        background-color: var(--color-bg-2);
+    }
+
+    .creationGameType > .topSettingIcon {
+        width: 45px;
+        height: 45px;
+        margin-right: 0px;
+        background-color: transparent;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .creationGameType.selected {
+        background-color: var(--color-bg-3);
+    }
+
+
+.createSquadBottomBar {
+    display: flex;
+    gap: 86px;
+    justify-content: center;
+}
+
+.createSquadStepButton:hover {
+    background-color: var(--color-tab-hover);
+}
+
+.createSquadStepButton {
+    background-color: var(--color-tab);
+    padding: 6px 6px;
+    font-weight: 400;
+    border-radius: 19px;
+    transition: 0.12s linear;
+    cursor: pointer;
+    position: absolute;
+    bottom: 18px;
+    font-size: 14px;
+    font-weight: 300;
+    padding-left: 5px;
+    padding-right: 7px;
+}
+
+.squadCreationStep1 {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    justify-content: space-around;
+    flex-grow: 1;
+}
+
+.createSquadStepButton > div {
+    background-color: white;
+    -webkit-mask-image: url('../../img/arrow-small.png');
+    -webkit-mask-size: contain;
+    width: 16px;
+    height: 16px;
+    transform: rotate(180deg);
+}
+
+.squadCreationEntry.tip > span {
+    font-weight: 500;
+}
+
+.squadCreationEntry.tip {
+    font-size: 14px;
+    max-width: 623px;
+    white-space: normal;
+    align-items: self-end;
+    font-weight: 300;
+    align-items: center;
+}
+
+.addingReqName {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+
+.requirementItem.mainList {
+    background-color: var(--color-card-active);
+    cursor: default;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.foundryTopSettingsSide.left {
+    flex-wrap: wrap;
+}
+
+
+.noSquadsFound {
+    width: 100%;
+    height: 100%;
+    background-color: #00000096;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .noSquadsFound > div {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+        text-align: center;
+        font-size: 26px;
+        font-weight: 400;
+    }
+
+        .noSquadsFound > div > span {
+            font-weight: 300;
+            font-size: 17px;
+        }
+
+main {
+    padding-top: 0px;
+    overflow: hidden;
+}
+
+
+.accountStateHolder {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+    padding: 8px 8px;
+}
+
+span.accountStateName {
+    text-align: center;
+    font-size: 20px;
+}
+
+.accountStateReputation {
+    font-weight: 300;
+    font-size: 15px;
+    padding: 0px 13px;
+    display: flex;
+    justify-content: space-between;
+}
+
+    .accountStateReputation > div > span {
+        font-weight: 400;
+    }
+
+.accountStateTabHolder {
+    margin-top: 4px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: auto;
+    border-radius: 20px;
+}
+
+.mainTabBody {
+    /* background-color: red; */
+    border-radius: 0px 0px 10px 10px;
+    overflow-y: scroll;
+    padding: 5px;
+    margin-top: 2px;
+}
+
+
+.recentPlayer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 11px;
+    background-color: var(--color-card);
+    border-radius: 15px;
+    padding-right: 6px;
+}
+
+.playerRight {
+    display: flex;
+    gap: 8px;
+}
+
+.playerRightButton.block {
+    background-color: var(--color-tab);
+    background-image: url(../../img/forbidden.png);
+    background-size: 67%;
+}
+
+    .playerRightButton.block:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+.playerRightButton.unblock {
+    background-color: var(--color-tab);
+    background-image: url(../../img/delete.png);
+    background-size: 67%;
+}
+
+    .playerRightButton.unblock:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+.playerRightButton {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 6px;
+    cursor: pointer;
+    background-position: center;
+    transition: 0.12s linear;
+}
+
+
+
+    .playerRightButton.reputation {
+        background-color: var(--color-buy);
+        background-image: url(../../img/plus.png);
+        background-size: 129%;
+    }
+
+        .playerRightButton.reputation:hover {
+            background-color: var(--color-buy-hover);
+        }
+
+    .playerRightButton.report {
+        background-color: var(--color-sell);
+        text-align: center;
+        font-weight: 600;
+        font-size: 18px;
+        padding: 2px;
+        color: var(--color-icons);
+    }
+
+        .playerRightButton.report:hover {
+            background-color: var(--color-sell-hover);
+        }
+
+.playerLeft {
+    font-weight: 300;
+    font-size: 15px;
+}
+
+
+.tabHeaderIcon.blocked {
+    -webkit-mask-image: url(../../img/forbidden.png);
+    -webkit-mask-size: 80%;
+    -webkit-mask-position: center;
+}
+
+.tabHeaderIcon.recent {
+    -webkit-mask-image: url(../../img/recent.png);
+    -webkit-mask-size: 90%;
+    -webkit-mask-position: center;
+}
+
+.staticRightColumnTop {
+    display: flex;
+    position: relative;
+    height: 10px;
+}
+
+span.accountStatus {
+    color: var(--color-buy-active);
+}
+
+    span.accountStatus.banned {
+        color: red;
+    }
+
+.userContainer {
+    gap: 6px;
+}
+
+.playerRightButton.unreputation {
+    background-color: var(--color-buy);
+    background-image: url(../../img/plusNegated.png);
+    background-size: 129%;
+}
+
+    .playerRightButton.unreputation:hover {
+        background-color: var(--color-buy-hover);
+    }
+
+.squadCreationEntry.vertical {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+textarea.squadCreationInput {
+    background-color: var(--color-card-active);
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding: 4px 8px;
+    color: white;
+    width: 100%;
+    height: 100px;
+    padding: 7px 10px;
+    font-size: 14px;
+}
+
+.reportUserModelInner {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+input.squadCreationInput {
+}
+
+    input.squadCreationInput[type=checkbox] {
+        width: 14px;
+        height: 14px;
+        margin-left: 4px;
+    }
+
+span.squadCreationTitle.content {
+    background: transparent;
+    font-weight: 500;
+}
+
+.topSettingIcon.refresh {
+    -webkit-mask-image: url('../../img/repeat.png');
+    margin-left: -1px;
+    -webkit-mask-size: 95%;
+}
+
+.refreshSuggestion {
+    display: flex;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 15px;
+    background-color: var(--color-sell-hover);
+    margin: 0px 8px;
+    margin-bottom: 7px;
+    border-radius: 17px;
+}
+
+.refreshIconInMessage {
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    -webkit-mask-image: url(../../img/repeat.png);
+    -webkit-mask-size: 95%;
+    background-color: var(--color-icons);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    margin: 0px 6px;
+}
+
+.refreshSuggestion > div {
+    display: flex;
+    padding: 5px 14px;
+}
+
+.notLoggedInText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notLoggerTextInner {
+    text-align: center;
+    padding: 0px 41px;
+    font-size: 14px;
+}
+
+.comingSoon {
+    font-size: 12px;
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    background-color: var(--color-card-active);
+    padding: 3px 5px;
+    border-radius: 9px;
+}
+
+span.reputation {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.ftueIcon.tennoFinder {
+    background-image: url('../../img/TennoFinder.png');
+}
+
+.ftueImageShower.squad > .ftueImage {
+    background-size: 91%;
+}
+
+.ftueImageShower.squad.s1 > .ftueImage {
+    background-image: url('../../img/ftue/ftueTennoFinder/1.png');
+    background-size: 91%;
+}
+
+.ftueImageShower.squad.s2 > .ftueImage {
+    background-image: url('../../img/ftue/ftueTennoFinder/2.png');
+}
+
+.ftueImageShower.squad.s3 > .ftueImage {
+    background-image: url('../../img/ftue/ftueTennoFinder/3.png');
+}
+
+.ftueImageShower.squad.s4 > .ftueImage {
+    background-image: url('../../img/ftue/ftueTennoFinder/4.png');
+    height: 192px;
+}
+
+.ftueImageShower.squad.s5 > .ftueImage {
+    background-image: url('../../img/ftue/ftueTennoFinder/squad.png?');
+    height: 216px;
+}
+
+.ftueImageShower.squad.s6 > .ftueImage {
+    background-image: url('../../img/ftue/ftueTennoFinder/1.png?');
+}
+
+.ftueImageShower.squad.s7 {
+    margin: 0px 25px;
+}
+
+li.ftureText {
+    text-align: left;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+    li.ftureText::marker {
+        font-weight: 500;
+    }
+
+.ftueImageShower > .settingsCheckBoxHolder {
+    cursor: pointer;
+}
+
+.ftureText.title {
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.betaFlare {
+    position: absolute;
+    background-color: #353693;
+    padding: 3px 7px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    top: 14px;
+    left: 291px;
+}
+
+    .betaFlare.ftue {
+        top: -1px;
+        left: 201px;
+    }
+
+select.squadCreationInput {
+    width: auto;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 2px 5px;
+}
+
+.typeExplanation {
+    font-size: 14px;
+    font-weight: 300;
+}

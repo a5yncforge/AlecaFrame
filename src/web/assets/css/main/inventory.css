@@ -1,0 +1,2012 @@
+﻿.inventoryObject {
+    align-items: center;
+    background: #303240;
+    flex-shrink: 1;
+    width: auto;
+    height: 130px;
+    background-color: var(--color-card);
+    position: relative;
+    overflow: hidden;
+    flex-grow: 1;
+    transition: 0.15s linear;
+    border-radius: 20px;
+    margin: 6px;
+    margin-top: 0px;
+    margin-bottom: 8px;
+    display: flex;
+    padding: 6px;
+}
+
+    .inventoryObject.isRelic, .inventoryObject.relicPlanner {
+        cursor: pointer;
+    }
+
+    .inventoryObject.isMod, .inventoryObject.isArcane, .inventoryObject.relicPlanner {
+        cursor: pointer;
+    }
+
+        .inventoryObject.isRelic:hover, .inventoryObject.isArcane:hover, .inventoryObject.isMod:hover, .inventoryObject.relicPlanner:hover {
+            background-color: var(--color-card-hover);
+        }
+
+            .inventoryObject.isRelic:hover > .inventoryItemImage,, .inventoryObject.isArcane > .inventoryItemImage, .inventoryObject.relicPlanner:hover > .inventoryItemImage {
+                background-color: #2b2a38;
+            }
+
+.inventoryItemImage {
+    width: 96%;
+    flex-grow: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-flow: column;
+    position: relative;
+    margin: 2px;
+    align-items: flex-start;
+    transition: 0.15s linear;
+    border-radius: 20px;
+    max-height: 87px;
+}
+
+    .inventoryItemImage.mod {
+        background-size: auto;
+        position: absolute;
+        left: -11px;
+        right: 0px;
+        width: auto;
+        bottom: -11px;
+        height: auto;
+        top: -10px;
+        border-radius: 10px;
+        max-height: unset;
+    }
+
+.isMod > .inventoryItemImage {
+    width: 100%;
+    height: 100%;
+    background-size: 95%;
+    background-repeat: no-repeat;
+    background-position: -23% 100%;
+    grid-row: 1 / 5;
+    background-color: #1B1A23;
+    flex-flow: column;
+    position: relative;
+    align-items: flex-start;
+    /* border: 1px solid #ffffff69; */
+    /* background-size: 80% 100%; */
+    border-right: 1px solid #ffffff66;
+    transition: 0.15s linear;
+}
+
+    .isMod > .inventoryItemImage.riven {
+        background-size: 76%;
+        background-position: 46% -63%;
+        background-color: #752875;
+    }
+
+    .isMod > .inventoryItemImage.requiem {
+        background-size: 80%;
+        background-position: center;
+        /* background-color: #792779; */
+    }
+
+.inventoryItemModTypeBar {
+    position: absolute;
+    left: 88px;
+    top: 0px;
+    bottom: 0px;
+    width: 3px;
+    border-radius: 0px 21px 21px 0px;
+    border-left: 1px solid #ffffff61;
+    margin-left: 4px;
+}
+
+    .inventoryItemModTypeBar.gold {
+        background-color: #e6cc48;
+    }
+
+    .inventoryItemModTypeBar.silver {
+        background-color: #989898;
+    }
+
+    .inventoryItemModTypeBar.bronze {
+        background-color: #af7125;
+    }
+
+    .inventoryItemModTypeBar.requiem {
+        background-color: #000000;
+    }
+
+    .inventoryItemModTypeBar.riven {
+        background-color: #c029ff;
+    }
+
+    .inventoryItemModTypeBar.primed {
+        background-color: #ffffff;
+    }
+
+.inventoryItemName {
+    font-weight: 500;
+    grid-column: 2/4;
+    text-align: center;
+    grid-row: 1;
+    font-size: 19px;
+    white-space: nowrap;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    grid-column: 1;
+}
+
+    .inventoryItemName > span {
+        max-width: 185px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+        .inventoryItemName > span.normalItem {
+            max-width: 265px;
+        }
+
+.inventoryItemQuantity {
+    font-weight: 600;
+    font-size: 15px;
+    right: -2px;
+    bottom: 4px;
+}
+
+    .inventoryItemQuantity.absolute {
+        position: absolute;
+    }
+
+    .inventoryItemQuantity.modLeveledUp {
+        width: 28px;
+        height: 28px;
+        background-image: url('../../img/arrow.png?0');
+        background-size: 64%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #1f4886;
+        left: 0px;
+        top: 59px;
+        position: absolute;
+        border-radius: 0px 8px 0px 0px;
+        border-right: 1px solid white;
+        border-top: 1px solid white;
+        cursor: pointer;
+    }
+
+.inventoryItemDucats {
+    margin-right: 8px;
+}
+
+.inventoryItemDucatsIcon {
+    background-image: url('../../img/prime.png');
+    background-size: 87%;
+    width: 25px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+    .inventoryItemDucatsIcon.ducanator {
+        background-image: url('../../img/ducanator.png');
+        background-size: contain;
+        margin-left: -6px;
+    }
+
+.inventoryItemDucatsHolder {
+    padding: 4px 6px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 0px 7px 0px 0px;
+    display: flex;
+}
+
+.inventoryItemButtonPostSell {
+    font-weight: 400;
+    font-size: 17px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+    background: var(--color-sell);
+    border-radius: 48px;
+    width: 100px;
+    padding: 11px;
+    height: 35px;
+    text-align: center;
+    font-size: 14px;
+    min-width: 65px;
+    cursor: pointer;
+    transition: 0.12s linear;
+    gap: 5px;
+}
+
+    .inventoryItemButtonPostSell:hover {
+        background-color: var(--color-sell-hover);
+    }
+
+    .inventoryItemButtonPostSell:active {
+        background-color: var(--color-sell-active);
+    }
+
+.inventoryItemButtonInstaSell {
+    font-weight: 400;
+    font-size: 17px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+    background: var(--color-buy);
+    border-radius: 48px;
+    width: 100px;
+    padding: 11px;
+    height: 35px;
+    text-align: center;
+    font-size: 14px;
+    min-width: 65px;
+    cursor: pointer;
+    transition: 0.12s linear;
+}
+
+    .inventoryItemButtonInstaSell:hover {
+        background-color: var(--color-buy-hover);
+    }
+
+    .inventoryItemButtonInstaSell:active {
+        background-color: var(--color-buy-active);
+    }
+
+.inventoryObjectContainer {
+    flex-direction: row;
+    padding: 1px;
+    overflow-x: hidden;
+    justify-content: left;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    width: 100%;
+    overflow-y: scroll;
+    align-content: flex-start;
+    flex-grow: 1;
+    padding-right: 6px;
+    padding-left: 3px;
+}
+
+.inventoryItemSellPlatIcon {
+    background-image: url('../../img/platinum.png');
+    background-size: cover;
+    width: 19px;
+    height: 19px;
+    background-repeat: no-repeat;
+    margin-left: 3px;
+}
+
+.inventorySellPrice {
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.inventoryBuyPrice {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.inventoryItemSellRight {
+    display: flex;
+    /* width: 74px; */
+    margin-left: 4px;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1px;
+}
+
+.searchSetting {
+    cursor: default;
+}
+
+#inventorySearch {
+    height: 26px;
+    margin-right: -8px;
+    padding: 7px;
+    width: 120px;
+    font-size: 14px;
+    font-weight: 100;
+    margin-right: 3px;
+    margin-left: -8px;
+    background: transparent;
+    border: none;
+    color: white;
+    padding-bottom: 5px;
+}
+
+#inventorySearch {
+    outline: none;
+}
+
+.inventoryTargetOwned {
+    width: auto;
+    padding: 4px 6px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    height: 27px;
+    width: 27px;
+    background-image: url('../../img/tick.png');
+    background-size: 74%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+    .inventoryTargetOwned.usedIn {
+        right: 8px;
+        background-image: url(../../img/user.png);
+        min-width: 21px;
+        min-height: 21px;
+        width: 21px;
+        height: 21px;
+    }
+
+.foundryRightColumn {
+    display: flex;
+    padding: 6px;
+    padding-bottom: 6px;
+    justify-content: flex-start;
+    position: static;
+    height: 100%;
+    overflow: hidden;
+}
+
+    .foundryRightColumn.shown {
+        display: flex;
+    }
+
+.inventoryWFMtabSelection {
+    display: flex;
+    /* flex-grow: 1; */
+    height: 32px;
+    font-size: 17px;
+    font-weight: 400;
+    padding-top: 0px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #ffffff99;
+}
+
+.inventoryWFMtabsHolder {
+    flex-grow: 1;
+    display: flex;
+}
+
+.inventoryWFMtab {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 6px;
+    padding: 3px;
+}
+
+.inventoryBuySellPanel {
+    display: flex;
+    flex-grow: 1;
+    /* height: max-content; */
+    height: 1px;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.inventorySellPanel {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 6px;
+    align-items: center;
+    height: 100%;
+}
+
+.inventoryBuyPanel {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 6px;
+    align-items: center;
+    margin-left: 3px;
+    background-color: #b76a6a47;
+}
+
+.inventorySellPanelListing {
+    display: flex;
+    grid-template-columns: 5fr 1fr 1fr;
+    align-items: center;
+    justify-content: space-between;
+    width: 98%;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: 0.15s linear;
+    border-bottom: 1px solid #ffffff26;
+    /* White */
+    min-height: 37px;
+}
+
+.inventorySellPanelListingName {
+    display: flex;
+    font-weight: 300;
+    max-width: 170px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    /* margin-right: 5px; */
+    display: block;
+}
+
+.inventorySellPanelListingAmount {
+    display: flex;
+    font-weight: 300;
+    font-size: 15px;
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 2px;
+    min-width: 50px;
+}
+
+.inventorySellPanelListingTier {
+    padding: 4px;
+    justify-self: center;
+    font-size: 16px;
+    max-width: 118px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.inventorySellPanelListingPlatinum {
+    display: flex;
+    align-items: center;
+    margin-right: 5;
+    font-weight: 400;
+    font-size: 18px;
+    margin-left: 2px;
+}
+
+.inventorySellPanelListingPlatinumIcon {
+    width: 15px;
+    height: 14px;
+    background-image: url('../../img/platinum.png');
+    background-size: cover;
+    margin-left: 3px;
+}
+
+.inventorySellPanelListingButton {
+    background-color: white;
+    border: 1px solid wheat;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
+.inventoryBuySellBottom {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 8px;
+    background-color: var(--color-bg-3);
+    border-radius: 21px;
+    align-items: center;
+    padding-right: 17px;
+}
+
+.inventoryBuySellBottomMiddle {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.inventoryBuySellBottomMiddleItem {
+    font-weight: 300;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.inventoryBuySellInput {
+    width: 55px;
+    margin-left: 3px;
+    font-size: 14px;
+    padding: 1px 6px;
+    padding-top: 2px;
+    padding-right: 3px;
+    background-color: var(--color-bg-2);
+    color: var(--color-text);
+    border: 1px solid #ffffff30;
+    border-radius: 7px;
+    outline: none;
+    border: n;
+    text-transform: capitalize;
+}
+
+.inventoryBuySellBuy {
+    border: 1px solid;
+    background-color: #434443;
+    padding: 4px;
+    height: 100%;
+    font-size: 17px;
+    cursor: pointer;
+    min-width: 76px;
+    width: 76px;
+}
+
+.inventoryBuySellSell {
+    border: 1px solid white;
+    background-color: #557da7b0;
+    padding: 4px;
+    height: 100%;
+    font-size: 17px;
+    cursor: pointer;
+    min-width: 76px;
+    width: 76px;
+}
+
+.inventoryBuySellPanelHolder {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-weight: 100;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 10px;
+    justify-content: flex-start;
+    flex-grow: 1;
+}
+
+.inventoryBuyTitle {
+    font-weight: 400;
+    font-size: 17px;
+    margin-left: auto;
+    margin-right: 6px;
+    z-index: 1;
+}
+
+.inventorySellTitle {
+    font-weight: 400;
+    font-size: 17px;
+    margin-right: auto;
+    margin-left: 6px;
+    z-index: 1;
+}
+
+.inventorySellPanelListing:hover {
+    background-color: #ffffff2e;
+}
+
+.inventorySellPanelListing.goodPrice > .inventorySellPanelListingRightPart {
+    /* box-shadow: inset 0px 0px 7px 1px #58c158; */
+    color: #92ff92;
+}
+
+.inventoryBuySellInput.relic {
+    width: 104px;
+    cursor: pointer;
+    border: none;
+    padding: 2px 4px;
+}
+
+.inventoryBuySellInput.mod {
+    width: 50px;
+}
+
+.inventorySellPanelListingRightPart {
+    display: flex;
+    gap: 9px;
+}
+
+/* we will explain what these classes do next! */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
+
+.list-enter-active, .list-leave-active {
+    transition: all 0.15s ease;
+}
+
+.list-enter-from, .list-leave-to {
+    opacity: 0;
+    /*   transform: translateX(50px);*/
+    height: 0px
+}
+
+.isMod > div > .inventoryItemOrderPlaced {
+    right: 8px;
+}
+
+.inventoryItemOrderPlaced {
+    padding: 4px 6px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    height: 27px;
+    width: 31px;
+    background-image: url('../../img/wfMarketIcon.png');
+    background-size: 84%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    right: -7px;
+    top: -1px;
+}
+
+    .inventoryItemOrderPlaced.absolute {
+        position: absolute;
+    }
+
+.inventoryWFMlogoutButton {
+    color: white;
+    width: 72px;
+    height: 31px;
+    font-size: 16px;
+    border: 1px solid white;
+    background-color: #963737e8;
+    position: absolute;
+    right: 8px;
+    top: 10px;
+    cursor: pointer;
+}
+
+    .inventoryWFMlogoutButton:active {
+        background-color: #c315158c;
+    }
+
+.inventoryWFMLoginModal {
+    height: 281px;
+    width: 400px;
+    background-color: var(--color-bg-1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ffffff42;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    border-radius: 29px;
+}
+
+.inventoryWFMemailInput {
+    margin-left: 7px;
+    border-radius: 10px;
+    padding: 2px 6px;
+    padding-top: 3px;
+    outline: none;
+    border: none;
+}
+
+.inventoryWFMLoginField {
+    margin-top: -6px;
+    display: flex;
+    font-weight: 300;
+    align-items: center;
+    display: flex;
+    gap: 3px;
+}
+
+.inventoryWFMloginTip {
+    font-size: 14px;
+    font-weight: 300;
+    padding: 3px 9px;
+    background-color: var(--color-bg-3);
+    border-radius: 20px;
+    display: flex;
+    gap: 4px;
+    margin-top: -11px;
+}
+
+.inventoryWFMloginButton {
+    width: 111px;
+    height: 40px;
+    background-color: #557da7b0;
+    color: white;
+    font-size: 18px;
+    border-radius: 20px;
+    /* border: 1px solid #ffffffa8; */
+    cursor: pointer;
+}
+
+.inventoryWFMLoginTitle {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 400;
+    justify-content: center;
+}
+
+.inventoryWFMLoginTitleIcon {
+    background-image: url('../../img/wfMarket.png');
+    width: 200px;
+    height: 57px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* border: 1px solid white; */
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.inventoryWFMloginButton:hover {
+    background-color: #75a1d0b0;
+}
+
+.inventoryWFMpasswordInput {
+    margin-left: 7px;
+    border-radius: 10px;
+    padding: 1px 6px;
+    outline: none;
+    padding: 2px 6px;
+    padding-top: 3px;
+    outline: none;
+    border: none;
+}
+
+.inventoryWFMlogoutButton:hover {
+    background-color: #bc4f4fe8;
+}
+
+.inventoryWFMAccountHeader {
+}
+
+.inventoryWFMOrders {
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.inventoryWFMAccountHeader {
+    height: 36px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 6px;
+    font-weight: 400;
+    font-size: 18px;
+    /* border-bottom: 1px solid #ffffffb0; */
+}
+
+.inventoryWFMAccountActiveOrders {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    margin-top: 1px;
+}
+
+.inventoryWFMAccountActiveOrdersHeader {
+    font-size: 17px;
+    font-weight: 300;
+    position: absolute;
+    top: 15px;
+    font-weight: 300;
+    left: 8px;
+    font-size: 18px;
+}
+
+.inventoryWFMAccountActiveOrdersContainer {
+    flex-grow: 1;
+    border: 1px solid white;
+    margin-top: 42px;
+    background-color: #ffffff3b;
+    padding: 4px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 174px;
+    padding-bottom: 0px;
+}
+
+.inventoryWFMorderOrderIcon {
+    height: 40px;
+    width: 40px;
+    background-position: center;
+    border: 1px solid #ffffff8a;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #ffffff42;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.inventoryWFMorderOrderAmount {
+    font-weight: 400;
+    font-size: 17px;
+    grid-column: 2;
+}
+
+.inventoryWFMorderOrderName {
+    font-weight: 300;
+    text-align: center;
+    margin-right: 5px;
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.inventoryWFMorderOrderRemove {
+    width: 33px;
+    height: 33px;
+    font-weight: 500;
+    font-size: 22px;
+    padding: 4px;
+    text-align: center;
+    border: 1px solid white;
+    background-color: #962d2d;
+    cursor: pointer;
+    grid-column: 5;
+    background-image: url('../../img/delete.png');
+    background-size: 79%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 40px;
+    top: 2px;
+}
+
+.inventoryWFMorder {
+    height: 43px;
+    margin-bottom: 4px;
+    padding: 3px;
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #e4e4e42e;
+    width: 362px;
+    padding-left: 0px;
+    grid-template-columns: 1fr 40px;
+    align-content: center;
+    grid-template-rows: 1fr;
+    position: relative;
+    box-shadow: inset 0px 0px 3px 1px #ffffff66;
+}
+
+    .inventoryWFMorder.invisible {
+        background-color: #0c0f125e;
+        box-shadow: inset 0px 0px 3px 1px #acafb4;
+        color: #9a9a9a;
+    }
+
+.inventoryWFMorderOrderRemove:hover {
+    background-color: #bc4f4fe8;
+    transition: linear 0.03s;
+}
+
+.inventoryWFMorderOrderRemove:active {
+    background-color: #c315158c;
+}
+
+.inventoryWFMloginButtonGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70%;
+    margin-bottom: 11px;
+}
+
+.inventoryWFMregisterButton {
+    width: 111px;
+    height: 40px;
+    background-color: #8055a7b0;
+    color: white;
+    font-size: 18px;
+    border-radius: 20px;
+    /* border: 1px solid #ffffffa8; */
+    cursor: pointer;
+    /* box-shadow: 0 0 5px 0px white; */
+}
+
+    .inventoryWFMregisterButton:hover {
+        background-color: #9569bcb0;
+    }
+
+.inventoryBuySellTabOverlayNoSelected div {
+    text-align: center;
+    width: 89%;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.inventoryBuySellTabOverlayNoSelected {
+    position: absolute;
+    bottom: 2px;
+    top: 36px;
+    left: 3px;
+    right: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    border-radius: 10px;
+    background: #101419e8;
+}
+
+.inventoryNoItemShown {
+    background: #161819e8;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+    .inventoryNoItemShown div {
+        text-align: center;
+        width: 89%;
+        font-weight: 400;
+        font-size: 26px;
+    }
+
+.inventoryBuySellTabOverlayTick {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background-image: url('../../img/tick.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60px;
+    z-index: 1;
+    border-radius: 19px;
+    background-color: #101419e8;
+}
+
+.inventoryWFMorderOrderPrice {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-weight: 500;
+    font-size: 17px;
+    grid-column: 4;
+}
+
+.inventoryWFMordersPlatinumIcon {
+    background-image: url('../../img/platinum.png');
+    background-size: cover;
+    width: 22px;
+    height: 22px;
+    background-repeat: no-repeat;
+    margin-left: 4px;
+    margin-right: 6px;
+}
+
+.inventoryWFMAccountActiveOrdersHeaderActive {
+}
+
+.inventoryWFMAccountActiveOrdersHeaderButton {
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    padding: 2px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.05s linear;
+}
+
+.inventoryWFMAccountActiveOrdersTypeSelector {
+    background-color: #434443;
+    border: 1px solid white;
+    position: absolute;
+    left: 137px;
+    top: 24px;
+    width: 115px;
+    display: flex;
+    height: 26px;
+    align-items: center;
+    justify-content: center;
+}
+
+.inventoryWFMAccountActiveOrdersHeaderButton:hover:not(.typeSelected) {
+    background-color: #5f5f5f;
+}
+
+.typeSelected {
+    background-color: #557da7b0;
+}
+
+.inventoryBuySellPanelCentralName {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 6px;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 6px 0px 4px 0px;
+    margin-top: -6px;
+}
+
+.listingMessageCopied {
+    width: 100%;
+    text-align: center;
+}
+
+.inventorySummary {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background-color: var(--color-bg-3);
+    /* width: 175px; */
+    height: 32px;
+    display: flex;
+    z-index: 1;
+    padding-right: 4px;
+    gap: 4px;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #ffffff4f;
+    border-bottom: none;
+    border-right: none;
+    padding-left: 10px;
+    border-radius: 13px 0px 15px 0px;
+}
+
+.inventorySummaryDatum {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+    margin-right: 5px;
+    margin-left: -2px;
+}
+
+.inventorySummaryPlatinumIcon {
+    background-image: url('../../img/platinum.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 22px;
+    height: 22px;
+    margin-left: 5px;
+}
+
+.inventorySummaryDucatsIcon {
+    background-image: url('../../img/ducats.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 22px;
+    height: 22px;
+    margin-left: 5px;
+}
+
+.inventoryNoItemShownSmall {
+    font-weight: 300;
+    font-size: 17px;
+}
+
+.closeAnyway {
+    /* border: 1px solid white; */
+    text-align: center;
+    background-color: #6a2b2b;
+    margin-right: -4px;
+    margin-bottom: 1px;
+    transition: 0.1s linear;
+    cursor: pointer;
+    font-size: 18px;
+    width: 128px;
+    padding: 9px 0px;
+    font-weight: 500;
+    border-radius: 20px;
+}
+
+    .closeAnyway:hover {
+        background-color: #7d3d3d;
+    }
+
+    .closeAnyway:active {
+        background-color: #8b4444;
+    }
+
+.closeAnywayText {
+    text-align: center;
+    font-size: 19px;
+    font-weight: 400;
+}
+
+.inventoryItemIsVaulted {
+    width: 30px;
+    height: 27px;
+    background-image: url('../../img/treasure.png');
+    margin-right: 10px;
+    background-size: 71%;
+    background-position: center;
+    background-color: #13202e;
+    border: 1px solid white;
+    border-radius: 4px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.listingMineLeftPart {
+    grid-template-columns: 1.25fr 0.8fr 5fr 1.5fr;
+    align-content: center;
+    grid-template-rows: 1fr;
+    display: grid;
+    align-items: center;
+    margin-right: 2px;
+}
+
+.listingMineRightPart {
+    width: 37px;
+    height: 37px;
+    right: 0px;
+    top: 1px;
+    position: absolute;
+    overflow: hidden;
+    background-color: #000000d4;
+    margin: 2px;
+    transition: 0.12s linear;
+    box-shadow: 0 0 5px 0px white;
+}
+
+    .listingMineRightPart:hover {
+        width: 185px;
+    }
+
+        .listingMineRightPart:hover > .inventoryWFMorderOrderSettings {
+            background-color: #505369;
+        }
+
+.inventoryWFMorderOrderSettings {
+    width: 37px;
+    height: 37px;
+    font-weight: 500;
+    font-size: 22px;
+    padding: 4px;
+    text-align: center;
+    border: 1px solid white;
+    background-color: #2547718f;
+    cursor: pointer;
+    grid-column: 5;
+    background-image: url(../../img/settings.png);
+    background-size: 79%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.inventoryWFMorderOrderMarkAsSold {
+    width: 33px;
+    height: 33px;
+    font-weight: 500;
+    font-size: 22px;
+    padding: 4px;
+    text-align: center;
+    border: 1px solid white;
+    background-color: #35895f91;
+    cursor: pointer;
+    grid-column: 5;
+    background-image: url('../../img/tick.png');
+    background-size: 79%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 77px;
+    top: 2px;
+    transition: 0.15s linear;
+}
+
+    .inventoryWFMorderOrderMarkAsSold:hover {
+        background-color: #63bd9091;
+    }
+
+.inventoryWFMorderOrderChangeVisibility {
+    width: 33px;
+    height: 33px;
+    font-weight: 500;
+    font-size: 22px;
+    padding: 4px;
+    text-align: center;
+    border: 1px solid white;
+    background-color: #000000;
+    cursor: pointer;
+    background-image: url('../../img/eyeLine.png');
+    background-size: 77%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 150px;
+    top: 2px;
+    transition: 0.15s linear;
+}
+
+    .inventoryWFMorderOrderChangeVisibility:hover {
+        background-color: #4a4949;
+    }
+
+    .inventoryWFMorderOrderChangeVisibility.invisible {
+        background-image: url('../../img/eye.png');
+    }
+
+.inventoryWFMorderOrderAddOne {
+    width: 33px;
+    height: 33px;
+    font-weight: 500;
+    font-size: 22px;
+    padding: 4px;
+    text-align: center;
+    border: 1px solid white;
+    background-color: #366083;
+    cursor: pointer;
+    position: absolute;
+    right: 114px;
+    top: 2px;
+    font-size: 19px;
+    transition: 0.15s linear;
+    color: white;
+}
+
+    .inventoryWFMorderOrderAddOne:hover {
+        background-color: #4376a0;
+    }
+
+.topSetting2 > select {
+    margin-left: 3px;
+    font-size: 14px;
+    padding: 0px 4px;
+    padding-right: 0px;
+    /* border: 1px solid #ffffff59; */
+    /* box-shadow: 0px 0px 5px 0px #ffffff5e; */
+    border-radius: 10px;
+    outline: none;
+    background-color: var(--color-bg-2);
+    padding: 2px 5px;
+}
+
+.topSettingIcon.ordering.reverseOrder {
+    -webkit-mask-image: url('../../img/orderingReverse.png');
+}
+
+.filterCheckbox {
+}
+
+.filterTable {
+    border-collapse: collapse;
+}
+
+.filterTableColumnCheck {
+    width: 45px;
+    text-align: center;
+}
+
+.filterTableColumnMain {
+}
+
+.filterTableHeader {
+    font-size: 17px;
+}
+
+.filterTableRowStart {
+    width: 81px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.filterTableCheckItem:nth-child(2) {
+    border-left: 1px solid #ffffff6b;
+}
+
+.filterTableCheckItem:last-child {
+    border-right: 1px solid #ffffff6b;
+}
+
+.filterTableCheckItem {
+    text-align: center;
+    padding-top: 3px;
+    /* border-radius: 6px; */
+    background-color: #0000003d;
+    position: relative;
+    border: 1px solid #ffffff6b;
+    transition: 0.12s linear;
+    border-left: none;
+    border-right: none;
+}
+
+    .filterTableCheckItem input {
+        cursor: pointer;
+    }
+
+    .filterTableCheckItem:hover {
+        background-color: #8c8c8c3d;
+    }
+
+.filterTableColumnCheck.yes {
+    color: #83ff83;
+}
+
+.filterTableColumnCheck.no {
+    color: #ff7575;
+}
+
+.filtersInventoryHolder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 3px;
+    padding-right: 8px;
+    cursor: default;
+    min-width: 227px;
+    overflow-y: auto;
+    max-height: 493px;
+}
+
+.filterGroup {
+    display: flex;
+    flex-direction: column;
+    /* width: 219px; */
+    flex-grow: 1;
+    width: 100%;
+}
+
+.filterHeader {
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 4px;
+    white-space: nowrap;
+}
+
+.filterOptions {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.filterOption {
+    flex-grow: 1;
+    text-align: -webkit-center;
+    border: 2px solid var(--color-tab-hover);
+    /* width: 10px; */
+    padding: 4px;
+    font-size: 14px;
+    transition: 0.15s linear;
+    font-weight: 400;
+    cursor: pointer;
+    background-color: var(--color-bg-3);
+    display: flex;
+    border-radius: 20px;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    position: relative;
+}
+
+    .filterOption.pulsed {
+        background-color: var(--color-tab-active);
+        font-weight: 500;
+    }
+
+    .filterOption:hover {
+        background-color: var(--color-tab-hover);
+        border: solid 2px #ffffff73;
+    }
+
+    .filterOption.pulsed:hover {
+        background-color: var(--color-tab-hover);
+        border: solid 2px #ffffff73;
+    }
+
+.filtersInventoryHolder span {
+    font-weight: 500;
+    font-size: 17px;
+    margin-bottom: 3px;
+}
+
+.filterTableHolder {
+    background-color: #0f1e3ac7;
+    padding: 6px 8px;
+    margin: 2px 0px;
+    border-radius: 3px;
+    box-shadow: 0px 0px 5px 0px #ffffffd1;
+    padding-top: 3px;
+}
+
+.inventoryItemButtonPostSellSmall {
+    font-weight: 400;
+    font-size: 17px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+    background: var(--color-sell);
+    border-radius: 48px;
+    /* width: 100px; */
+    padding: 3px 11px;
+    height: 35px;
+    text-align: center;
+    font-size: 14px;
+    min-width: 65px;
+    cursor: pointer;
+    transition: 0.12s linear;
+    max-height: 35px;
+    min-width: 108px;
+    max-width: 114px;
+    gap: 9px;
+    width: auto;
+    margin: auto;
+}
+
+    .inventoryItemButtonPostSellSmall:hover {
+        background-color: var(--color-sell-hover);
+    }
+
+    .inventoryItemButtonPostSellSmall:active {
+        background-color: var(--color-sell-active);
+    }
+
+    .inventoryItemButtonPostSellSmall.notEnough {
+        background-color: #390d0de0;
+        color: #d2d2d2;
+        filter: brightness(0.65)
+    }
+
+.inventoryComponentsHolder {
+    display: flex;
+    min-width: 130px;
+    width: 130px;
+    /* border: 1px solid white; */
+    justify-content: center;
+    flex-grow: 0;
+    justify-content: center;
+    gap: 6px 6px;
+    flex-wrap: wrap;
+    max-height: 80px;
+    overflow: hidden;
+}
+
+.inventorySetHolder {
+    grid-row: 2/3;
+    grid-column: 2/4;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: -9px;
+    padding-top: 10px;
+    gap: 4px;
+}
+
+.inventoryComponent {
+    width: 35px;
+    height: 35px;
+    background-color: #ffffff12;
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    border-bottom: none;
+    border-radius: 35px;
+    border-right: none;
+    cursor: pointer;
+}
+
+    .inventoryComponent.enough {
+        box-shadow: inset 0px 0px 4px 1px #46d234;
+        background-color: #6e9b6878;
+    }
+
+.inventoryComponentName {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background: #00000085;
+    font-size: 13px;
+    font-weight: 400;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding: 0px 2px;
+}
+
+.imRank {
+    display: flex;
+    font-size: 17px;
+    font-weight: 300;
+}
+
+.inventoryItemModLeftPart {
+    height: 100%;
+    grid-row: 2/3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 2;
+    justify-content: space-around;
+}
+
+.imRankRankPart {
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.deltaViewerNotification {
+    position: absolute;
+    /* outline: solid 1px red; */
+    /* width: 100px; */
+    /* height: 20px; */
+    bottom: 14px;
+    left: 149px;
+    z-index: 0;
+    border: solid 1px #ffffff75;
+    box-shadow: 0 0 7px 2px black;
+    padding: 4px 6px;
+    background-color: var(--color-bg-2);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: space-between;
+    margin-top: auto;
+    display: none;
+}
+
+    .deltaViewerNotification.shown {
+        display: flex;
+    }
+
+.deltaNotificationIcon {
+    width: 28px;
+    height: 28px;
+    -webkit-mask-image: url(../../img/vaulted.png);
+    background-color: var(--color-icons-bg);
+    -webkit-mask-size: 130%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center -5px;
+}
+
+.deltaNotificationShow {
+    width: 26px;
+    height: 26px;
+    background-image: url('../../img/eye.png');
+    background-size: 68%;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* border: 1px solid white; */
+    border-radius: 6px;
+    margin-left: 5px;
+    background-color: #314c99;
+    cursor: pointer;
+    transition: 0.1s linear;
+}
+
+    .deltaNotificationShow:hover {
+        background-color: #425ca7;
+    }
+
+.deltaNotificationClose {
+    width: 27px;
+    height: 27px;
+    background-image: url(../../img/close.png);
+    background-size: 53%;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* border: 1px solid white; */
+    background-color: #833737;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.1s linear;
+}
+
+    .deltaNotificationClose:hover {
+        background-color: #9e4e4e;
+    }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+
+.wfmRightTitle {
+    width: 100%;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 400;
+    margin-top: 0px;
+    margin-bottom: 3px;
+    text-align: -webkit-center;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+}
+
+.wfmRightBuySellSelector {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+    background-color: var(--color-bg-3);
+    border-radius: 21px;
+    gap: 5px;
+    height: 48px;
+}
+
+.wfmRightSellButton { /* Green */
+    background: var(--color-sell);
+    border-radius: 48px;
+    width: 65px;
+    padding: 9px;
+    height: 35px;
+    text-align: center;
+    font-size: 14px;
+    min-width: 65px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.12s linear;
+}
+
+    .wfmRightSellButton.selected {
+        background: var(--color-sell-active);
+    }
+
+    .wfmRightSellButton:not(.selected):hover {
+        background: var(--color-sell-hover);
+    }
+
+.wfmRightBuyButton {
+    background: var(--color-buy);
+    border-radius: 48px;
+    width: 65px;
+    padding: 8px;
+    text-align: center;
+    min-width: 65px;
+    cursor: pointer;
+    transition: 0.12s linear;
+}
+
+    .wfmRightBuyButton.selected {
+        background-color: var(--color-buy-active);
+    }
+
+    .wfmRightBuyButton:not(.selected):hover {
+        background: var(--color-buy-hover);
+    }
+
+.inventoryBuySellBottom {
+}
+
+.wfmRightSellButton.big {
+    width: 109px;
+    padding: 10px;
+    height: 39px;
+    font-size: 16px;
+    min-width: 109px;
+}
+
+.inventoryRightListingSettings {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    justify-content: space-around;
+    flex-grow: 1;
+    margin-left: 8px;
+}
+
+.wfmRightItemName {
+    text-align: center;
+}
+
+.wfmRightBuyButton.big {
+    width: 109px;
+    padding: 10px;
+    height: 39px;
+    font-size: 16px;
+    min-width: 109px;
+}
+
+.inventoryLeftPart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 89px;
+    min-width: 90px;
+    padding: 2px 0px;
+    position: relative;
+    margin-left: 1px;
+}
+
+.inventoryRightPart {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    justify-content: space-around;
+    padding: 1px 5px;
+    overflow: hidden;
+}
+
+.inventoryBuySellContainer {
+    display: flex;
+    gap: 11px;
+    margin-top: 2px;
+}
+
+.inventoryItemExtraList {
+    display: flex;
+    justify-content: space-around;
+    padding-left: 3px;
+    align-items: center;
+    gap: 3px;
+}
+
+
+.modInvUsedBy {
+    display: flex;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 300;
+    padding: 3px 5px;
+    justify-content: center;
+    gap: 3px;
+}
+
+    .modInvUsedBy > span {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block;
+        overflow: hidden;
+        color: #1ce871;
+        font-weight: 400;
+    }
+
+
+.inventoryRightSetHolder {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    justify-content: space-around;
+    padding-top: 3px;
+    /* flex-grow: 1; */
+}
+
+.inventorySummaryPlatinumIcon.traces {
+    background-image: url(../../img/trace.webp);
+    margin-left: 7px;
+}
+
+.inventoryItemFav {
+    width: auto;
+    padding: 4px 6px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    height: 27px;
+    width: 27px;
+    background-image: url(../../img/star2.png);
+    background-size: 64%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.wfmSteamIcon {
+    width: 35px;
+    min-width: 35px;
+    height: 35px;
+    display: inline-block;
+    background-image: url('../../img/steam.png');
+    background-size: contain;
+}
+
+.inventoryWFMloginTip > span > a {
+    color: #84c6ff;
+}
+
+.wfmSearchButton {
+    width: 22px;
+    height: 22px;
+    -webkit-mask-image: url(../../img/search.png);
+    background-color: var(--color-icons);
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 81%;
+    -webkit-mask-position: center;
+    cursor: pointer;
+}
+
+.wfmSearchHolder > input[type="text"] {
+    background-color: var(--color-card-hover);
+    border: none;
+    outline: none;
+    padding: 4px 12px;
+    border-radius: 12px;
+    color: var(--color-text);
+    width: 19px;
+    font-weight: 300;
+    font-size: 15px;
+    display: flex;
+    flex-grow: 1;
+    line-break: anywhere;
+}
+
+    .wfmSearchHolder > input[type="text"]::placeholder {
+        color: #a8a8a8;
+    }
+
+
+.wfmRightTitle.inSearchMode {
+    margin-top: -3px;
+    align-items: center;
+}
+
+.wfmGuessesHolder {
+    position: absolute;
+    left: 0px;
+    top: 32px;
+    right: 0px;
+    z-index: 10;
+    background-color: var(--color-bg-3);
+    border-radius: 10px;
+    padding: 8px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 226px;
+    overflow-y: auto;
+}
+
+    .wfmGuessesHolder > div {
+        font-size: 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        border-radius: 37px;
+        padding: 4px 7px;
+        cursor: pointer;
+        transition: 0.12s linear;
+    }
+
+        .wfmGuessesHolder > div:hover {
+            background-color: var(--color-card-active);
+        }
+
+.wfmSearchHolder {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 8px;
+}
+
+.wfmSuggestionPicture {
+    width: 28px;
+    height: 28px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.settingsCheckBoxHolder.relicPlanner {
+    margin-left: 8px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.relicPlanner > input.settingsCheckBoxHolderBox {
+    margin-right: 7px;
+}
+
+.inventoryRelicIcons {
+    display: flex;
+    gap: 16px;
+    margin: 0px 10px;
+}
+
+.relicDetailsBLTopExpected.relicPlanner {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+}
+
+.relicDetailsBLTopExpectedCoinsCoin.relicPlanner {
+    width: 35px;
+    text-align: center;
+    display: initial;
+}
+
+.relicPlanner > .relicDetailsBLTopExpectedCoins {
+    gap: 7px;
+}
+
+.inventoryItemButtonPostSell.notEnough {
+    background-color: #390d0de0;
+    color: #d2d2d2;
+    filter: brightness(0.65);
+}
+
+.inventoryItemImage.mod {
+    background-size: 83%;
+}
+
+.wfmFilterConfirmOverlay {
+    display: none;
+}
+
+.filterOption.confirming > .wfmFilterConfirmOverlay {
+    display: block;
+    position: absolute;
+    background-color: #811414;
+    width: 100%;
+    border-radius: 15px;
+    height: 100%;
+    top: 0px;
+    padding-top: 4px;
+    left: 0px;
+}
+
+#inventoryObjectContainer {
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+}
+
+#tabRelicPlanner > .inventorySummary {
+    padding-left: 2px;
+}
+
+.wfmDownOverlay {
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(100% - 8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: #000000e0;
+    border-radius: 15px;
+}
+
+    .wfmDownOverlay.hidden {
+        display: none;
+    }
+
+.inventoryWFMDownModal {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 604px;
+    align-items: center;
+    background-color: var(--color-bg-1);
+    padding: 10px 7px;
+    border-radius: 19px;
+}
+
+    .inventoryWFMDownModal > .inventoryWFMLoginTitle {
+        justify-content: space-between;
+        gap: 4px;
+        font-size: 22px;
+    }

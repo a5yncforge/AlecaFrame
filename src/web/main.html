@@ -1,0 +1,1841 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+    <title>AlecaFrame</title>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <!-- JS files -->
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+    <!-- Style -->
+    <link rel="stylesheet" href="assets/js/external/alwan.min.css">
+
+    <!-- Script -->
+    <script src="assets/js/external/alwan.min.js"></script>
+    <script src="assets/js/external/chart.js"></script>
+    <script src="assets/js/external/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/main/foundry.css" />
+    <link rel="stylesheet" href="assets/css/main/inventory.css" />
+    <link rel="stylesheet" href="assets/css/main/modal.css" />
+    <link rel="stylesheet" href="assets/css/main/relicPlanner.css" />
+    <link rel="stylesheet" href="assets/css/main/rivenExplorer.css" />
+    <link rel="stylesheet" href="assets/css/main/masteryHelper.css" />
+    <link rel="stylesheet" href="assets/css/main/wfmarket.css" />
+    <link rel="stylesheet" href="assets/css/main/resources.css" />
+    <link rel="stylesheet" href="assets/css/public/stats.css" />
+
+</head>
+
+
+<body style="user-select: none;">
+    <div class="content">
+
+        <header onmousedown="dragMove(event);">
+
+
+
+            <div class="alecaframeNameTop">
+                <div class="showMenuButton"></div>
+                AlecaFrame
+            </div>
+
+            <div class="topBarPlayerStatisRightBottom">
+                <div id="currentStatusOK" class="currentStatus OK hidden">
+                    <div class="currentStatusIcon"></div>
+                    WF data OK!
+                </div>
+                <div id="currentStatusCACHE" class="currentStatus CACHE hidden">
+                    <div class="currentStatusIcon"></div>
+                    Using old data
+                </div>
+                <div id="currentStatusERROR" class="currentStatus NOTOPEN hidden">
+                    <div class="currentStatusIcon"></div>
+                    WF data not ready
+                </div>
+            </div>
+
+            <div class="topBarRight">
+                <div class="wfInfoOnlineStatus" id="wfInfoOnlineStatus">
+                    <Transition name="fade">
+                        <div v-if="visible" class="wfInfoOnlineStatusInner">
+
+                            <div class="wfInfoStatusAutoHolderRight">
+                                <div class="wfInfoStatusIcon" @click="doRegister()"></div>
+                                <div class="wfInfoStatusAutoHolder">
+                                    <input type="checkbox" id="wfInfoAuto" v-model="autoMode" @change="statusChangedAuto">
+                                    <span onclick="$('#wfInfoAuto').click()">Auto</span>
+                                </div>
+                            </div>
+
+                            <select :disabled="autoMode" id="wfInfoStatus" v-model="selectedStatus" @change="statusChangedManual">
+                                <option value="invisible">Offline</option>
+                                <option value="online">Online</option>
+                                <option value="ingame">In-Game</option>
+                            </select>
+
+                            <div class="wfmarketUnreadMessagesIcon" onclick="overwolf.utils.openUrlInDefaultBrowser('https://warframe.market/im/chats')">
+                                <div v-if="unreadMessages>0" class="wfmarketUnreadMessagesIconText">{{unreadMessages}}</div>
+                            </div>
+
+                            <div v-if="connectingToWS" class="wfmarketConnecting">
+                                Connecting...
+                            </div>
+                        </div>
+                    </Transition>
+                </div>
+
+                <!--<div class="topBarHelp">
+                    <div class="topBarHelpIcon"></div>
+                    Help/Wiki
+                </div>-->
+
+                <div class="horizontalGroup zoom">
+                    <button class="window-control zoomout" onclick="decreaseZoom()">
+                        <div>
+
+                        </div>
+                    </button>
+
+                    <div id="zoomLevel">100%</div>
+
+                    <button class="window-control zoomin" onclick="increaseZoom()">
+                        <div>
+
+                        </div>
+                    </button>
+                </div>
+
+                <div class="window-controls-group">
+                    <a class="window-control discord-icon" target="_blank" href="https://discord.gg/Bc7PNNnnEZ">
+                        <svg class="svg-icon-fill">
+                            <use xlink:href="assets/img/svg/discord.svg#Layer_1" />
+                        </svg>
+                    </a>
+
+                    <button class="window-control" onclick="minimize()">
+                        <svg class="svg-icon-fill">
+                            <use xlink:href="assets/img/svg/sprite.svg#window-control_minimize" />
+                        </svg>
+                    </button>
+
+                    <button class="window-control" onclick="toggleMaximize()" onmousedown="event.stopPropagation()">
+                        <svg class="svg-icon-fill">
+                            <use id="maximizeImage" xlink:href="assets/img/svg/sprite.svg#window-control_maximize" />
+                        </svg>
+                    </button>
+
+                    <button class="window-control window-control-close" onclick="CloseModalApp.CloseRequested()">
+                        <svg class="svg-icon-fill">
+                            <use xlink:href="assets/img/svg/sprite.svg#window-control_close" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+
+        </header>
+
+
+        <main>
+            <div class="expandableMenu hidden">
+
+                <div class="warframeStatusContainer" id="warframeStatusAndAccountData">
+                    <div class="warframeStatusName" v-if="playerState?.dataReady ?? false">
+                        <div class="foundryPlayerIcon" :style="{ backgroundImage: 'url(&quot;' + playerState?.iconurl + '&quot;)' }">
+                            <div class="foundryPlayerLevel">{{playerState.playerMasteryLevel}}</div>
+                        </div>
+                        <div class="foundryPlayerName">{{playerState.playerName}}</div>
+                    </div>
+                    <div class="playerDataTooltip" v-show="playerState?.dataReady ?? false">
+                        <div class="playerDetailsTooltipTop">
+                            <div id="foundryUnlocks" class="foundryPlayerCurrency">
+                                <div class="foundryPlayerPercentUnlockedBackground">
+                                    <div class="foundryUnlockPercentWhite" :style="{'--unlockProgress':playerState.unlockPercent}"></div>
+                                </div>
+                                <div class="foundryPlayerPercentUnlocked">{{playerState.unlockPercent??'- -'}}</div>
+                            </div>
+                            <div class="foundryPlayerMoney">
+                                <div id="foundryPlatinum" class="foundryPlayerCurrency">
+                                    <div class="foundryPlayerCurrencyIcon"></div>
+                                    <div class="foundryPlayerCurrencyAmount">{{playerState.platinum ?? '-'}}</div>
+                                </div>
+                                <div id="foundryCredits" class="foundryPlayerCurrency">
+                                    <div class="foundryPlayerCurrencyIcon"></div>
+                                    <div class="foundryPlayerCurrencyAmount">{{playerState.credits ?? '-'}}</div>
+                                </div>
+                                <div id="foundryDucados" class="foundryPlayerCurrency">
+                                    <div class="foundryPlayerCurrencyIcon"></div>
+                                    <div class="foundryPlayerCurrencyAmount">{{playerState.ducados ?? '-'}}</div>
+                                </div>
+                                <div id="foundryEndo" class="foundryPlayerCurrency">
+                                    <div class="foundryPlayerCurrencyIcon"></div>
+                                    <div class="foundryPlayerCurrencyAmount">{{playerState.endo ?? '-'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topMenuGroup">
+                    <div class="menuItem selected" tabId="tabFoundry" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon foundry"></div>
+                        Foundry
+                    </div>
+                    <div class="menuItem" tabId="tabMasteryHelper" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon masteryHelper"></div>
+                        Mastery helper
+                    </div>
+                    <div class="menuItem" tabId="tabInventory" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon inventory"></div>
+                        Inventory
+                    </div>
+                    <div class="menuItem" tabId="tabRelicPlanner" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon relicPlanner"></div>
+                        Relic planner
+                    </div>
+                    <div class="menuItem" tabId="tabRivenExplorer" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon rivenExplorer"></div>
+                        Rivens
+                    </div>
+                    <div class="menuItem" tabId="tabWarframeMarket" id="mainTabWFM" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon warframemarket"></div>
+                        Warframe Market
+                    </div>
+                    <div class="menuItem" tabId="proAnalyticsTab" onmousedown="event.stopPropagation(); proAnalyticsApp.refreshIfNecessary();" onclick="menuPressed(event);">
+                        <div class="menuItemIcon analytics"></div>
+                        Trading Analytics
+                        <div class="subscriberIcon menu"></div>
+                    </div>
+                    <div class="menuItem" tabId="tabStats" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon stats"></div>
+                        Stats
+                    </div>
+                    <!--<div class="menuItem" tabId="tabResources" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon stats"></div>
+                        Resources &amp; Shards
+                    </div>-->
+                    <!--<div class="menuItem" tabId="tabAFBuilds" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon squad"></div>
+                        AFBuilds
+                        <div class="menuItemExternalIcon"></div>
+                    </div>-->
+                    <!--<div class="menuItem" tabId="tabSquadMaker" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon squad"></div>
+                        Tenno Finder
+                        <div class="menuItemExternalIcon"></div>
+                    </div>-->
+                    <div class="menuItem" tabId="tabAbout" onmousedown="event.stopPropagation()" onclick="menuPressed(event);">
+                        <div class="menuItemIcon about"></div>
+                        Help/About
+                    </div>
+                </div>
+
+
+                <div class="menuItem settings" onmousedown="event.stopPropagation()" onclick="settingsApp.open(); updatePersistentSettingsDisplay();">
+                    <div class="menuItemIcon settings"></div>
+                    Settings
+                </div>
+
+
+            </div>
+
+            <div class="notMenuContent">
+                <div class="background">
+                    <div class="tabs">
+
+                        <div id="banner">
+                            <div class="bannerContent">
+                                <div class="bannerIcon"></div>
+                                <div id="bannerText"></div>
+                            </div>
+                            <div class="innerModalClose" onclick="$('#banner').hide(); plugin.get().CloseCurrentBanner();"></div>
+                            <!--HTML content goes here when a banner is needed-->
+                        </div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="tabFoundry" class="tab foundryTab" data-include="foundry"></div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="tabMasteryHelper" class="tab inventoryTab" data-include="masteryHelper"></div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="tabInventory" class="tab inventoryTab" data-include="inventory"></div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="tabRelicPlanner" class="tab relicPlanner" data-include="relicPlanner"></div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="tabRivenExplorer" class="tab relicExplorer" data-include="rivenExplorer"></div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="tabWarframeMarket" class="tab warframeMarket" data-include="warframeMarket"></div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="proAnalyticsTab" class="tab proAnalytics" data-include="proAnalytics"></div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="tabStats" class="tab stats" data-include="stats"></div>
+
+                        <!--Include this html (template ish)-->
+                        <div id="tabResources" class="tab resources" data-include="resources"></div>
+
+                        <div id="tabAbout" class="tab aboutTab" style="display:none">
+                            <div class="aboutMainLinkContainerOuter">
+                                <div class="aboutMainLinkContainer">
+                                    <div class="aboutMainLinkItem" onclick="overwolf.utils.openUrlInDefaultBrowser('https://docs.alecaframe.com/')">
+                                        <div class="aboutMainLinkItemImage wiki"></div>
+                                        Wiki/Docs
+                                    </div>
+                                    <div class="aboutMainLinkItem" onclick="overwolf.utils.openUrlInDefaultBrowser('https://docs.alecaframe.com/faq')">
+                                        <div class="aboutMainLinkItemImage faq"></div>
+                                        FAQ
+                                    </div>
+                                    <div class="aboutMainLinkItem" onclick="overwolf.utils.openUrlInDefaultBrowser('https://discord.gg/Bc7PNNnnEZ')">
+                                        <div class="aboutMainLinkItemImage discord"></div>
+                                        Discord
+                                    </div>
+                                    <!--<div class="aboutMainLinkItem">
+                                        <div class="aboutMainLinkItemImage"></div>
+                                        Github
+                                    </div>-->
+                                    <div class="aboutMainLinkItem" onclick="PatreonApp.open()">
+                                        <div class="aboutMainLinkItemImage patreon"></div>
+                                        Support the development
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="aboutSection credits">
+                                Version: <span id="aboutVersion">{{version}}</span> Made with ❤️ in 🇪🇸 🇪🇺. © 2021-2026 Alejandro Cabrerizo. All rights reserved
+                            </div>
+                            <div class="aboutSection thanks">
+                                A special thanks to the Patreon 'AlecaFrame Enjoyer' supporters for making AlecaFrame possible: Sainan, Skunk616, uSouLz, 哦 哇, StaggyBaby, Shawn Dozier, Vanitas0292, Andrew Barnett and Namielle.
+                            </div>
+                            <div class="aboutSection credits small">
+                                AlecaFrame is a third party app and is not affiliated with Digital Extremes.
+                            </div>
+                            <div class="buttonUpdate" :class="[buttonClass]" @click="updateButtonClicked()">{{buttonText}}</div>
+                        </div>
+                    </div>
+
+
+
+                    <div id="modalFroundryDetails" v-cloak>
+                        <Transition name="fade">
+                            <div v-show="visible" class="modalSize" @click.self="visible=false">
+                                <div class="innerModal foundryDetails">
+                                    <div class="innerModalHeader">
+                                        <div class="innerModalHeaderTitle">Item details</div>
+                                        <div class="innerModalClose" @click="visible=false">
+                                        </div>
+                                    </div>
+                                    <div class="innerModalContent">
+                                        <div class="foundryDetailsContainer">
+                                            <div class="foundryDetailsTop">
+                                                <div :data-tilt class="foundryDetailsImage" :style="{ backgroundImage: 'url(&quot;' + item.imageURL + '&quot;)' }"></div>
+                                                <div class="foundryDetailsTopRight">
+                                                    <div class="foundryDetailsTopTop">
+                                                        <div class="foundryDetailsTopTopTitle">{{item.title}}</div>
+                                                        <div class="foundryObjectTopIcon fav" :class="{yes:item.isFav}" @click.stop="item.isFav=!item.isFav; setFavStatus(item.internalName, item.isFav);"></div>
+                                                        <div class="foundryDetailsTopRightAlignGroup">
+                                                            <div v-if="item.components?.length>1" class="foundryDetailsCraftingTree" @click="openCraftingTree()"><div class="craftingTreeIcon"></div>Crafting tree</div>
+                                                            <div v-if="item.neededForOtherStuff" class="foundryDetailsTopTopUsedInOthers" :data-tippy-content="item.neededForOtherStuffInfo"></div>
+                                                            <div v-if="item.wikiLink!=undefined && item.wikiLink!='-'" class="foundryDetailsTopTopLink"><a :href="item.wikiLink">Wiki link</a></div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="foundryDetailsTopDescription">{{item.description}}</div>
+                                                    <div class="foundryDetailsTopCustom">
+                                                        <div v-if="item.itemType=='warframe'" class="foundryDetailsCustomWarframeContainer">
+                                                            <div class="foudnryDetailsCustomGeneralContainer">
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Base health:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue health">{{item.extraWarframeData.baseHealth}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Base shield:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue shield">{{item.extraWarframeData.baseShield}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Base armor:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue armor">{{item.extraWarframeData.baseArmor}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Base energy:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue energy">{{item.extraWarframeData.baseEnergy}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Run speed:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue speed">{{item.extraWarframeData.runSpeed}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Polarities:</div>
+                                                                    <div v-if="item.extraWarframeData.auraPolarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon auraSeparator">[</div>
+                                                                    <div v-if="item.extraWarframeData.auraPolarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon polarity aura" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + item.extraWarframeData.auraPolarity + '.png&quot;)' }"></div>
+                                                                    <div v-if="item.extraWarframeData.auraPolarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon auraSeparator">]</div>
+                                                                    <div v-if="item.extraWarframeData.auraPolarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon whitespace"></div>
+                                                                    <div v-for="polarity in item.extraWarframeData.polarities" class="foundryDetailsCustomGeneralEntryValueIcon polarity" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + polarity + '.png&quot;)' }"></div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry foundryDetailsCustomWarframePassive">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Passive:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue passive">{{item.extraWarframeData.passive}}</div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="foundryDetailsCustomWarframeAbilitiesHolder">
+                                                                <div class="abilitiesTitle">Abilities</div>
+                                                                <div v-for="(ability, index) in item.extraWarframeData.abilities" class="foundryDetailsCustomWarframeAbility" :data-tippy-content="ability.description">
+                                                                    <div class="foundryDetailsCustomWarframeAbilityItem">{{index+1}}) {{ability.name}}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div v-else-if="item.itemType=='weaponShoot'" class="foundryDetailsCustomWarframeContainer">
+                                                            <div class="foudnryDetailsCustomGeneralContainerWeaponShoot">
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue weaponShoot">
+                                                                        <div class="extraWeaponShootDataTypeContainer">
+                                                                            <div v-if="item.extraWeaponShootData.weaponType=='Rifle'" class="weaponTypeIcon rifle"></div>
+                                                                            <div v-if="item.extraWeaponShootData.weaponType=='Shotgun'" class="weaponTypeIcon shotgun"></div>
+                                                                            <div v-if="item.extraWeaponShootData.weaponType=='Pistol'" class="weaponTypeIcon pistol"></div>
+                                                                            <div class="weaponType">{{item.extraWeaponShootData.weaponType}}</div>
+                                                                        </div>
+
+                                                                        <div class="triggerType">{{item.extraWeaponShootData.triggerType}}</div>
+                                                                        <div class="noiseType" :class="noiseClasses(item.extraWeaponShootData.noise)">{{item.extraWeaponShootData.noise}}</div>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Mag. size/Ammo:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue">{{item.extraWeaponShootData.magazineSize}} / {{item.extraWeaponShootData.ammo}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Riven disposition:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue disposition">{{item.extraWeaponShootData.rivenDisposition}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Reload time:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue reloadTime">{{item.extraWeaponShootData.reloadTime}}s</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Polarities:</div>
+                                                                    <div v-for="polarity in item.extraWeaponShootData.polarities" class="foundryDetailsCustomGeneralEntryValueIcon polarity" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + polarity + '.png&quot;)' }"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="foudnryDetailsCustomGeneralContainerWeaponShootRight">
+                                                                <div class="foundryDetailsWeaponShootModesHeader">
+                                                                    <div v-for="mode in item.extraWeaponShootData.attacks" :title="mode.name" class="foundryDetailsAttackModeListItem" @click="selectedWeaponShootMode=mode" :class="isWeaponShootModeSelected(mode)">
+                                                                        <div class="foundryDetailsComponentName">{{mode.name}}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="foundryDetailsWeaponShootModesBody">
+                                                                    <div v-if="selectedWeaponShootMode!=undefined" class="foundryDetailsWeaponShootModesBodyContainer">
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Crit %:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue critChance">{{selectedWeaponShootMode.critChance}}%</div>
+                                                                        </div>
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Crit mult:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue critMult">{{selectedWeaponShootMode.critDamage}}x</div>
+                                                                        </div>
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Fire rate:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue fireRate">{{selectedWeaponShootMode.fireRate}}</div>
+                                                                        </div>
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Status %:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue status">{{selectedWeaponShootMode.statusChance}}%</div>
+                                                                        </div>
+
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode shotType">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Shot type:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue shotType">{{selectedWeaponShootMode.shotType}}</div>
+                                                                        </div>
+
+                                                                        <div class="foundryDetailsWeaponShootModesBodyDamageContainer">
+                                                                            <div v-for="damage in selectedWeaponShootMode.damages" class="foundryDetailsWeaponShootModesBodyDamageContainerItem">
+                                                                                <div class="foundryDetailsWeaponShootModesBodyDamageContainerItemIcon" :style="{ backgroundImage: 'url(&quot;assets/img/damageTypes/' + damage.damageType.toLowerCase() + '.webp&quot;)' }"></div>
+                                                                                {{damage.damage}}%
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div v-else-if="item.itemType=='weaponMelee'" class="foundryDetailsCustomWarframeContainer">
+                                                            <div class="foudnryDetailsCustomGeneralContainerWeaponMelee">
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Combo duration:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue comboDuration">{{item.extraWeaponMeleeData.comboDuration}}s</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Range:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue range">{{item.extraWeaponMeleeData.range}}m</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Heavy cast time:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue heavyAttackTime">{{item.extraWeaponMeleeData.heavyAttackTime}}s</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Blocking angle:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue blocking">{{item.extraWeaponMeleeData.blockingAngle}}º</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Riven disposition:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue disposition">{{item.extraWeaponMeleeData.rivenDisposition}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Polarities:</div>
+                                                                    <div v-if="item.extraWeaponMeleeData.auraPolarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon auraSeparator">[</div>
+                                                                    <div v-if="item.extraWeaponMeleeData.auraPolarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon polarity aura" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + item.extraWeaponMeleeData.auraPolarity + '.png&quot;)' }"></div>
+                                                                    <div v-if="item.extraWeaponMeleeData.auraPolarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon auraSeparator">]</div>
+                                                                    <div v-if="item.extraWeaponMeleeData.auraPolarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon whitespace"></div>
+                                                                    <div v-for="polarity in item.extraWeaponMeleeData.polarities" class="foundryDetailsCustomGeneralEntryValueIcon polarity" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + polarity + '.png&quot;)' }"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="foudnryDetailsCustomGeneralContainerWeaponShootRight">
+                                                                <div class="foundryDetailsWeaponShootModesHeader">
+                                                                    <div v-for="mode in item.extraWeaponMeleeData.attacks" :title="mode.name" class="foundryDetailsAttackModeListItem" @click="selectedWeaponMeleeMode=mode" :class="isWeaponMeleeModeSelected(mode)">
+                                                                        <div class="foundryDetailsComponentName">{{mode.name}}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="foundryDetailsWeaponShootModesBody">
+                                                                    <div v-if="selectedWeaponMeleeMode!=undefined" class="foundryDetailsWeaponShootModesBodyContainer">
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Crit %:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue critChance">{{selectedWeaponMeleeMode.critChance}}%</div>
+                                                                        </div>
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Crit mult:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue critMult">{{selectedWeaponMeleeMode.critDamage}}x</div>
+                                                                        </div>
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Speed:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue fireRate">{{selectedWeaponMeleeMode.fireRate}}</div>
+                                                                        </div>
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Status %:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue status">{{selectedWeaponMeleeMode.statusChance}}%</div>
+                                                                        </div>
+
+                                                                        <div class="foundryDetailsCustomGeneralEntry mode shotType">
+                                                                            <div class="foundryDetailsCustomGeneralEntryKey">Attack type:</div>
+                                                                            <div class="foundryDetailsCustomGeneralEntryValue shotType">{{selectedWeaponMeleeMode.shotType}}</div>
+                                                                        </div>
+
+                                                                        <div class="foundryDetailsWeaponShootModesBodyDamageContainer">
+                                                                            <div v-for="damage in selectedWeaponMeleeMode.damages" class="foundryDetailsWeaponShootModesBodyDamageContainerItem">
+                                                                                <div class="foundryDetailsWeaponShootModesBodyDamageContainerItemIcon" :style="{ backgroundImage: 'url(&quot;assets/img/damageTypes/' + damage.damageType.toLowerCase() + '.webp&quot;)' }"></div>
+                                                                                {{damage.damage}}%
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div v-else-if="item.itemType=='mod' || item.itemType=='arcane'" class="foundryDetailsCustomWarframeContainer">
+                                                            <div v-if="item.itemType=='mod'" class="foudnryDetailsCustomGeneralContainer mod">
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Mod type:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue modType">{{item.extraModData.type}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Rarity:</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue rarity">{{item.extraModData.rarity}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">{{item.extraModData.costIsGains?'Extra capacity:':'Drain:'}}</div>
+                                                                    <div class="foundryDetailsCustomGeneralEntryValue drain">{{item.extraModData.costRange}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomGeneralEntry">
+                                                                    <div class="foundryDetailsCustomGeneralEntryKey">Polarities:</div>
+                                                                    <div v-if="item.extraModData.polarity!=undefined" class="foundryDetailsCustomGeneralEntryValueIcon polarity aura" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + item.extraModData.polarity + '.png&quot;)' }"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="foundryDetailsCustomWarframeAbilitiesHolder mod">
+                                                                <div class="abilitiesTitle">{{item.itemType == 'mod' ? 'Mod levels': 'Arcane levels'}}</div>
+                                                                <div class="foundryDetailsCustomModTierHeaderHolder">
+                                                                    <div v-for="tier in item.extraModData.tiers" class="foundryDetailsCustomModTierHeader" @click="selectedModTier=tier" :class="{selected: tier==selectedModTier}">
+                                                                        {{tier.level}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="foundryDetailsCustomModTierDescriptionHolder">
+                                                                    <div v-if="selectedModTier!=undefined" class="foundryDetailsCustomModTierDescription">
+                                                                        <div class="foundryDetailsCustomModTierDescriptionTop">
+                                                                            Last upgrade:
+                                                                            <div v-if="item.itemType=='mod'" class="foundryDetailsCustomModTierDescriptionEndo">{{selectedModTier.levelEndo<=0?'-':selectedModTier.levelEndo}} <div class="foundryDetailsModEndoIcon"></div></div>
+                                                                            <div v-if="item.itemType=='mod'" class="foundryDetailsCustomModTierDescriptionEndo">{{selectedModTier.levelCredits<=0?'-':selectedModTier.levelCredits}} <div class="foundryDetailsModCreditsIcon"></div></div>
+                                                                            <div v-if="item.itemType=='arcane'" class="foundryDetailsCustomModTierDescriptionEndo">{{selectedModTier.levelCredits<=0?'-':selectedModTier.levelCredits}} <div class="foundryDetailsModArcaneIcon"></div></div>
+                                                                        </div>
+                                                                        <div class="foundryDetailsCustomModTierDescriptionTop">
+                                                                            Total from 0:
+                                                                            <div v-if="item.itemType=='mod'" class="foundryDetailsCustomModTierDescriptionEndo">{{selectedModTier.endo<=0?'-':selectedModTier.endo}} <div class="foundryDetailsModEndoIcon"></div></div>
+                                                                            <div v-if="item.itemType=='mod'" class="foundryDetailsCustomModTierDescriptionEndo">{{selectedModTier.credits<=0?'-':selectedModTier.credits}} <div class="foundryDetailsModCreditsIcon"></div></div>
+                                                                            <div v-if="item.itemType=='arcane'" class="foundryDetailsCustomModTierDescriptionEndo">{{selectedModTier.credits<=0?'-':selectedModTier.credits}} <div class="foundryDetailsModArcaneIcon"></div></div>
+                                                                        </div>
+
+                                                                        <div class="foundryDetailsCustomModTierDescriptionBenefits" v-html="selectedModTier.benefits"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div v-else class="foundryDetailsCustomWarframeContainer">
+                                                            <div class="backdropNoInfo">
+                                                                More details are currently not supported for this item
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="foundryDetailsBottom">
+                                                <div class="foundryDetailsBottomLeft">
+                                                    <div class="foundryDetailsBottomLeftTitle">Components</div>
+                                                    <div v-if="item!=undefined && item.components!=undefined" class="foundryDetailsBottomLeftList">
+                                                        <div v-for="component in item.components" class="foundryDetailsBottomLeftListItem" @click="selectedComponent=component" :class="isSelected(component)">
+                                                            <div class="foundryDetailsComponentImage" :style="{ backgroundImage: 'url(&quot;' + component.baseData.picture + '&quot;)' }"></div>
+                                                            <div class="foundryDetailsComponentName">{{component.baseData.name}} <span v-if="component?.baseData?.neccessaryAmount > 0">({{component?.baseData?.quantityOwned}}/{{component?.baseData?.neccessaryAmount}})</span></div>
+                                                            <div v-if="component.baseData.parentOwned" class="relicPLannerMiniRewardParentOwned big foundryDetails"></div>
+                                                            <div v-if="!component.baseData.uniqueName.includes('SET_')" class="foundryObjectTopIcon fav" :class="{yes:component.baseData.isFavOnlyPart}" @click.stop="component.baseData.isFavOnlyPart=!component.baseData.isFavOnlyPart; setFavStatus(component.baseData.uniqueName, component.baseData.isFavOnlyPart);"></div>
+                                                        </div>
+                                                        <div v-if="item.components.length==0" class="backdropNoInfo">
+                                                            <div>No components were found for this item</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="foundryDetailsBottomRight">
+                                                    <div v-if="selectedComponent!=undefined && selectedComponent.baseData!=undefined" class="foundryDetailsBottomRightData">
+                                                        <div class="foundryDetailsComponentDataImage" :style="{ backgroundImage: 'url(&quot;' + selectedComponent.baseData.picture + '&quot;)' }"></div>
+                                                        <div v-if="selectedComponent.description!=undefined && selectedComponent.description!=''" class="foundryDetailsDescriptionHolder"><div class="foundryDetailsComponentDataDescription">{{selectedComponent.description}}</div></div>
+                                                        <div class="foundryDetailsComponentPriceHolder">
+                                                            <div class="foundryDetailsComponentPriceSell" @click="buySellClicked(selectedComponent.sellPrice,selectedComponent.baseData.name)">
+                                                                SELL
+                                                                <div class="foundryDetailsComponentPricePrice">
+                                                                    {{selectedComponent.sellPrice==undefined?'-':selectedComponent.sellPrice}}
+                                                                    <div class="foundryDetailsComponentPriceIcon"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="foundryDetailsComponentPriceBuy" @click="buySellClicked(selectedComponent.buyPrice,selectedComponent.baseData.name, true)">
+                                                                BUY
+                                                                <div class="foundryDetailsComponentPricePrice">
+                                                                    {{selectedComponent.buyPrice==undefined?'-':selectedComponent.buyPrice}}
+                                                                    <div class="foundryDetailsComponentPriceIcon"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="foundryDetailsBottomRightDropColumnHolder nomargina">
+                                                        <div class="foundryDetailsBottomRightDropColumnTitle">Drop locations:</div>
+                                                        <div class="foundryDetailsBottomRightDropColumnListContainer">
+                                                            <div v-if="selectedComponent!=null" v-for="drop in selectedComponent.drops" class="foundryDetailsBottomRightDropItem" :class="dropClasses(drop)" :data-id="drop.relicUID" @click="relicClicked(drop.relicUID)">
+                                                                <div class="foundryDetailsBottomRightDropItemPicture" :style="{ backgroundImage: 'url(&quot;' + drop.imageURL + '&quot;)' }"></div>
+                                                                <div class="foundryDetailsBottomRightDropItemDropName">{{drop.dropPlace}}</div>
+                                                                <div v-if="drop.dropType==1" class="foundryDetailsBottomRightDropItemDropOwned">
+                                                                    <div class="foundryDetailsBottomRightDropItemDropOwnedIcon"></div>
+                                                                    <div class="foundryDetailsBottomRightDropItemDropOwnedNumber">x{{drop.ownedAmount}}</div>
+                                                                </div>
+                                                                <div class="foundryDetailsBottomRightDropItemDropPercent">{{drop.dropPercent}}</div>
+                                                            </div>
+                                                            <div v-if="selectedComponent!=undefined && ( selectedComponent.drops==undefined || selectedComponent.drops.length<1)" class="backdropNoInfo">
+                                                                <div>No drops were found for this item</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="selectedComponent==undefined" class="backdropNoInfo">
+                                                        <div>Select a component to see more information here</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
+
+                    <div id="modalCraftingTree" v-cloak>
+                        <Transition name="fade">
+                            <div v-show="visible" class="modalSize" @click.self="close()">
+                                <div class="innerModal craftingTree">
+                                    <div class="innerModalHeader">
+                                        <div class="innerModalHeaderTitle">Crafting tree</div>
+                                        <div class="innerModalClose" @click="close()">
+                                        </div>
+                                    </div>
+                                    <div class="innerModalContent">
+                                        <div class="craftingTreeTopPart">
+
+                                            <div class="craftingTreeContainer" @click="deselectFocusItem()">
+
+                                            </div>
+                                            <div v-if="data?.parentWeapons?.length > 0" class="craftingTreeUsedForCrafting">
+                                                Used for crafting:
+                                                <div class="craftingTreeUserForCraftingWeaponContianer">
+                                                    <div v-for="weapon in data?.parentWeapons" @click="open(weapon?.data?.uniqueName)" class="craftingTreeUsedForCraftingItem">
+                                                        <div class="craftingTreeUsedForCraftingItemImage" :style="{ backgroundImage: 'url(&quot;' + weapon?.data?.picture + '&quot;)' }">
+                                                            <div v-if="selectedItem?.quantityOwned>0" class="craftingTreeDetailsItemOwnedIcon usedForCrafting"></div>
+                                                        </div>
+                                                        {{weapon?.data?.name}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="craftingTreeRightDetails" :class="{shown:selectedItem!=undefined}">
+                                                <div class="craftingTreeDetailsTop">
+                                                    <div class="craftingTreeDetailsImage" :style="{ backgroundImage: 'url(&quot;' + selectedItem?.data?.picture + '&quot;)' }"></div>
+                                                    <div class="craftingTreeDetailsNameCombo">
+                                                        <div class="craftingTreeDetailsName">{{selectedItem?.data?.name}}</div>
+                                                        <div class="craftingTreeDetailsTopButtom">
+                                                            <div class="craftingTreeDetailsAmount">x{{showSI(selectedItem?.amountNeeded)}}</div>
+                                                            <div v-if="selectedItem?.data?.wikiLink!=undefined && selectedItem?.data?.wikiLink!=''" class="craftingTreeWikiButton" @click="openBrowserLink(selectedItem?.data?.wikiLink)">Wiki Link</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="craftingTreeDetailsOwnership">
+                                                    <div v-if="selectedItem?.quantityOwned>0" class="craftingTreeDetailsItem owned"><div class="craftingTreeDetailsItemOwnedIcon"></div><span class="number">{{showSI(selectedItem?.quantityOwned)}}</span> Owned</div>
+                                                    <div v-if="selectedItem?.amountToCraft>0" class="craftingTreeDetailsItem craft"><div class="craftingTreeDetailsItemOwnedIcon"></div><span class="number">{{showSI(selectedItem?.amountToCraft)}}</span> Can be crafted</div>
+                                                    <div v-if="selectedItem?.amountMissing>0" class="craftingTreeDetailsItem missing"><div class="craftingTreeDetailsItemOwnedIcon"></div><span class="number">{{showSI(selectedItem?.amountMissing)}}</span> Missing</div>
+                                                </div>
+
+                                                <div v-if="selectedItem?.wfmarket?.postMax != undefined" class="inventoryItemButtonPostSell" onclick="onBuySellItemClickedAttr(event);" :data-item-name="selectedItem?.data?.name">
+                                                    Buy from WFMarket
+                                                    <div class="inventoryItemSellRight">
+                                                        <span class="inventorySellPrice">{{selectedItem?.wfmarket?.post<1 ? '-' : selectedItem?.wfmarket?.post}}</span>
+                                                        <div class="inventoryItemSellPlatIcon"></div>
+                                                    </div>
+                                                </div>
+                                                <div v-else class="craftingTreeNotPurchasedFromWFMarket">
+                                                    This item can't be traded
+                                                </div>
+
+                                                <div class="craftingTreeDetailsDropLocations">
+
+                                                    <div class="foundryDetailsBottomRightDropColumnTitle">Drop locations:</div>
+                                                    <div class="foundryDetailsBottomRightDropColumnListContainer">
+                                                        <div v-for="drop in selectedItem?.drops" class="foundryDetailsBottomRightDropItem" :class="dropClasses(drop)" :data-id="drop.relicUID" @click="relicClicked(drop.relicUID)">
+                                                            <div class="foundryDetailsBottomRightDropItemPicture" :style="{ backgroundImage: 'url(&quot;' + drop.imageURL + '&quot;)' }"></div>
+                                                            <div class="foundryDetailsBottomRightDropItemDropName">{{drop.dropPlace}}</div>
+                                                            <div v-if="drop.dropType==1" class="foundryDetailsBottomRightDropItemDropOwned">
+                                                                <div class="foundryDetailsBottomRightDropItemDropOwnedIcon"></div>
+                                                                <div class="foundryDetailsBottomRightDropItemDropOwnedNumber">x{{drop.ownedAmount}}</div>
+                                                            </div>
+                                                            <div class="foundryDetailsBottomRightDropItemDropPercent">{{drop.dropPercent}}</div>
+                                                        </div>
+                                                        <div v-if="selectedItem?.drops==undefined || selectedItem?.drops?.length<1" class="backdropNoInfo">
+                                                            <div>No drops were found for this item</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="craftingTreeSettingsOverlay">
+                                                <div class="craftingTreeSummarySettings">
+                                                    Hide completed:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="hideCompleted" @change="refresh()">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div v-if="data.found==false" class="noCraftingTreeFound"><div>No crafting tree found for this item</div></div>
+                                        </div>
+
+                                        <div class="craftingTreeResourceContainer">
+
+                                            <div class="craftingTreeSummaryColumn">
+                                                <div class="craftingTreeSummaryResourceGroup">
+                                                    Blueprints needed:
+                                                    <div class="craftingTreeContainerResourceContainer">
+                                                        <div v-for="resource in data.craftingTreeDataSummary?.blueprintsNeeded" class="craftingTreeSummaryComponent" @click="resourceSummaryClicked(resource.data.name)">
+                                                            <div class="craftingTreeSummaryCompImage" :style="{ backgroundImage: 'url(&quot;' + resource.data.picture + '&quot;)' }"></div>
+                                                            <div class="craftingTreeSummaryCompName">{{resource.data.name}}</div>
+                                                            <div class="craftingTreeSummaryNeededAmount">{{resource.amountNeeded}}</div>
+                                                        </div>
+                                                        <div v-if="(data.craftingTreeDataSummary?.blueprintsNeeded?.length??0) == 0" class="craftingTreeSummaryMesssageNone">No blueprints missing</div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="craftingTreeSummaryResourceGroup">
+                                                    Resources needed:
+                                                    <div class="craftingTreeContainerResourceContainer">
+                                                        <div v-for="resource in data.craftingTreeDataSummary?.resourcesNeeded" class="craftingTreeSummaryComponent" @click="resourceSummaryClicked(resource.data.name)">
+                                                            <div class="craftingTreeSummaryCompImage" :style="{ backgroundImage: 'url(&quot;' + resource.data.picture + '&quot;)' }"></div>
+                                                            <div class="craftingTreeSummaryCompName">{{resource.data.name}}</div>
+                                                            <div class="craftingTreeSummaryNeededAmount">{{resource.amountNeeded}}</div>
+                                                        </div>
+                                                        <div v-if="(data.craftingTreeDataSummary?.resourcesNeeded?.length??0) == 0" class="craftingTreeSummaryMesssageNone">No resources missing</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="craftingTreeSummarySeparator"></div>
+
+                                            <div class="craftingTreeSummaryColumn right">
+                                                <div class="craftingTreeSummaryData">
+                                                    <div class="craftingTreeSummarySpecialItem">
+                                                        Total
+                                                        <div class="craftingTreeSummaryCreditsIcon"></div>
+                                                        :
+                                                        <div class="amount">{{data?.craftingTreeDataSummary?.credits ?? '-'}}</div>
+                                                    </div>
+
+                                                    <div class="craftingTreeSummaryGroup">
+                                                        <div class="craftingTreeSummarySpecialItem" title="Minimum time it would take by paralelize blueprint construction.">
+                                                            Min. time:
+                                                            <div class="amount">{{data?.craftingTreeDataSummary?.shortestTime ?? '-'}}</div>
+                                                        </div>
+                                                        <div class="craftingTreeSummarySpecialItem" title="Maximum crafting time if you don't paralelize blueprint construction.">
+                                                            Max. time:
+                                                            <div class="amount">{{data?.craftingTreeDataSummary?.time ?? '-'}}</div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <!-- v-for here with all the resources (totals) -->
+                                        </div>
+
+                                        <Transition name="fade">
+                                            <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+                                        </Transition>
+                                    </div>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
+
+                    <div id="modalRelicDetails" v-cloak>
+                        <Transition name="fade">
+                            <div v-show="visible" class="modalSize" @click.self="visible=false">
+                                <div class="innerModal relicDetails">
+                                    <div class="innerModalHeader">
+                                        <div class="innerModalHeaderTitle">Relic overview</div>
+                                        <div class="innerModalClose" @click="visible=false">
+                                        </div>
+                                    </div>
+                                    <div class="innerModalContent">
+                                        <div class="relicDetailsContainer">
+                                            <div class="relicDetailsTop">
+                                                <div class="relicDetailsTopLeft">
+                                                    <div class="relicDetailsTopLeftIcon" :style="{ backgroundImage: 'url(&quot;' + relic.image + '&quot;)' }"></div>
+                                                    <div class="relicDetailsTopLeftName">{{relic.relicName}}</div>
+                                                    <div class="foundryObjectTopIcon fav" :class="{yes:relic.isFav}" @click.stop="relic.isFav=!relic.isFav; setFavStatus(relic.relicName, relic.isFav);"></div>
+                                                </div>
+                                                <div class="foundryVaultedHolder relicDetails">
+                                                    <div class="foundryObjectTopIcon vaulted" :class="{yes:relic.vaulted,no:!relic.vaulted}"></div>
+                                                    {{relic.vaulted?"Vaulted":"Unvaulted"}}
+                                                </div>
+                                            </div>
+                                            <div class="relicDetailsBottom">
+                                                <div v-if="selectedRarity!=undefined" class="relicDetailsBottomLeft">
+                                                    <div class="relicDetailsBLTop">
+
+                                                        <div class="relicDetailsTopMiniRow">
+                                                            <div class="relicDetailsSelector">
+                                                                Squad size:
+                                                                <select class="relicDetailsBLTopSelected squadSize" v-model="squadSize" @change="selectRarity()">
+                                                                    <option :value="1">1</option>
+                                                                    <option :value="2">2</option>
+                                                                    <option :value="3">3</option>
+                                                                    <option :value="4">4</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="relicDetailsSelector">
+                                                                Relic refinement tier:
+                                                                <select class="relicDetailsBLTopSelected" v-model="selectedRarityName" @change="selectRarity()">
+                                                                    <option v-for="rarity in relic.levels" :value="rarity.rarity">{{rarity.rarity}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="selectedRarity.bySquad!=undefined" class="relicDetailsTopMiniRow">
+                                                            <div class="relicDetailsBLTopExpected" id="relicDetailsBLTopExpected">
+                                                                <div class="relicDetailsBLTopExpectedTitle">Expected value:</div>
+                                                                <div class="relicDetailsBLTopExpectedCoins">
+                                                                    <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                                                        {{selectedRarity.bySquad[squadSize].expectedPlat}}
+                                                                        <div class="relicDetailsBLTopExpectedCoinsCoinIcon plat"></div>
+                                                                    </div>
+                                                                    <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                                                        {{selectedRarity.bySquad[squadSize].expectedDucats}}
+                                                                        <div class="relicDetailsBLTopExpectedCoinsCoinIcon ducats"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="relicDetailsBLBottom">
+                                                        <div v-if="selectedRarity.bySquad!=undefined" class="relicDetailsBLBottomTier bronze">
+                                                            <div v-for="drop in selectedRarity.bySquad[squadSize].bronzeItems" class="relicDetailsBLBottomItem" :class="{owned: drop.owned}">
+                                                                <div class="relicDetailsBLBottomItemName">
+                                                                    <div :style="{ backgroundImage: 'url(&quot;' + drop.image + '&quot;)' }" class="relicDetailsBLBottomItemImage"></div>
+                                                                    <div v-if="drop.parentOwned" class="relicPLannerMiniRewardParentOwned big"></div>
+                                                                    <div class="relicDetailsBLBottomItemNameName">{{drop.name}}</div>
+                                                                </div>
+                                                                <div class="relicDetailsBLTopExpectedCoins">
+                                                                    <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                                                        {{drop.plat}}
+                                                                        <div class="relicDetailsBLTopExpectedCoinsCoinIcon plat"></div>
+                                                                    </div>
+                                                                    <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                                                        {{drop.ducats}}
+                                                                        <div class="relicDetailsBLTopExpectedCoinsCoinIcon ducats"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="relicDetailsBLBottomItemChance">{{drop.percentageDrop}}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="selectedRarity.bySquad!=undefined" class="relicDetailsBLBottomTier silver">
+                                                            <div v-for="drop in selectedRarity.bySquad[squadSize].silverItems" class="relicDetailsBLBottomItem" :class="{owned: drop.owned}">
+                                                                <div class="relicDetailsBLBottomItemName">
+                                                                    <div :style="{ backgroundImage: 'url(&quot;' + drop.image + '&quot;)' }" class="relicDetailsBLBottomItemImage"></div>
+                                                                    <div v-if="drop.parentOwned" class="relicPLannerMiniRewardParentOwned big"></div>
+                                                                    <div class="relicDetailsBLBottomItemNameName">{{drop.name}}</div>
+                                                                </div>
+                                                                <div class="relicDetailsBLTopExpectedCoins">
+                                                                    <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                                                        {{drop.plat}}
+                                                                        <div class="relicDetailsBLTopExpectedCoinsCoinIcon plat"></div>
+                                                                    </div>
+                                                                    <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                                                        {{drop.ducats}}
+                                                                        <div class="relicDetailsBLTopExpectedCoinsCoinIcon ducats"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="relicDetailsBLBottomItemChance">{{drop.percentageDrop}}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="selectedRarity.bySquad!=undefined" class="relicDetailsBLBottomTier gold">
+                                                            <div v-for="drop in selectedRarity.bySquad[squadSize].goldItems" class="relicDetailsBLBottomItem" :class="{owned: drop.owned}">
+
+                                                                <div class="relicDetailsBLBottomItemName">
+                                                                    <div :style="{ backgroundImage: 'url(&quot;' + drop.image + '&quot;)' }" class="relicDetailsBLBottomItemImage"></div>
+                                                                    <div v-if="drop.parentOwned" class="relicPLannerMiniRewardParentOwned big"></div>
+                                                                    <div class="relicDetailsBLBottomItemNameName">{{drop.name}}</div>
+                                                                </div>
+                                                                <div class="relicDetailsBLTopExpectedCoins">
+                                                                    <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                                                        {{drop.plat}}
+                                                                        <div class="relicDetailsBLTopExpectedCoinsCoinIcon plat"></div>
+                                                                    </div>
+                                                                    <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                                                        {{drop.ducats}}
+                                                                        <div class="relicDetailsBLTopExpectedCoinsCoinIcon ducats"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="relicDetailsBLBottomItemChance">{{drop.percentageDrop}}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="foundryDetailsBottomRightDropColumnHolder">
+                                                    <div class="relicDetailsBuySell">
+                                                        <div class="inventoryItemButtonPostSell" onclick="onBuySellItemClickedAttr(event);" :data-item-name="relic.relicName+ ' Relic'">
+                                                            SELL
+                                                            <div class="inventoryItemSellRight">
+                                                                <span class="inventorySellPrice">{{sellPrice==undefined || sellPrice<1 ? '-' : sellPrice}}</span>
+                                                                <div class="inventoryItemSellPlatIcon"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="inventoryItemButtonInstaSell" onclick="onBuySellItemClickedAttr(event);" :data-item-name="relic.relicName + ' Relic'">
+                                                            BUY
+                                                            <div class="inventoryItemSellRight">
+                                                                <span class="inventoryBuyPrice">{{buyPrice==undefined || sellPrice<1 ? '-' : buyPrice}}</span>
+                                                                <div class="inventoryItemSellPlatIcon"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="foundryDetailsBottomRightDropColumnTitle">Drop locations:</div>
+                                                    <div class="foundryDetailsBottomRightDropColumnListContainer">
+                                                        <div v-for="drop in relic.drops" class="foundryDetailsBottomRightDropItem isNormalDrop" :class="dropClasses(drop)">
+                                                            <div class="foundryDetailsBottomRightDropItemPicture" :style="{ backgroundImage: 'url(&quot;' + drop.imageURL + '&quot;)' }"></div>
+                                                            <div class="foundryDetailsBottomRightDropItemDropName">{{drop.dropPlace}}</div>
+                                                            <div class="foundryDetailsBottomRightDropItemDropPercent">{{drop.dropPercent}}</div>
+                                                        </div>
+                                                        <div v-if="relic.drops==undefined || relic.drops.length<1" class="backdropNoInfo">
+                                                            <div>This relic seems to be vaulted</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
+
+                    <div id="modalSettings" v-cloak data-include="settings"></div>
+
+
+
+                    <!--Include this html (template ish)-->
+                    <div id="modalRivenDetails" v-cloak data-include="rivenDetailsModal"></div>
+
+                    <div id="deltaDetails" v-cloak data-include="deltaViewer"></div>
+                </div>
+                <div class="staticRightColumn">
+
+                    <div class="staticRightColumnTop">
+                        <div class="mainTabHeader">
+                            <div class="tabHeaderOption selected" tabid="timerEventsTab" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon timers"></div> Timers &amp; Events</div>
+                            <div class="tabHeaderOption" id="tabWFMarketBuySell" tabid="inventoryWFMtabBUYSELL" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon WFMexplorer"></div> WFMarket</div>
+                        </div>
+                        <div class="mainTabBody">
+                            <div id="timerEventsTab" class="shown">
+                                <div class="foundryWorldStats">
+                                    <div class="eventsTopBarHolder">
+                                        <div class="topBarPrimeResurgence">
+                                            <div class="topBarPrimeResurgenceIcon"></div>
+                                            <div class="topBarPrimeResurgenceTextTop">Prime Resurgence</div>
+                                        </div>
+                                        <div id="primeResurgenceTemplate" style="display:none">
+                                            <div v-if="primeResurgenceState!=undefined" class="prTooltipContainer">
+                                                <div v-for="item in primeResurgenceState.items" class="prTooltipItemHolder" :key="item.internalName" :itemUID="item.internalName" onclick="openTopBarPRItem(event)">
+                                                    <div class="prTooltipIcon" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)' }">
+                                                        <div v-if="item.owned || item.mastered" class="relicPLannerMiniRewardParentOwned topBar"></div>
+                                                    </div>
+                                                    <div class="prTooltipName">{{item.name}}</div>
+                                                </div>
+                                                <div class="topBarPrNextRotation">Next rotation in:<span class="bolderNextRotationIn">{{primeResurgenceState.primeResurgenceEndsIn}}</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="topBarBaro" :class="{baroHere:baroState?.baroEnabled}">
+                                            <div class="topBarBaroText">{{(baroState==undefined)? "- - -" : baroState.baroArrivesOrEndsIn}}</div>
+                                        </div>
+                                        <div id="baroTemplate" style="display:none">
+                                            <div v-if="baroState!=undefined" class="prTooltipContainer baro">
+                                                <div v-if="(baroState?.itemGroups?.length??0) == 0">
+                                                    Baro Ki'Teer will arrive soon
+                                                </div>
+                                                <div class="baroGroupContainer" v-for="group in baroState.itemGroups">
+                                                    <div class="baroGroupName">{{group.groupName}}</div>
+                                                    <div class="baroGroupItemContainer">
+                                                        <div v-for="item in group.items" :title="item.name" class="prTooltipItemHolder" :key="item.internalName" :itemUID="item.internalName" onclick="openTopBarPRItem(event)">
+                                                            <div class="prTooltipIcon" :class="{questionMark: item.name=='Other' || item.name=='Icon'|| item.name=='Booster'}" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)' }">
+                                                                <div v-if="item.owned || item.mastered" class="relicPLannerMiniRewardParentOwned topBar"></div>
+                                                                <div v-if="item.premiumCost > 0" class="topBarPremiumCost">
+                                                                    {{item.premiumCost}}
+                                                                    <div class="topBarPremiumCostIcon"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="prTooltipName">{{item.name}}</div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bigTimersContainers">
+                                        <div id="earthTimer" class="foundryTimer">
+                                            <div class="timerIcon">
+                                                <div v-if="notiEarthDay || notiEarthNight" class="timerIconBell"></div>
+                                            </div>
+                                            <div class="timerRight">
+                                                <div class="timerRightTop">
+                                                    <div class="timerName">EARTH</div>
+                                                    <div class="timerStatus">{{worldState.earthState}}</div>
+                                                </div>
+                                                <div class="timerTimeLeftHolder"><div class="timerTimeLeft">{{worldState.earthTimeLeft}}</div></div>
+                                            </div>
+                                            <div class="timerOverlay">
+                                                <div class="timerNotificationGroup">
+                                                    Day:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="notiEarthDay" @change="notificationSettingsUpdated">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="timerNotificationGroup">
+                                                    Night:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="notiEarthNight" @change="notificationSettingsUpdated">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="cetusTimer" class="foundryTimer">
+                                            <div class="timerIcon">
+                                                <div v-if="notiCetusDay || notiCetusNight" class="timerIconBell"></div>
+                                            </div>
+                                            <div class="timerRight">
+                                                <div class="timerRightTop">
+                                                    <div class="timerName">CETUS</div>
+                                                    <div class="timerStatus">{{worldState.cetusState}}</div>
+                                                </div>
+                                                <div class="timerTimeLeftHolder"><div class="timerTimeLeft">{{worldState.cetusTimeLeft}}</div></div>
+                                            </div>
+                                            <div class="timerOverlay">
+                                                <div class="timerNotificationGroup">
+                                                    Day:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="notiCetusDay" @change="notificationSettingsUpdated">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="timerNotificationGroup">
+                                                    Night:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="notiCetusNight" @change="notificationSettingsUpdated">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="vallisTimer" class="foundryTimer">
+                                            <div class="timerIcon">
+                                                <div v-if="notiVallisCold || notiVallisWarm" class="timerIconBell"></div>
+                                            </div>
+                                            <div class="timerRight">
+                                                <div class="timerRightTop">
+                                                    <div class="timerName">VALLIS</div>
+                                                    <div class="timerStatus">{{worldState.vallisState}}</div>
+                                                </div>
+                                                <div class="timerTimeLeftHolder"><div class="timerTimeLeft">{{worldState.vallisTimeLeft}}</div></div>
+                                            </div>
+                                            <div class="timerOverlay">
+                                                <div class="timerNotificationGroup">
+                                                    Cold:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="notiVallisCold" @change="notificationSettingsUpdated">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="timerNotificationGroup">
+                                                    Warm:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="notiVallisWarm" @change="notificationSettingsUpdated">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="cambionTimer" class="foundryTimer">
+                                            <div class="timerIcon">
+                                                <div v-if="notiCambionFass || notiCambionVome" class="timerIconBell"></div>
+                                            </div>
+                                            <div class="timerRight">
+                                                <div class="timerRightTop">
+                                                    <div class="timerName">CAMBION</div>
+                                                    <div class="timerStatus">{{worldState.cambionState}}</div>
+                                                </div>
+                                                <div class="timerTimeLeftHolder"><div class="timerTimeLeft">{{worldState.cambionTimeLeft}}</div></div>
+                                            </div>
+                                            <div class="timerOverlay">
+                                                <div class="timerNotificationGroup">
+                                                    Fass:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="notiCambionFass" @change="notificationSettingsUpdated">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="timerNotificationGroup">
+                                                    Vome:
+                                                    <label class="switch">
+                                                        <input type="checkbox" v-model="notiCambionVome" @change="notificationSettingsUpdated">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!--<div class="timerCategory">
+                                        <div class="timerCategoryTitle fullRounded">
+                                            Duviri mood
+                                            <div class="timerDuviriCurrentStateHolder">
+                                                <span class="timerDuviryPlace">{{worldState.duviriTimers?.current?.name}}</span>
+                                                <span class="timerDuviriTimeLeft">({{worldState.duviriTimers?.current?.timeLeft}} left)</span>
+                                            </div>
+                                            <div class="timerDuviriCurrentStateHolder">
+                                                Next: <span class="timerDuviryPlace">{{worldState.duviriTimers?.next?.name}}</span>
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+                                    <div class="timerCategory">
+                                        <div class="timerCategoryTitle">
+                                            Void fissures
+                                            <div class="timerFissureNotificationSwitch">
+                                                <div class="timerFissureNotificationIcon"></div>
+                                                <label class="switch small">
+                                                    <input type="checkbox" v-model="fissureNotificationEnabled" @change="notificationSettingsUpdated();">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <div class="newEasyFilter">
+                                                <div class="newEasyFilterItem" :class="{selected:selectedFissureType=='all'}" @click="selectedFissureType='all'">
+                                                    <div class="newEasyFilterIcon topSettingIcon all" style="height:18px"></div>
+                                                </div>
+                                                <div class="newEasyFilterItem" :class="{selected:selectedFissureType=='normal'}" @click="selectedFissureType='normal'">
+                                                    <div class="newEasyFilterIcon topSettingIcon normalMode"></div>
+                                                </div>
+                                                <div class="newEasyFilterItem" :class="{selected:selectedFissureType=='hard'}" @click="selectedFissureType='hard'">
+                                                    <div class="newEasyFilterIcon topSettingIcon steelPath"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="timerCategoryContent voidFissures">
+                                            <div v-if="fissureNotificationEnabled" class="timerFissureNotifications">
+
+                                                <div v-for="(setting, index) in fissureNotificationSettings" class="fissureNotificationSetting">
+                                                    <div class="timerFissureNotificationGroup">
+                                                        <select v-model="setting.type" @change="notificationSettingsUpdated();">
+                                                            <option value="all">Any</option>
+                                                            <option value="lith">Lith</option>
+                                                            <option value="meso">Meso</option>
+                                                            <option value="neo">Neo</option>
+                                                            <option value="axi">Axi</option>
+                                                            <option value="requiem">Req.</option>
+                                                            <option value="omnia">Omnia</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="timerFissureNotificationGroup">
+                                                        <select v-model="setting.mode" @change="notificationSettingsUpdated();">
+                                                            <option value="all">Any</option>
+                                                            <option value="Assault">Assault</option>
+                                                            <option value="Capture">Capture</option>
+                                                            <option value="Defense">Defense</option>
+                                                            <option value="Disruption">Disruption</option>
+                                                            <option value="Excavation">Excavation</option>
+                                                            <option value="Extermin.">Extermin.</option>
+                                                            <option value="Hive">Hive</option>
+                                                            <option value="Intercep.">Intercep.</option>
+                                                            <option value="Mobile Def.">Mobile Def.</option>
+                                                            <option value="Rescue">Rescue</option>
+                                                            <option value="Sabotage">Sabotage</option>
+                                                            <option value="Spy">Spy</option>
+                                                            <option value="Survival">Survival</option>
+                                                            <option value="Void Cascade">Void Casc.</option>
+                                                            <option value="Alchemy">Alchemy</option>
+                                                            <option value="Void Flood">Void Flood</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="timerFissureNotificationGroup">
+                                                        <select v-model="setting.location" @change="notificationSettingsUpdated();">
+                                                            <option value="all">Any</option>
+                                                            <option value="Ceres">Ceres</option>
+                                                            <option value="Earth">Earth</option>
+                                                            <option value="Eris">Eris</option>
+                                                            <option value="Europa">Europa</option>
+                                                            <option value="Jupiter">Jupiter</option>
+                                                            <option value="Kuva Fort.">Kuva Fort.</option>
+                                                            <option value="Mars">Mars</option>
+                                                            <option value="Neptune">Neptune</option>
+                                                            <option value="Phobos">Phobos</option>
+                                                            <option value="Pluto">Pluto</option>
+                                                            <option value="Saturn">Saturn</option>
+                                                            <option value="Sedna">Sedna</option>
+                                                            <option value="Uranus">Uranus</option>
+                                                            <option value="Venus">Venus</option>
+                                                            <option value="Void">Void</option>
+                                                            <option value="Lua">Lua</option>
+                                                            <option value="Zariman">Zariman</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="timerFissureNotificationGroup">
+                                                        <select v-model="setting.steelPath" @change="notificationSettingsUpdated();">
+                                                            <option value="all">Any</option>
+                                                            <option value="normal">Normal</option>
+                                                            <option value="steelPath">Steel Path</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="timerFissureNotificationDelete" @click="deleteFissureNotification(index)"></div>
+                                                </div>
+
+
+                                                <div class="fissureNotificationAddNew" @click="addFissureNotification()">
+                                                    Add new row
+                                                    <div class="timerFissureNotificationAddButton"></div>
+                                                </div>
+                                            </div>
+                                            <div v-for="group in worldState.relicDataPoints" class="timerFissureGroup">
+                                                <div class="timerRelicTier">
+                                                    <div class="relicTierImage" :class="[group.relicType.toLowerCase()]"></div>
+                                                </div>
+                                                <div class="timerRelicGroupContainer">
+                                                    <div v-for="relic in group.fissures.filter(p => selectedFissureType == 'all' ||  p.steelPath == (selectedFissureType=='hard'))" class="voidFissure" :class="{matches:relic.matchesNotification}">
+                                                        <div class="timerRelicName"> <div class="newEasyFilterIcon topSettingIcon" :class="{steelPath: relic.steelPath, normalMode: !relic.steelPath}"></div> <span class="relicNotifType">{{relic.type}}</span><span class="maxWidth"> ({{relic.planet}})</span></div>
+                                                        <div class="timerRelicTimeLeft">{{relic.timeLeft}}</div>
+                                                    </div>
+                                                    <!--If no fissures are available-->
+                                                    <div v-if="group.fissures.filter(p => selectedFissureType == 'all' ||  p.steelPath == (selectedFissureType=='hard'))?.length == 0" class="voidFissure">
+                                                        <div class="timerRelicName">-</div>
+                                                        <div class="timerRelicTimeLeft">-</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="(worldState.relicDataPoints?.length ?? 0) == 0" class="fissuresLoadingHolder">
+                                                <div class="fissuresLoadingText">Loading void fissures...</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="timerCategory">
+                                        <div class="timerCategoryTitle">Reset timers</div>
+                                        <div class="timerCategoryContent smallTimers">
+                                            <div class="smallTimer">
+                                                <div class="smallTimerName">Weekly resets (Archons, Circuit, Traders,...):</div>
+                                                <div class="smallTimerTimeLeft">{{worldState.weeklyTimeLeft}}</div>
+                                            </div>
+                                            <div class="smallTimer">
+                                                <div class="smallTimerName">Daily sortie:</div>
+                                                <div class="smallTimerTimeLeft">{{worldState.sortieTimeLeft}}</div>
+                                            </div>
+                                            <div class="smallTimer">
+                                                <div class="smallTimerName">Daily resets (Standing caps, SP alerts,...):</div>
+                                                <div class="smallTimerTimeLeft">{{worldState.dailyUTCTimeLeft}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="timerCategory">
+                                        <div class="timerCategoryTitle">The Circuit</div>
+                                        <div class="timerCategoryContent circuit">
+                                            <div class="theCircuitHolder">
+                                                <div v-for="item in circuitState.normal" class="circuitItem" @click="openFoundryDetails(item.uniqueID)">
+                                                    <div class="circuitItemImage" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)'}">
+                                                        <div v-if="item.owned" class="relicPLannerMiniRewardParentOwned topBar"></div>
+                                                    </div>
+                                                    {{item.name}}
+                                                </div>
+                                            </div>
+                                            <div class="theCircuitHolder">
+                                                <div v-for="item in circuitState.steel" class="circuitItem" @click="openFoundryDetails(item.uniqueID)">
+                                                    <div class="circuitItemImage" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)'}">
+                                                        <div v-if="item.owned" class="relicPLannerMiniRewardParentOwned topBar"></div>
+                                                    </div>
+                                                    {{item.name}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="inventoryWFMtabBUYSELL" class="inventoryWFMtab">
+                                <div class="wfmRightTitle">
+                                    <div v-if="!doingSearch && false">
+
+                                    </div>
+                                    <div v-if="doingSearch || true" class="wfmSearchHolder">
+                                        WFMarket search: <input v-model="wfmSearchCurrentGuess" type="text" placeholder="Search" @click="showSearch(); updateSearchSuggestions();" @input="showSearch(); updateSearchSuggestions();" />
+                                        <div v-if="searchSuggestions!=undefined && searchSuggestions.length>0 && doingSearch" class="wfmGuessesHolder">
+                                            <div v-for="guess in searchSuggestions" @click="suggestionClicked(guess.name, guess.urlName)">
+                                                <div class="wfmSuggestionPicture" :style="{ backgroundImage: 'url(&quot;' + 'https://warframe.market/static/assets/' + guess.picture + '&quot;)' }"></div>
+                                                <span>{{guess.name}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wfmSearchButton" @click="showSearch(); updateSearchSuggestions();"></div>
+                                </div>
+
+                                <div class="wfmRightBuySellSelector">
+                                    <div class="wfmRightSellButton" :class="{selected:currentMode=='sell'}" @click="currentMode='sell'">WTS</div>
+                                    <div class="wfmRightItemName">{{postingSettings.readableName}}</div>
+                                    <div class="wfmRightBuyButton" :class="{selected:currentMode=='buy'}" @click="currentMode='buy'">WTB</div>
+                                </div>
+                                <div class="inventoryBuySellPanel">
+                                    <div v-for="listing in (currentMode=='sell' ? sellListings:buyListings)" class="inventorySellPanelListing" @click="messageClicked(listing,currentMode=='sell')">
+                                        <div v-if="!listing.clicked" class="inventorySellPanelListingAmount">x{{listing.amount}}</div>
+                                        <span v-if="!listing.clicked" class="inventorySellPanelListingName">{{listing.playerName}}</span>
+                                        <div v-if="!listing.clicked" class="inventorySellPanelListingRightPart">
+                                            <div v-if="isSpecial" class="inventorySellPanelListingTier">{{listing.specialValue}}</div>
+                                            <div class="inventorySellPanelListingPlatinum">
+                                                {{listing.platimun}}
+                                                <div class="inventorySellPanelListingPlatinumIcon"></div>
+                                            </div>
+                                        </div>
+                                        <div v-if="listing.clicked" class="listingMessageCopied">Message copied!</div>
+                                    </div>
+                                </div>
+                                <div class="inventoryBuySellBottom">
+                                    <div v-if="currentMode=='sell'" class="wfmRightSellButton big" @click="ExecutePost('sell')">POST SELL</div>
+                                    <div v-if="currentMode=='buy'" class="wfmRightBuyButton big" @click="ExecutePost('buy')">POST BUY</div>
+
+                                    <div class="inventoryRightListingSettings">
+                                        <div class="inventoryBuySellBottomMiddleItem">
+                                            Units:
+                                            <input type="number" v-model="unitsPosting" id="inventoryBuySellAmount" class="inventoryBuySellInput" />
+                                        </div>
+                                        <div class="inventoryBuySellBottomMiddleItem">
+                                            Price:
+                                            <input type="number" v-model="pricePosting" id="inventoryBuySellPrice" class="inventoryBuySellInput" />
+                                        </div>
+                                        <div class="inventoryBuySellBottomMiddleItem" v-if="postingSettings.isMod">
+                                            Rank:
+                                            <input type="number" v-model="mod_rank" id="inventoryBuySellSpecial" class="inventoryBuySellInput mod" />
+                                        </div>
+                                        <div class="inventoryBuySellBottomMiddleItem" v-if="postingSettings.isAyatan">
+                                            Cyan stars:
+                                            <input type="number" v-model="cyan_stars" id="inventoryBuySellSpecial" class="inventoryBuySellInput mod" />
+                                        </div>
+                                        <div class="inventoryBuySellBottomMiddleItem" v-if="postingSettings.isAyatan">
+                                            Amber stars:
+                                            <input type="number" v-model="amber_stars" id="inventoryBuySellSpecial" class="inventoryBuySellInput mod" />
+                                        </div>
+                                        <div class="inventoryBuySellBottomMiddleItem" v-if="postingSettings.isRelic || postingSettings.isFish || postingSettings.isFish2 || postingSettings.isVeiledRiven || (suggestedSubtypes!=undefined && suggestedSubtypes.length>0)">
+                                            Type:
+                                            <select v-model="subtype" class="inventoryBuySellInput relic" name="cars" id="cars">
+                                                <option v-if="postingSettings.isRelic" value="intact">Intact</option>
+                                                <option v-if="postingSettings.isRelic" value="exceptional">Exceptional</option>
+                                                <option v-if="postingSettings.isRelic" value="flawless">Flawless</option>
+                                                <option v-if="postingSettings.isRelic" value="radiant">Radiant</option>
+
+                                                <option v-if="postingSettings.isFish" value="small">Small</option>
+                                                <option v-if="postingSettings.isFish" value="medium">Medium</option>
+                                                <option v-if="postingSettings.isFish" value="large">Large</option>
+
+                                                <option v-if="postingSettings.isFish2" value="basic">Basic</option>
+                                                <option v-if="postingSettings.isFish2" value="adorned">Adorned</option>
+                                                <option v-if="postingSettings.isFish2" value="magnificent">Magnificent</option>
+
+                                                <option v-if="postingSettings.isVeiledRiven" value="unrevealed">Unrevealed</option>
+                                                <option v-if="postingSettings.isVeiledRiven" value="revealed">Revealed</option>
+
+                                                <option v-for="setting in suggestedSubtypes" v-if="!postingSettings.isRelic && !postingSettings.isFish && !postingSettings.isFish2 && !postingSettings.isVeiledRiven" :value="setting">{{setting}}</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Transition name="fade">
+                                    <div v-if="nothingSelected" class="inventoryBuySellTabOverlayNoSelected">
+                                        <div>Select an item in your inventory to see its WFMarket listings here</div>
+                                    </div>
+                                </Transition>
+                                <Transition name="fade">
+                                    <div v-if="tick" class="inventoryBuySellTabOverlayTick"></div>
+                                </Transition>
+                                <Transition name="fade">
+                                    <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+                                </Transition>
+                                <Transition name="fade">
+                                    <div v-if="error" class="inventoryBuySellTabOverlayError">
+                                        <div>{{errorMessage}}</div>
+                                    </div>
+                                </Transition>
+
+                                <Transition name="fade">
+                                    <div v-if="doingSearch" class="inventoryBuySellTabOverlayError notAnError" @click="doingSearch=false"></div>
+                                </Transition>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="adCointainerWithSubscribe adHideable">
+                        <div id="mainAD" class="mainAD adHideable">
+                            <div id="mainADinner" class="adAttr400x300 adHideable"></div>
+                        </div>
+
+                        <div class="subscribeButton GoPremiumCallout adHideable">
+                            <div class="subscriberIcon"></div>
+                            <div>Remove ads and support the developement</div>
+                            <div class="patreonBigIcon" onclick="PatreonApp.open()"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="deltaViewerNotification">
+                <div class="deltaNotificationIcon"></div>
+                <div id="deltaViewerNotificationMessage">5 new items found</div>
+                <div class="deltaNotificationShow" onclick="deltaDetailsApp.open()"></div>
+                <div class="deltaNotificationClose" onclick="plugin.get().ClearDeltas(); $('.deltaViewerNotification').removeClass('shown'); plugin.get().GenerateDeltaEvent();"></div>
+            </div>
+
+
+        </main>
+
+
+
+
+
+        <div id="modalScalingIssues" v-cloak>
+            <Transition name="fade">
+                <div v-show="visible" class="modalFULLSize" @click.self="visible=false">
+                    <div class="innerModal scalingIssues">
+                        <div class="innerModalHeader">
+                            <div class="innerModalHeaderTitle">Scaling issues detected in the relic overlay</div>
+                            <div class="innerModalClose" @click="visible=false"></div>
+                        </div>
+                        <div class="innerModalContent">
+                            <div class="changelogContent">
+                                <span class="changelogTitle">AlecaFrame recently had issues detecting the rewards from a relic. These are some things you can try to fix it:</span>
+                                <ul class="changelogChanges">
+                                    <li class="changelogChangeGroup number">
+                                        <div class="changelogText">Copy your Warframe UI scaling settings to AlecaFrame:</div>
+                                        <div class="changelogImage" style="height: 215px; background-image: url('assets/img/copyScaleSettings.png')"></div>
+                                    </li>
+                                    <li class="changelogChangeGroup number">
+                                        <div class="changelogText">Try using borderless mode instead of fullscreen</div>
+                                    </li>
+                                    <li class="changelogChangeGroup number">
+                                        <div class="changelogText">Check the FAQ in our <a href="https://discord.gg/Bc7PNNnnEZ">Discord</a> server or ask for help there</div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </div>
+
+
+
+
+        <div id="modalUpdated" v-cloak>
+            <Transition name="fade">
+                <div v-show="visible" class="modalFULLSize" @click.self="visible=false">
+                    <div class="innerModal changelog">
+                        <div class="innerModalHeader">
+                            <div class="innerModalHeaderTitle">AlecaFrame just updated to version {{data?.version}}!</div>
+                            <div class="innerModalClose" @click="visible=false"></div>
+                        </div>
+                        <div class="innerModalContent">
+                            <div class="changelogContent">
+                                <span class="changelogTitle">Changelog:</span>
+                                <ul class="changelogChanges">
+                                    <li v-for="change in data?.changes" :class="[change.type]" class="changelogChangeGroup">
+                                        <div v-html="change?.text" class="changelogText"></div>
+                                        <div v-if="change.image!=undefined" class="changelogImage" :style="{ backgroundImage: 'url(&quot;' + change.image + '&quot;)', height: change.imageHeight + 'px'}"></div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </div>
+
+        <div id="modalFTUE" v-cloak>
+            <Transition name="fade">
+                <div v-show="visible" class="modalFULLSize" onmousedown="if(event.target==event.currentTarget) dragMove(event);">
+                    <div class="innerModal ftue">
+                        <div class="innerModalHeader">
+                            <div class="innerModalHeaderTitle">Welcome to AlecaFrame!</div>
+                        </div>
+                        <div class="innerModalContent">
+                            <div class="ftueImageShowerContainer">
+                                <div v-if="progress==0" class="ftueImageShower s1" :key="0">
+                                    <div class="ftueIcon"></div>
+                                    <div class="ftureTextBig">Welcome to AlecaFrame</div>
+                                    <div class="ftureText">AlecaFrame has a lot of features, lets explore them together!</div>
+                                </div>
+                                <div v-if="progress==1" class="ftueImageShower s1" :key="0">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">The first tab is the Foundry, where you can check your overall progress in the game and what you need to complete everything else.</div>
+                                </div>
+                                <div v-if="progress==2" class="ftueImageShower s2" :key="1">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">If you click on any Warframe or Weapon in the foundry, you can see more details and where each component can be obtained.</div>
+                                </div>
+                                <div v-if="progress==3" class="ftueImageShower s3" :key="2">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">The next tab is the Inventory, where you can see all the tradeable items in your inventory and their average price.</div>
+                                    <div class="ftureText">If you connect your WFMarket account, you can create listings with 1 click! </div>
+                                </div>
+                                <div v-if="progress==4" class="ftueImageShower s4" :key="3">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">This tab is called the "Relic planner", where you can easily check which relic is the most profitable or recommended for you.</div>
+                                </div>
+                                <div v-if="progress==5" class="ftueImageShower s5" :key="4">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">If you click on a relic, you can also see detailed information such as drop locations and customized reward probabilities.</div>
+                                </div>
+                                <div v-if="progress==6" class="ftueImageShower s7" :key="5">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">In the next tab, you can check your rivens, see how perfect they are and create listings with 1 click!</div>
+                                </div>
+                                <div v-if="progress==7" class="ftueImageShower s8" :key="6">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">The final tab shows your current WFMarket listings, allows you to quickly edit or remove then and even to automatically remove/fix the ones where you don't own the items anymore.</div>
+                                </div>
+                                <div v-if="progress==8" class="ftueImageShower s6" :key="7">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">Once you open a relic in-game or need to choose a relic, you will see an overlay with useful information to help you make the best choice.</div>
+                                </div>
+                                <div v-if="progress==9" class="ftueImageShower s9" :key="8">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">AlecaFrame can also automatically mark WFMarket listings as sold whenever you trade an item.</div>
+                                    <div class="ftureText">You CAN DISABLE IT in the settings menu if you prefer to do it manually.</div>
+                                </div>
+                                <div v-if="progress==10" class="ftueImageShower sFinal" :key="9">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">And we are done here, just make sure that the connection to the game is working to get the most out of the app!</div>
+                                </div>
+                            </div>
+                            <div class="ftueImageControls">
+                                <button @click="progress--" class="ftueControl prev" :disabled="progress<=0">Back</button>
+                                <button @click="progress>=10 ? done() : progress++" class="ftueControl next">{{progress>=10?'Finish':'Next'}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </Transition>
+        </div>
+
+        <div id="modalPatreon" v-cloak>
+            <Transition name="fade">
+                <div v-show="visible" class="modalFULLSize" @click.self="close()">
+                    <div class="innerModal ftue">
+                        <div class="innerModalHeader">
+                            <div class="innerModalHeaderTitle">Support the development of AlecaFrame</div>
+                            <div class="innerModalClose" @click="visible=false"></div>
+                        </div>
+                        <div class="innerModalContent">
+                            <div class="patreonModalTop">
+                                <span>No ads, more features and support the development!</span>
+                                <img class="patreonBigBannerModal" src="assets/img/subscribeDetailsBanner.png" />
+                            </div>
+                            <div class="patreonModalBottom">
+                                <div class="patreonModalSubscribeWay">
+                                    <div class="patreonModalLine">
+                                        <span>1. Join the AlecaFrame Patreon</span>
+                                        <div class="patreonButton bigPatreonLogo" onclick="openSubscriptionWindow()"><div class="menuItemExternalIcon patreonLogo"></div></div>
+                                    </div>
+                                    <div class="patreonModalLine">
+                                        <span>2. Link your Patreon account</span>
+                                        <div class="patreonButton linkAccountButton" @click="linkPatreonAccount()">Link account <div class="menuItemExternalIcon LinkAccount"></div></div>
+                                    </div>
+                                </div>
+                                <div class="patreonModalSeparator">
+                                    <span class="patreonLine"></span>
+                                    or
+                                    <span class="patreonLine"></span>
+                                </div>
+                                <div class="patreonModalSubscribeWay">
+                                    <div class="patreonButton subscribeInOverwolfModalButton" onclick="subscribeClick()">Subscribe through Overwolf <div class="menuItemExternalIcon LinkAccount"></div></div>
+                                </div>
+                                <span class="patreonClarify">*Subscribing through Overwolf gives you the perks of the first Patreon tier (Themes, no ads and beta access)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </div>
+
+        <div id="modalKeepAuto" v-cloak>
+            <Transition name="fade">
+                <div v-show="visible" class="modalFULLSize" @click.self="close()">
+                    <div class="innerModal ftue">
+                        <div class="innerModalContent">
+                            <div class="closeConfirmHolder">
+                                <div class='closeAnywayText'>Do you want AlecaFrame to remember the 'Auto' mode setting when restarted?</div>
+                                <div class="closeAnywayButtons">
+                                    <div @click='answerNo()' class='closeAnyway goBack'>No</div>
+                                    <div @click='answerYes()' class='closeAnyway'>Yes</div>
+                                </div>
+                                <div class="dontShowAgainHolder">
+                                    <input id="dontShowAgainKeepAuto" class="settingsCheckBoxHolderBox" type="checkbox" />
+                                    <div class="dontShowAgainText">Don't show again</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </div>
+
+        <div id="modalHelp" v-cloak>
+            <Transition name="fade">
+                <div v-show="visible" class="modalFULLSize" @click.self="close()">
+                    <div class="innerModal helper">
+                        <div class="innerModalHeader">
+                            <div class="innerModalHeaderTitle">Warframe connection troubleshooter</div>
+                            <div class="innerModalClose" @click="close()">
+                            </div>
+                        </div>
+                        <div class="innerModalContent">
+                            <div class="helpModalContainer">
+                                <div v-if="allOK" class="helpModalOKHolder">
+                                    <div class="helpModalOKText">Wow! It seems like everything is working now.</div>
+                                    <button class="helpModalOKButton" @click="close()">Awesome!</button>
+                                </div>
+                                <div v-if="!allOK" class="helpModalChecklistGlobalContainer">
+                                    <div class="modalHelpTitle">Connection checklist:</div>
+                                    <div class="modalHelpChecklistContainer">
+                                        <div id="helperChecklist1" class="modalHelpChecklistItem">
+                                            <div class="modalHelpItemName">Warframe is open and you are logged in</div>
+                                            <div class="modalHelpItemCurrentStatus" :class="classObject(0)"></div>
+                                        </div>
+                                        <div id="helperChecklist2" class="modalHelpChecklistItem">
+                                            <div class="modalHelpItemName">Warframe needs to be opened after Overwolf</div>
+                                            <div class="modalHelpItemCurrentStatus" :class="classObject(1)"></div>
+                                        </div>
+                                        <div id="helperChecklist3" class="modalHelpChecklistItem">
+                                            <div class="modalHelpItemName">Warframe should NOT run as admin</div>
+                                            <div class="modalHelpItemCurrentStatus" :class="classObject(2)"></div>
+                                        </div>
+                                        <div id="helperChecklist4" class="modalHelpChecklistItem">
+                                            <div class="modalHelpItemName">The Warframe overlay needs to be enabled in Overwolf settings</div>
+                                            <div class="modalHelpItemCurrentStatus" :class="classObject(3)"></div>
+                                        </div>
+                                        <div id="helperChecklist5" class="modalHelpChecklistItem">
+                                            <div class="modalHelpItemName">Your overwolf install is OK</div>
+                                            <div class="modalHelpItemCurrentStatus" :class="classObject(4)"></div>
+                                        </div>
+                                        <div id="helperChecklist6" class="modalHelpChecklistItem">
+                                            <div class="modalHelpItemName">If it still doesn't work, try entering/leaving a relay 4-5 times</div>
+                                            <div class="modalHelpItemCurrentStatus" :class="classObject(5)"></div>
+                                        </div>
+                                    </div>
+                                    <div class="modalHelpBottomText">If after following this checklist you are still having issues, feel free to ask for help on <a href="https://discord.gg/Bc7PNNnnEZ">Discord</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </Transition>
+        </div>
+
+
+        <div id="loadingScreen" onmousedown="dragMove(event);">
+            <div v-show="visible" class="modalFULLSize">
+                <div class="innerModal loading">
+                    <div class="innerModalContent">
+                        <div class="loadingContainer" id="loadingContainerloading">
+                            <div class="loadingModalSpinner"></div>
+                            <div class="loadingModalText">Loading game data...</div>
+                        </div>
+
+                        <div class="loadingContainer" id="loadingContainerError" style="display:none;" onmousedown="event.stopImmediatePropagation()">
+                            <div class="loadingModalError"></div>
+                            <div class="loadingModalText">Failed to download the latest game data.</div>
+                            <div class="loadingModalText">Please check your internet connection or ask for help on <a href="https://discord.gg/Bc7PNNnnEZ">Discord</a></div>
+                            <div id="loadingContainerErrrorMessage" class="loadingModalText errorMessage"></div>
+                            <div class="buttonUpdate inErrorTab" onclick="overwolf.extensions.relaunch();">Try again</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalClose" v-cloak>
+            <Transition name="fade">
+                <div v-show="visible" class="modalFULLSize" @click.self="close()">
+                    <div class="innerModal ftue">
+                        <div class="innerModalContent">
+                            <div class="closeConfirmHolder">
+                                <div class='closeAnywayText'>If you close AlecaFrame, the relic overlay won't show up.</div>
+                                <div class="closeAnywayButtons">
+                                    <div @click='close()' class='closeAnyway goBack'>Go back</div>
+                                    <div @click='closeAll()' class='closeAnyway'>Close anyway</div>
+                                </div>
+                                <div class="dontShowAgainHolder">
+                                    <input id="dontShowAgainInModel" class="settingsCheckBoxHolderBox" type="checkbox" />
+                                    <div class="dontShowAgainText">Don't show again</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </div>
+    </div>
+
+    <script>
+        function dragResize(edge) {
+            overwolf.windows.getCurrentWindow(function (result) {
+                if (result.status == "success") {
+                    overwolf.windows.dragResize(result.window.id, edge);
+                }
+            });
+        };
+    </script>
+
+    <div class="resize horizontal top" onmousedown="dragResize('Top');"></div>
+    <div class="resize vertical left" onmousedown="dragResize('Left');"></div>
+    <div class="resize vertical right" onmousedown="dragResize('Right');"></div>
+    <div class="resize horizontal bottom" onmousedown="dragResize('Bottom');"></div>
+
+    <div class="resize corner top-left" onmousedown="dragResize('TopLeft');"></div>
+    <div class="resize corner top-right" onmousedown="dragResize('TopRight');"></div>
+    <div class="resize corner bottom-left" onmousedown="dragResize('BottomLeft');"></div>
+    <div class="resize corner bottom-right" onmousedown="dragResize('BottomRight');"></div>
+
+    <!--Join templates-->
+    <script>
+        var includes = $('[data-include]')
+        $.each(includes, function () {
+            var file = 'main_parts/' + $(this).data('include') + '.html'
+
+            //Loading local files so this not being async is fine
+            var data = $.ajax({ type: "GET", url: file, async: false }).responseText;
+
+            $(this).html(data);
+            console.log("Loaded template: " + $(this).data('include'));
+        })
+    </script>
+
+    <!-- Post JS files -->
+    <script src="assets/js/main/mainBase.js"></script>
+    <script src="assets/js/main/mainFoundry.js"></script>
+    <script src="assets/js/main/mainInventory.js"></script>
+    <script src="assets/js/main/modals.js"></script>
+    <script src="assets/js/main/mainRelicPlanner.js"></script>
+    <script src="assets/js/main/mainMasteryHelper.js"></script>
+    <script src="assets/js/main/changelog.js"></script>
+    <script src="assets/js/main/resources.js"></script>
+
+    <script src="assets/js/main/rivenExplorer/general.js"></script>
+    <script src="assets/js/main/rivenExplorer/unveiled.js"></script>
+    <script src="assets/js/main/rivenExplorer/veiled.js"></script>
+
+    <script src="assets/js/main/proAnalytics.js"></script>
+
+    <script src="assets/js/public/stats.js"></script>
+
+
+    <script src="assets/js/main/warframeMarket/ordersAndContracts.js"></script>
+
+    <script src="https://content.overwolf.com/libs/ads/latest/owads.min.js" async onload="onOwAdReady()"></script>
+
+    <script src="assets/js/tilt.jquery.js"></script>
+</body>
+
+
+
+</html>

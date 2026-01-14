@@ -1,0 +1,337 @@
+﻿* {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    border: none;
+    margin: 0px;
+    background: none;
+}
+
+.relicRecommendationContainer {
+    color: var(--color-text);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg-1);
+    border: 1px solid #ffffff9e;
+    border-radius: 10px;
+}
+
+
+
+
+.footer {
+    /* margin-bottom: 5px; */
+    font-size: 13px;
+    margin-top: 8px;
+    padding: 6px 8px;
+    flex-shrink: 0;
+    width: 100%;
+    text-align: center;
+    background-color: var(--color-bg-3);
+}
+
+.closeIcon {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-image: url('../../img/close.png');
+    background-size: 66%;
+    background-repeat: no-repeat;
+    background-position: center;
+    right: 7px;
+    top: 7px;
+    border-radius: 4px;
+    transition: 0.2s linear;
+    cursor: pointer;
+    z-index: 10;
+}
+
+    .closeIcon:hover {
+        background-color: #8babcc6b;
+    }
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 10px;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #98cff5;
+    }
+
+
+main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.mainContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: space-around;
+    padding: 0px 7px;
+    margin-top: 4px;
+    position: relative;
+    gap: 5px;
+}
+
+.itemsContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: -4px;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+    gap: 3px;
+}
+
+.itemImage {
+    width: 35px;
+    height: 25px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.buttonsActions {
+    display: flex;
+    gap: 11px;
+    width: 100%;
+    padding: 0px 6px;
+}
+
+button {
+    flex-grow: 1;
+    color: var(--color-text);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.12s linear;
+    height: 26px;
+}
+
+    button.report {
+        background-color: var(--color-sell);
+    }
+
+    button.giveRep {
+        background-color: var(--color-tab);
+    }
+
+    button.goBack {
+        background-color: var(--color-card-hover);
+        flex-grow: 0.25;
+    }
+
+        button.goBack:hover {
+            background-color: var(--color-card-active);
+            flex-grow: 0.25;
+        }
+
+    button.report:hover {
+        background-color: var(--color-sell-hover);
+    }
+
+    button.giveRep:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+
+.loadingBar {
+    height: 2px;
+    background-color: white;
+    position: absolute;
+    top: -1px;
+}
+
+.subtitle {
+    font-size: 13.5px;
+    font-weight: 300;
+}
+
+.title {
+    font-weight: 300;
+    flex-shrink: 0;
+    background-color: var(--color-bg-3);
+    margin-top: 0px;
+    padding: 5px;
+    padding-top: 6px;
+    text-align: center;
+    width: 100%;
+}
+
+    .title > span {
+        font-weight: 500;
+    }
+
+.subtitle > span {
+    color: #87ff87;
+}
+
+.tickOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000cf;
+    background-image: url('../../img/tick.png');
+    margin: 0px;
+    z-index: 10;
+    background-size: 15%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.errorOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000de;
+    margin: 0px;
+    z-index: 10;
+    background-size: 15%;
+    background-repeat: no-repeat;
+    background-position: center 38%;
+    padding: 8px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loadingOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000cf;
+    background-image: url('../../img/loading.svg');
+    margin: 0px;
+    z-index: 10;
+    background-size: 15%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* we will explain what these classes do next! */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.35s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
+
+.closeIcon.tick {
+    right: 28px;
+    background-image: url('../../img/tick.png');
+    background-size: 84%;
+    border-radius: 14px;
+}
+
+
+textarea {
+    position: absolute;
+    top: 4px;
+    left: 0px;
+    margin: 0px 8px;
+    bottom: 34px;
+    right: 0px;
+    /* width: 341px; */
+    /* height: 44px; */
+    text-align: start;
+    background-color: var(--color-card-active);
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    color: var(--color-text);
+    padding: 7px 9px;
+    resize: none;
+}
+
+.errorImage {
+    width: 44px;
+    height: 44px;
+    background-image: url(../../img/error.png);
+    margin: 0px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center 38%;
+}
+
+
+
+.tippy-box[data-theme~='extraVaultedInfoTheme'] {
+    background-color: var(--color-bg-2);
+    border-radius: 10px;
+}
+
+    .tippy-box[data-theme~='extraVaultedInfoTheme'][data-placement^='top'] > .tippy-arrow::before {
+        border-bottom-color: #ffffffbd;
+        color: #e8e8e8b3;
+    }
+
+    .tippy-box[data-theme~='extraVaultedInfoTheme'][data-placement^='bottom'] > .tippy-arrow::before {
+        border-top-color: #ffffffbd;
+        color: #e8e8e8b3;
+        top: -8px;
+    }
+
+    .tippy-box[data-theme~='extraVaultedInfoTheme'] > .tippy-content {
+        display: flex;
+        flex-direction: row;
+        border: 1px solid #ffffffc7;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+.tippy-content > strong {
+    margin-right: 4px;
+}
+
+.topContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-grow: 1;
+    align-items: center;
+}

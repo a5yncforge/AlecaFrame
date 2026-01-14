@@ -1,0 +1,261 @@
+﻿
+
+<div class="statsVueHolder">
+    <div class="statsTopBar">
+        <div v-if="!fromOverwolf" class="alecaframeNameTop">
+            <div class="showMenuButton"></div>
+            AlecaFrame
+        </div>
+        <div v-if="fromOverwolf" class="statsTitle">Your personal stats:</div>
+        <div v-if="!fromOverwolf" class="foundryPlayerLevelAndMoney">
+            <div id="foundryUnlocksStats" class="foundryPlayerCurrency">
+                <div class="foundryPlayerPercentUnlockedBackground">
+                    <div class="foundryUnlockPercentWhite" :style="{'--unlockProgress':lastDataPoint?.percentageCompletion+'%'}"></div>
+                </div>
+                <div class="foundryPlayerPercentUnlocked">{{(lineIfZeroOrUndefined(lastDataPoint?.percentageCompletion))+'%'}}</div>
+            </div>
+            <div class="topBarPlayerStatsRight">
+                <div class="topBarPlayerStatisRightTop">
+                    <div class="foundryPlayerLevel">{{lineIfZeroOrUndefined(lastDataPoint?.mr)}}</div>
+                    <div class="foundryPlayerName">{{wholeParsedData?.usernameWhenPublic??"Loading..."}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="!fromOverwolf" id="foundryPlatinum" class="foundryPlayerCurrency">
+            <div class="foundryPlayerCurrencyIcon"></div>
+            <div class="foundryPlayerCurrencyAmount">{{lineIfZeroOrUndefined(toSI(lastDataPoint?.plat))}}</div>
+        </div>
+        <div v-if="!fromOverwolf" id="foundryCredits" class="foundryPlayerCurrency">
+            <div class="foundryPlayerCurrencyIcon"></div>
+            <div class="foundryPlayerCurrencyAmount">{{lineIfZeroOrUndefined(toSI(lastDataPoint?.credits))}}</div>
+        </div>
+        <div v-if="!fromOverwolf" id="foundryDucados" class="foundryPlayerCurrency">
+            <div class="foundryPlayerCurrencyIcon"></div>
+            <div class="foundryPlayerCurrencyAmount">{{lineIfZeroOrUndefined(toSI(lastDataPoint?.ducats))}}</div>
+        </div>
+        <div v-if="!fromOverwolf" id="foundryEndo" class="foundryPlayerCurrency">
+            <div class="foundryPlayerCurrencyIcon"></div>
+            <div class="foundryPlayerCurrencyAmount">{{lineIfZeroOrUndefined(toSI(lastDataPoint?.endo))}}</div>
+        </div>
+
+        <div class="statsBarSeparator"></div>
+
+        <div v-if="fromOverwolf" class="statsBarRightOW">
+            <div id="statsDataExportButton" class="statsCreateLink dataExport">
+                <div class="statsCreateLinkIcon dataExport"></div>
+                <div class="statsCreateLinkText">Data export &amp; API</div>
+            </div>
+            <div id="statsCreateLinkButton" class="statsCreateLink">
+                <div class="statsCreateLinkIcon"></div>
+                <div class="statsCreateLinkText">Create public link</div>
+            </div>
+        </div>
+        <div v-else class="statsBarRightWEB">
+            <span>Get your own stats</span>
+            <a @click="openAFDownloadPage()" href="https://www.alecaframe.com/?promo=publicStats" target="_blank" class="statsDownloadAF">Download AlecaFrame<div class="statsDownloadIcon"></div></a>
+        </div>
+    </div>
+
+    <div class="statsBottomContainer">
+        <div class="statsLeftContent">
+            <div class="statsChartsTop" v-if="!loading && !error">
+                <div class="statsChartBottomOverlay">
+                    <span>Timeframe:</span>
+                    <select v-model="timeframe" @change="timeframeUpdated($event)">
+                        <option value="7">7 days</option>
+                        <option value="30">30 days</option>
+                        <option value="90">90 days</option>
+                        <option value="0">Auto</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="statsChartBottom">
+                <div class="statsChart" :class="{expanded:chart.expanded??false}" v-for="chart in charts">
+                    <div class="statsChartTop">
+                        <div class="statsChartTopLeft">
+                            {{chart.name}}
+                            <div class="statsChartIcon" :class="[chart.icon]"></div>
+                        </div>
+                        <div class="statsChartTopRight">
+                            <div class="statsChartIconTheme expand" @click="chart.expanded=!chart.expanded; anyChartExpanded = chart.expanded" :class="{expanded:chart.expanded}"></div>
+                        </div>
+                    </div>
+                    <div class="statsChartContainer">
+                        <canvas :id="'chart'+chart.name" class="statsChartChart"></canvas>
+                    </div>
+
+                    <div v-if="!ifPublicFeatureEnabled(chart.featurePublicENUM)" class="statsGreyOverlay">
+                        Chart disabled in this link
+                    </div>
+                </div>
+                <Transition name="fade">
+                    <div v-if="anyChartExpanded" class="statsGreyOverlay" @click="minimizeAllGraphs()"></div>
+                </Transition>
+
+            </div>
+
+            <div v-if="!statsPanelShown" class="statsIconOpenHolder" @click="statsPanelShown = true">
+                <div class="statsIconCloseIcon"></div>
+            </div>
+        </div>
+
+
+
+        <div v-if="statsPanelShown" class="statsTrades">
+            <div class="statsIconClose" @click="statsPanelShown = false"></div>
+            <div class="statsTradeHistoryTitle">Trade history</div>
+            <div class="statsFilterTypeHolder">
+                <div class="topSetting stats" :class="{selected:selectedFilter=='all'}" @click="selectedFilter='all'"><div class="topSettingIcon all"></div></div>
+                <div class="topSetting stats" :class="{selected:selectedFilter=='sales'}" @click="selectedFilter='sales'"><div class="topSettingIcon sales"></div>Sale</div>
+                <div class="topSetting stats" :class="{selected:selectedFilter=='purchases'}" @click="selectedFilter='purchases'"><div class="topSettingIcon purchases"></div>Purchase</div>
+                <div class="topSetting stats" :class="{selected:selectedFilter=='trades'}" @click="selectedFilter='trades'"><div class="topSettingIcon trades"></div>Trade</div>
+            </div>
+            <div class="statsFilterSearchHolder">
+                <div class="topSetting inventorySetting stats">
+                    <div class="topSettingIcon search"></div>
+                    <input id="inventorySearch" placeholder="Search" v-model="selectedSearch" onkeyup="" />
+                </div>
+                <div class="topSetting2 inventorySetting stats">
+                    <div title="Change order" class="topSettingIcon ordering" :class="{reverseOrder:!isOrderingReversed}" @click="isOrderingReversed=!isOrderingReversed"></div>
+                    <select v-model="selectedOrdering">
+                        <option value="date">Date</option>
+                        <option value="platPrice">Platinum</option>
+                        <option value="user">Username</option>
+                    </select>
+                </div>
+            </div>
+            <div class="statsContainer">
+                <div class="tradeItem" v-for="trade in orderedFilteredTrades" :key="trade.ts">
+                    <div class="tradeUsername">{{trade.user.substr(0,trade.user.length-1)}}</div>
+                    <div class="tradeTs">{{new Date(trade.ts).toLocaleString()}}</div>
+                    <!-- Remove platform icon from name. TODO: show it -->
+                    <div class="tradeItems">
+                        <div class="tradeItemsHolder">
+                            <div v-for="component in trade.tx" :data-tippy-content="component.displayName" class="statsTradedItem" @click="openItemDetails(component.name)" :style="{ backgroundImage: 'url(&quot;' + component.picture + '&quot;)' }">
+                                <div v-if="component.cnt!=0" class="foundryObjectComponentsComponentCount">{{component.cnt}}</div>
+                            </div>
+                        </div>
+                        <div class="tradeItemsSeparator"></div>
+                        <div class="tradeItemsHolder">
+                            <div v-for="component in trade.rx" :data-tippy-content="component.displayName" class="statsTradedItem" @click="openItemDetails(component.name)" :style="{ backgroundImage: 'url(&quot;' + component.picture + '&quot;)' }">
+                                <div v-if="component.cnt!=0" class="foundryObjectComponentsComponentCount">{{component.cnt}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="trade.type==0" class="tradeAction sale">Sale</div>
+                    <div v-if="trade.type==1" class="tradeAction purchase">Purchase</div>
+                    <div v-if="trade.type==2" class="tradeAction trade">Trade</div>
+                </div>
+                <div class="relicPlannerShowMore stats" v-if="shouldShowViewMoreMessage && orderedFilteredTrades?.length==50">
+                    Only 50 trades are shown. Try using different filters or click <span class="relicPlannerShowMoreButton" @click="showAllOnce=true">here</span> to show all of them.
+                </div>
+            </div>
+            <div v-if="!isTradeEnabled()" class="statsGreyOverlay">
+                Trade history is disabled in this link
+            </div>
+            <div v-if="tradeNotReady" class="statsGreyOverlay">
+                Trade history is only available if the game language is set to English
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <Transition name="fade">
+        <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+    </Transition>
+    <Transition name="fade">
+        <div v-if="error || userNotReady" class="inventoryNoItemShown">
+            <div>An error has occurred or you have no recorded stats.<br /> <span class="inventoryNoItemShownSmall">Please come back later or click <a @click="refresh();">here</a> to try again.</span></div>
+        </div>
+    </Transition>
+    <Transition name="fade">
+        <div v-if="notEnabled" class="inventoryNoItemShown">
+            <div>The stats tab is disabled.<br /> <span class="inventoryNoItemShownSmall">You can enable it in the settings menu and then click <a @click="refresh();">here</a> to try again.</span></div>
+        </div>
+    </Transition>
+</div>
+
+<div style="display:none">
+    <div id="sharePublicLinkTemplate">
+        <div class="publicLinkOptionsHolder">
+            <div class="timerNotificationGroup">
+                Account data:
+                <label class="switch">
+                    <input id="publicToggleAccountData" type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="timerNotificationGroup">
+                Trades:
+                <label class="switch">
+                    <input id="publicToggleTrades" type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="timerNotificationGroup">
+                Platinum:
+                <label class="switch">
+                    <input id="publicTogglePlatinum" type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="timerNotificationGroup">
+                Ducats:
+                <label class="switch">
+                    <input id="publicToggleDucats" type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="timerNotificationGroup">
+                Endo:
+                <label class="switch">
+                    <input id="publicToggleEndo" type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="timerNotificationGroup">
+                Credits:
+                <label class="switch">
+                    <input id="publicToggleCredits" type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="timerNotificationGroup">
+                Aya:
+                <label class="switch">
+                    <input id="publicToggleAya" type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="timerNotificationGroup">
+                Relics:
+                <label class="switch">
+                    <input id="publicToggleRelics" type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="statsButtonRow">
+            <button class="buttonSettingsTest statsPublicLink" onclick="generateStatsShareLink(true)">Generate token</button>
+            <button class="buttonSettingsTest statsPublicLink" onclick="generateStatsShareLink()">Generate link</button>
+        </div>
+        
+    </div>
+</div>
+
+
+<div style="display:none">
+    <div id="exportDataTemplate">
+        <div class="statsExportButtonsHolder">
+            <button class="buttonSettingsTest exportData" onclick="exportJSON()">Export data as JSON</button>
+            <button class="buttonSettingsTest exportData" onclick="exportCSV()">Export data as CSV</button>
+        </div>                
+        <div class="statsAPIThingsHolder">
+            <button class="buttonSettingsTest copyAPIToken" onclick="copyAPIToken()">Copy my API token</button>
+            For more information about the stats API, please check the FAQ channel on Discord
+        </div>
+    </div>
+</div>

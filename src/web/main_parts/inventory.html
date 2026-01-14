@@ -1,0 +1,299 @@
+﻿<div class="foundryTopSettings">
+    <div class="foundryTopSettingsSide left">
+        <div class="topSetting inventorySetting selected" selectionData="allParts" onclick="changedInventorySetting1(event);">
+            <div class="topSettingIcon all"></div>
+            All parts
+        </div>
+        <!--<div class="topSetting inventorySetting selected" selectionData="warframeParts" onclick="changedInventorySetting1(event);">
+            <div class="topSettingIcon waframe"></div>
+            Warframe parts
+        </div>
+        <div class="topSetting inventorySetting" selectionData="weaponParts" onclick="changedInventorySetting1(event);">
+            <div class="topSettingIcon primary"></div>
+            Weapon parts
+        </div>-->
+        <div class="topSetting inventorySetting" selectionData="relics" onclick="changedInventorySetting1(event);">
+            <div class="topSettingIcon prime"></div>
+            Relics
+        </div>
+        <div class="topSetting inventorySetting" selectionData="mods" onclick="changedInventorySetting1(event);">
+            <div class="topSettingIcon mods"></div>
+            Mods
+        </div>
+        <div class="topSetting inventorySetting" selectionData="arcanes" onclick="changedInventorySetting1(event);">
+            <div class="topSettingIcon arcanes"></div>
+            Arcanes
+        </div>
+        <div class="topSetting inventorySetting" selectionData="misc" onclick="changedInventorySetting1(event);">
+            <div class="topSettingIcon misc"></div>
+            Misc
+        </div>
+        <div class="topSetting inventorySetting" selectionData="sets" onclick="changedInventorySetting1(event);">
+            <div class="topSettingIcon sets"></div>
+            Sets
+        </div>
+    </div>
+
+    <div class="foundryTopSettingsSide right">
+        <div class="topSetting inventorySetting">
+            <div class="topSettingIcon search"></div>
+            <input id="inventorySearch" placeholder="Search" onkeyup="changedInventorySettingSearch(event);" />
+            <div class="topSettingIcon removeSearch" onclick="removeSearch()"></div>
+        </div>
+        <div class="topSetting notHoverOpen inventorySetting">
+            <div id="settingFilterExpandingInventory" class="topSettingIcon filter"></div>
+            <div class="topSettingIcon removeSearch" onclick="removeInventoryFilters()"></div>
+        </div>
+        <div class="topSetting2 inventorySetting">
+            <div title="Change order" class="topSettingIcon ordering" onclick="changeOrderingLargerOrSmallerFirst(event);"></div>
+            <select id="inventoryOrdering" onchange="RefreshInventory();">
+                <option value="name">Name</option>
+                <option value="platPrice">Platinum</option>
+                <option value="ducats">Ducats</option>
+                <option value="amount">Amount</option>
+                <option title="Ducats/Platinum" value="ducanator">Ducanator</option>
+                <option title="% of parts owned" value="complete">Complete (Sets)</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div id="inventoryMainBody" class="foundryMainBody">
+    
+
+    <div id="inventoryObjectContainer" class="inventoryObjectContainer">
+
+        <div v-for="item in items" class="inventoryObject" :key="item.internalName + item.currentModRank" :class="{isRelic:item.isRelic, isMod:item.type=='mod', isArcane:item.type=='arcane' }" @click="itemClicked(item.type,item.internalName,item)">
+            <div class="inventoryLeftPart">
+                <div class="inventoryItemImage" :class="[item.modType,item.type]" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)' }"></div>
+
+                <div v-if="!useDucanator && item.ducats>0" class="inventoryItemDucatsHolder">
+                    <div class="inventoryItemDucats">{{item.ducats}}</div>
+                    <div class="inventoryItemDucatsIcon"></div>
+                </div>
+                <div v-if="useDucanator" class="inventoryItemDucatsHolder">
+                    <div class="inventoryItemDucats">{{Math.round((item.ducats/item.sellPrice)*100)/100}}</div>
+                    <div class="inventoryItemDucatsIcon ducanator"></div>
+                </div>
+            </div>
+
+            <div class="inventoryRightPart">
+                <div class="inventoryItemName" :rank="item.currentModRank"><span class="normalItem">{{item.name}}</span></div>
+
+                <div v-if="item.type!='set'" class="inventoryItemExtraList">
+                    <div class="inventoryItemQuantity">x{{item.amountOwned}}</div>
+
+
+                    <div v-if="item.vualtedMakesSense" class="foundryVaultedHolder">
+                        <div class="foundryObjectTopIcon vaulted" :class="{yes:item.vaulted,no:!item.vaulted}"></div>
+                        {{item.vaulted?"Vaulted":"Unvaulted"}}
+                    </div>
+
+                    <div v-if="item.ordersPlaced" class="inventoryItemOrderPlaced"></div>
+                    <div v-if="item.goalItemOwned" class="inventoryTargetOwned"></div>
+
+                    <div v-if="item.isFav" class="inventoryItemFav"></div>
+
+
+                    <div v-if="item.type=='mod'" :class="[item.modType]" class="inventoryItemModTypeBar"></div>
+
+                    <div v-if="item.type=='mod' || item.type=='arcane'" class="inventoryItemModLeftPart">
+                        <div class="imRank">
+                            Lvl:
+                            <span class="imRankRankPart">{{item.currentModRank}}</span>
+                            /{{item.modRankMax}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modInvUsedBy" v-if="item.modUsedBy!=''">
+                    <div class="inventoryTargetOwned usedIn" :data-tippy-content="item.modUsedBy"></div>
+                    <span>{{item.modUsedBy}}</span>
+                </div>
+                
+
+
+                <div v-if="item.type=='set'" class="inventorySetHolder">
+                    <div class="inventoryComponentsHolder">
+                        <div v-for="component in item.components"
+                             class="inventoryComponent"
+                             :style="{ backgroundImage: 'url(&quot;' + component.picture + '&quot;)' }"
+                             v-bind:class="{enough: component.recipeNeccessaryComponents}"
+                             v-bind:data-tippy-content="component.name + (component.neccessaryAmount > 1 ? ' ('+component.neccessaryAmount+' needed)' : '')"
+                             @click="componentClicked(component)">
+                            <div class="inventoryComponentName">{{component.quantityOwned}}</div>
+                        </div>
+                    </div>
+
+                    <div class="inventoryRightSetHolder">
+
+                        <div v-if="item.type=='set'" class="inventoryItemExtraList">
+                            <div class="inventoryItemQuantity">x{{item.amountOwned}}</div>
+
+                            <div v-if="item.vualtedMakesSense" class="foundryVaultedHolder">
+                                <div class="foundryObjectTopIcon vaulted" :class="{yes:item.vaulted,no:!item.vaulted}"></div>
+                            </div>
+
+                            <div v-if="item.ordersPlaced" class="inventoryItemOrderPlaced"></div>
+                            <div v-if="item.goalItemOwned" class="inventoryTargetOwned"></div>
+                        </div>
+
+                        <div class="inventoryItemButtonPostSellSmall" onclick="onBuySellItemClicked(event);"
+                             v-bind:class="{notEnough: !item.isReadyToSell}">
+                            SELL
+                            <div class="inventoryItemSellRight">
+                                <span class="inventorySellPrice">{{(item.sellPrice==undefined || item.sellPrice==0) ? '-' : item.sellPrice}}</span>
+                                <div class="inventoryItemSellPlatIcon"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="inventoryBuySellContainer">
+                    <div v-if="item.type!='set'" class="inventoryItemButtonPostSell" @click.stop="onBuySellItemClickedVUE($event);" :class="{notEnough:item.amountOwned==0}">
+                        WTS
+                        <div class="inventoryItemSellRight">
+                            <span class="inventorySellPrice">{{(item.sellPrice==undefined || item.sellPrice==0) ? '-' : item.sellPrice}}{{(item.shouldDisplayPlusInPrice)?'+':''}}</span>
+                            <div class="inventoryItemSellPlatIcon"></div>
+                        </div>
+                    </div>
+
+                    <div v-if="item.type!='set'" class="inventoryItemButtonInstaSell" @click.stop="onBuySellItemClickedVUE($event,true);">
+                        WTB
+                        <div class="inventoryItemSellRight">
+                            <span class="inventoryBuyPrice">{{(item.buyPrice==undefined || item.buyPrice==0) ? '-' : item.buyPrice}}</span>
+                            <div class="inventoryItemSellPlatIcon"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="hidden-flex-item inventory"></div>
+        <div class="relicPlannerShowMore" v-if="items.length==100">
+            Only 100 results are shown. Try using different filters or click <span class="relicPlannerShowMoreButton" onclick="lastInventoryFilter = undefined; RefreshInventory(true)">here</span> to show all of them. <br /> WARNING: This might make the app slugish on slow computers
+        </div>
+        <Transition name="fade">
+            <div v-if="noItems" class="inventoryNoItemShown">
+                <div>Your inventory seems empty.<br /> <span class="inventoryNoItemShownSmall">Come back whenever you have something to sell or check that the connection to the game is working properly</span></div>
+            </div>
+        </Transition>
+
+        <Transition name="fade">
+            <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+        </Transition>
+    </div>
+</div>
+
+<div class="inventorySummary">
+    <div class="settingsCheckBoxHolder relicPlanner" v-cloak v-if="invFilterType=='mods'">
+        <input class="settingsCheckBoxHolderBox" type="checkbox" v-model="onlyOwned" @change="refresh()">
+        Only owned
+    </div>
+    <div class="inventorySummaryDatum">
+        {{summaryPlatinum}}
+        <div class="inventorySummaryPlatinumIcon"></div>
+    </div>
+    <div class="inventorySummaryDatum">
+        {{summaryDucats}}
+        <div class="inventorySummaryDucatsIcon"></div>
+    </div>
+</div>
+
+<div style="display:none">
+    <div id="tooltipFiltersInventoryTemplate">
+        <div class="filtersInventoryHolder">
+
+            <div class="filterGroup">
+                <div class="filterHeader">Item crafted</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'itemOwned','yes')">Mastered</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'itemOwned','no')">Unmastered</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">>1 owned</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'moreThanOneCopies','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'moreThanOneCopies','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Vaulted</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'vaulted','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'vaulted','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Order placed</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'orderPlaced','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'orderPlaced','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Part type</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'partType','normal')">Normal</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'partType','prime')">Prime</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Favorite</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'favorite','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'favorite','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Minimum platinum</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'minPlat','5')">5</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'minPlat','10')">10</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'minPlat','15')">15</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Set complete</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'completeSet','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'completeSet','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Equipped (Mods only)</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'equipped','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'equipped','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Leveled up (Mods & Arcanes)</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'leveledUp','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterCheckboxClicked(event,'leveledUp','no')">No</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

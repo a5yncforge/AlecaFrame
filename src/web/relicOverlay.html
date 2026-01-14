@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>AlecaFrame relic</title>
+
+    <script src="https://content.overwolf.com/libs/ads/latest/owads.min.js"></script>
+
+
+    <!-- JS files -->
+    <script src="assets/js/external/jquery.min.js"></script>
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>
+
+    <!--<script src="assets/js/vue.global.prod.js"></script>
+
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/external/popper.min.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>-->
+    <!-- CSS files -->
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/relicOverlay/base.css" />
+</head>
+
+<body style="user-select: none;">
+    <div class="content">
+        <main>
+            <div class="relicPart">
+                <div class="relicHolder">
+                    <div v-bind:class="{relicMaxPrice:relicMaxPrice(relic)}" v-for="relic in relics" class="relic">
+                        <div class="relicItemName">{{relic.name}}</div>
+
+                        <!-- Relic prices -->
+                        <div class="relicItemPrices">
+                            <div class="relicItemPricePlatinum">
+                                {{relic.platinum==-1?"-":relic.platinum}}
+                                <div class="relicItemPricePlatinumIcon"></div>
+                            </div>
+
+                            <div v-if="relic.isItemVaulted" class="itemIsVaulted">
+                                <div class="itemIsVaultedIcon"></div>
+                            </div>
+
+                            <div v-if="relic.isFav" class="relicPLannerMiniRewardParentOwned fav foundry big"></div>
+
+                            <div class="relicItemPriceDucats">
+                                {{relic.ducats==-1?"-":relic.ducats}}
+                                <div class="relicItemPriceDucatsIcon"></div>
+                            </div>
+                        </div>
+
+                        <!-- Crafted  / Not crafted -->
+                        <div class="relicItemOwnershipInfo">
+                            <div v-if="relic.isPartOfOwned" class="relicItemUnlocked">
+                                Crafted
+                            </div>
+
+                            <div v-if="!relic.isPartOfOwned" class="relicItemLocked">
+                                Not crafted
+                            </div>
+                            <div class="relicItemUnlockedCount">
+                                {{relic.countOwned}}/{{relic.totalToOwn}}
+                            </div>
+                        </div>
+
+                        <!-- Foundry -->
+                        <div v-if="relic.componentData!=undefined && relic.componentData.length>0"
+                             class="foundryObjectComponents">
+                            <div class="components">
+                                <div v-for="component in relic.componentData" class="foundryObjectComponentsComponent"
+                                     v-bind:class="{gotNeccessaryComponents:component.recipeNeccessaryComponents, componentHighlight:component.recipeHighlightedComponent}"
+                                     :style="{ backgroundImage: 'url(&quot;' + component.picture + '&quot;)' }">
+                                    <div class="foundryObjectComponentsComponentCount">{{component.quantityOwned}}</div>
+                                    <div v-if="component.isFavOnlyPart || component.isFav" class="relicPLannerMiniRewardParentOwned fav foundry"></div>
+                                </div>
+                            </div>
+                            <div v-if="relic.setPlat>0" class="setPrice">
+                                {{relic.setPlat}}
+                                <div class="relicItemSetPricePlatinumIcon"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <Transition name="fade">
+                        <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+                    </Transition>
+                    <Transition name="fade">
+                        <div v-if="error" class="inventoryBuySellTabOverlayError">
+                            <div>{{errorMessage}}</div>
+                        </div>
+                    </Transition>
+                </div>
+                <div class="relicBottomAlecaframe adHideable">
+                    <div class="relicBottomAlecaFrameTitle">
+                        <div class="relicBottomAlecaFrameIcon"></div>
+                        AlecaFrame
+                    </div>
+
+                    <div class="relicBottomOpenCloseMessage">
+                        <div class="relicBottomOpenCloseMessageInner">
+                            Use Ctrl+TAB to interact with the overlay
+                        </div>
+                    </div>
+
+                    <div class="relicItemPricePlatinumBOTTOM">
+                        {{globalData.platinum==-1?"-":globalData.platinum}}
+                        <div class="relicItemPricePlatinumIconBOTTOM"></div>
+                    </div>
+                    <div class="relicItemPriceDucatsBOTTOM">
+                        {{globalData.ducats==-1?"-":globalData.ducats}}
+                        <div class="relicItemPriceDucatsIconBOTTOM"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="staticRightColumn adHideable">
+                <div id="mainAD" class="mainAD adAttr400x300">
+                </div>
+                <div class="adBackground">
+                    <!--<div class="adBackgroundInner">
+                            Hey, If you like what you are seeing and would like to support the developement of this app, feel free to join our Discord server. <br /> You can find a link next next to the close button of the main window
+                        </div>-->
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Post JS files -->
+    <script src="assets/js/relicOverlay/main.js"></script>
+    <script>onOwAdReady();</script>
+
+</body>
+
+
+
+</html>

@@ -1,0 +1,120 @@
+.disabled {
+    filter: brightness(0.7)
+}
+
+
+
+header.thin {
+    height: 50px;
+    padding-left: 6px;
+}
+
+.gameModeSelection {
+    display: flex;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+.gameModeSelectionContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
+.topSetting.forceOpen:not(.selected) {
+    background-color: var(--color-card);
+}
+
+
+.squadItemLine {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.squadItemTopRight {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+
+
+.squadMode {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-weight: 400;
+}
+
+
+.requirementItem {
+    position: relative;
+    display: flex;
+    gap: 5px;
+    background-color: var(--color-bg-3);
+    border-radius: 17px;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+    height: 28px;
+    padding-left: 4px;
+    align-items: center;
+    outline: none;
+    padding-right: 11px;
+    transition: 0.12s linear;
+    white-space: nowrap;
+}
+
+    .requirementItem:hover {
+        background-color: var(--color-card-active);
+    }
+
+
+.reqImg {
+    min-width: 23px;
+    min-height: 23px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.squadItemLine.requirements {
+    padding-bottom: 3px;
+    justify-content: flex-start;
+}
+
+    .squadItemLine.requirements::-webkit-scrollbar {
+        height: 4px;
+    }
+
+.noExtraRequirementsText {
+    padding: 5px;
+}
+
+main {
+    overflow: hidden;
+}
+
+.squadType {
+    text-transform: capitalize;
+    padding: 3px 7px;
+    background-color: var(--color-card-active);
+    font-weight: 300;
+    font-size: 13px;
+    border-radius: 6px;
+}
+
+    .squadType.casual {
+        background-color: var(--color-card-active);
+    }
+
+    .squadType.optimized {
+        background-color: var(--color-sell-hover);
+    }

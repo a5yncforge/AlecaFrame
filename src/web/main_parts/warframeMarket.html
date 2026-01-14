@@ -1,0 +1,386 @@
+﻿
+<div class="mainTabHeader">
+    <div class="tabHeaderOption selected" tabid="MyOrdersTab" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon orders"></div>My orders</div>
+    <div class="tabHeaderOption" tabid="MyContractsTab" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon contracts"></div>My contracts</div>
+    <div class="tabHeaderLogOutWFM" onclick="DoWFMTabLogout();">Log out</div>
+</div>
+
+<div class="mainTabBody">
+    <div id="MyOrdersTab" class="shown">
+        <div class="foundryTopSettings">
+            <div class="foundryTopSettingsSide left">
+                <div v-for="category in topLeftCategories" class="topSetting relicPlanner" selectionData="all" :class="{selected: selectedCategory==category}" @click="changeSetting(category);">
+                    <div class="topSettingIcon" :class="[category.toLowerCase()]"></div>
+                    {{category}}
+                </div>
+            </div>
+
+            <div class="foundryTopSettingsSide right">
+
+                <div class="topSetting inventorySetting" :class="{forceOpen:selectedSearch!=''}">
+                    <div class="topSettingIcon search"></div>
+                    <input id="inventorySearch" placeholder="Search" @keyup="refresh();" v-model="selectedSearch" />
+                    <div class="topSettingIcon removeSearch" @click="selectedSearch = ''; refresh();"></div>
+                </div>
+
+                <div class="topSetting notHoverOpen relicPlanner">
+                    <div id="settingFilterExpandingWFMOrdersActions" class="topSettingIcon actions"></div>
+                </div>
+
+                <div class="topSetting notHoverOpen relicPlanner" :class="{forceOpen:Object.keys(yesnoFilters).length != 0}">
+                    <div id="settingFilterExpandingWFMOrders" class="topSettingIcon filter"></div>
+                    <div class="topSettingIcon removeSearch" @click="yesnoFilters = {}; refresh();" onclick="createWFMordersFilterTippy();"></div>
+                </div>
+
+                <div class="topSetting2 inventorySetting">
+                    <div title="Change order" class="topSettingIcon ordering" onclick="changeOrderingLargerOrSmallerFirst(event);" @click="selectedOrderingLargerToSmaller=!selectedOrderingLargerToSmaller; refresh();"></div>
+                    <select id="inventoryOrdering" @change="refresh()" v-model="selectedOrderingMode">
+                        <option value="name">Name</option>
+                        <option value="platinum">Platinum</option>
+                        <option value="amount">Amount</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="relativeContainer">
+            <div class="foundryObjectContainer wfmItems">
+
+                <div v-for="item in items" class="wfmItem" :key="item.randomID">
+                    <div class="wfmItemTop">
+                        <div class="wfmItemButton visibility" :class="{public: item.orderVisible}" @click="changeVisibility(item.randomID,item.platinumPerItem,item.amountOnSale,item.orderVisible)"></div>
+                        <div class="wfmItemName">{{item.name}}</div>
+                        <div class="wfmItemOwned">
+                            <div class="wfmItemOwnedText">{{item.dataInvalid?'-':item.amountOwned}} owned</div>
+                            <div v-if="item.showWarning" @click="fixSingleOrder(item)" class="wfmItemOwnedWarning">!</div>
+                        </div>
+                    </div>
+                    <div class="wfmItemBottom" :class="{private: !item.orderVisible}">
+                        <div class="wfmItemLeft" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)' }">
+                            <div class="wfmItemLeftText">{{item.isSellOrder?'WTS':'WTB'}}</div>
+                        </div>
+                        <div class="wfmItemRight">
+                            <div class="wfmItemBottomAmount">
+                                <span v-if="!item.editing">{{item.amountOnSale}}</span>
+                                <input class="inventoryBuySellInput wfmItemInput" v-if="item.editing" v-model="item.amountOnSale" type="number" />
+                                <div class="inventoryItemSellPlatIcon amount"></div>
+                            </div>
+                            <div class="wfmItemBottomPlat">
+                                <span v-if="!item.editing">{{item.platinumPerItem}}</span>
+                                <input class="inventoryBuySellInput wfmItemInput" v-if="item.editing" v-model="item.platinumPerItem" type="number" />
+                                <div class="inventoryItemSellPlatIcon rivenExplorer"></div>
+                            </div>
+                            <div class="wfmItemBottomExtra">{{item.extraItemDataString}}</div>
+                            <div class="wfmItemLowestPrice">
+                                <div class="wfmItemButton showMore" @click="showMore(item)"></div>
+                                <span>Lowest price:</span>
+                                {{item.lowestSalePrice<=0 ? '-' : item.lowestSalePrice}}
+                                <div class="inventoryItemSellPlatIcon rivenExplorer"></div>
+                            </div>
+                            <div class="wfmItemButtons">
+                                <div class="wfmItemButton edit" :class="{editing:item.editing}" @click="toggleEditMode(item)">
+                                    <div v-if="item.editing" class="wfmEditConfirm"></div>
+                                </div>
+                                <div v-if="!item.editing" class="wfmItemButton addOne" @click="addOne(item.randomID,item.platinumPerItem,item.amountOnSale,item.orderVisible)"></div>
+                                <div v-if="!item.editing" class="wfmItemButton markSold" @click="markAsSold(item.randomID)"></div>
+                                <div v-if="!item.editing" class="wfmItemButton remove" @click="removeOrder(item.randomID)"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+
+                <Transition name="fade">
+                    <div v-if="noItems" class="inventoryNoItemShown">
+                        <div><span class="inventoryNoItemShownSmall">No WFMarket orders were found with those filters</span></div>
+                    </div>
+                </Transition>
+
+
+                <Transition name="fade">
+                    <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+                </Transition>
+            </div>
+
+
+        </div>
+        <div class="inventorySummary">
+            <div class="inventorySummaryDatum">
+                WTS:
+                <div class="wfmSummaryBold">{{totalSellPlat}}</div>
+                <div class="inventorySummaryPlatinumIcon"></div>
+            </div>
+            <div class="inventorySummaryDatum">
+                WTB:
+                <div class="wfmSummaryBold">{{totalBuyPlat}}</div>
+                <div class="inventorySummaryPlatinumIcon"></div>
+            </div>
+        </div>
+    </div>
+    <div id="MyContractsTab">
+        <div class="foundryTopSettings">
+            <div class="foundryTopSettingsSide left">
+                <div v-for="category in topLeftCategories" class="topSetting relicPlanner" selectionData="all" :class="{selected: selectedCategory==category}" @click="changeSetting(category);">
+                    <div class="topSettingIcon" :class="[category.toLowerCase()]"></div>
+                    {{category}}
+                </div>
+            </div>
+
+            <div class="foundryTopSettingsSide right">
+                <div class="topSetting inventorySetting" :class="{forceOpen:selectedSearch!=''}">
+                    <div class="topSettingIcon search"></div>
+                    <input id="inventorySearch" placeholder="Search" @keyup="refresh();" v-model="selectedSearch" />
+                    <div class="topSettingIcon removeSearch" @click="selectedSearch = ''; refresh();"></div>
+                </div>
+
+                <div class="topSetting notHoverOpen relicPlanner">
+                    <div id="settingFilterExpandingWFMContractsActions" class="topSettingIcon actions"></div>
+                </div>
+
+                <div class="topSetting notHoverOpen relicPlanner" :class="{forceOpen:Object.keys(yesnoFilters).length != 0}">
+                    <div id="settingFilterExpandingWFMContracts" class="topSettingIcon filter"></div>
+                    <div class="topSettingIcon removeSearch" @click="yesnoFilters = {}; refresh();" onclick="createWFMcontractsFilterTippy();"></div>
+                </div>
+
+                <div class="topSetting2 inventorySetting">
+                    <div title="Change order" class="topSettingIcon ordering" onclick="changeOrderingLargerOrSmallerFirst(event);" @click="selectedOrderingLargerToSmaller=!selectedOrderingLargerToSmaller; refresh();"></div>
+                    <select id="inventoryOrdering" @change="refresh()" v-model="selectedOrderingMode">
+                        <option value="name">Name</option>
+                        <option value="weapon">Weapon</option>
+                        <option value="platinum">Platinum</option>
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="relativeContainer">
+            <div class="foundryObjectContainer wfmItems">
+
+                <div v-for="item in items" class="wfmItem" :key="item.randomID">
+                    <div class="wfmItemTop">
+                        <div class="wfmItemButton visibility" :class="{public: item.orderVisible}" @click="changeVisibility(item.randomID,!item.orderVisible)"></div>
+                        <div class="wfmItemName"><span class="rivenWeaponNameWeapon">{{item.weaponName}}</span>{{item.name}}</div>
+                        <div class="wfmItemOwned">
+                            <div v-if="item.showWarning" @click="fixSingleOrder(item)" class="wfmItemOwnedWarning">!</div>
+                        </div>
+                    </div>
+                    <div class="wfmItemBottom contract" :class="{private: !item.orderVisible}">
+                        <div class="wfmItemLeft" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)' }">
+                            <div class="wfmItemLeftText contract" :class="{auction:item.isAuction}">{{item.isAuction?'Auction':'Direct'}}</div>
+                        </div>
+                        <div class="wfmItemRight">
+                            <div class="wfmItemBottomAmount contract">
+                                <span>{{item.platinumText}}</span>
+                                <div class="inventoryItemSellPlatIcon rivenExplorer"></div>
+                            </div>
+                            <!--
+                            <div class="wfmItemBottomPlat">
+                                <span v-if="!item.editing">{{item.platinumPerItem}}</span>
+                                <input class="inventoryBuySellInput wfmItemInput" v-if="item.editing" v-model="item.platinumPerItem" type="number" />
+                                <div class="inventoryItemSellPlatIcon rivenExplorer"></div>
+                            </div>
+                            <div class="wfmItemBottomExtra">{{item.extraItemDataString}}</div>
+                            <div class="wfmItemLowestPrice">
+                                                        <span>Lowest price:</span>
+                                                        {{item.lowestSalePrice<=0 ? '-' : item.lowestSalePrice}}
+                                                        <div class="inventoryItemSellPlatIcon rivenExplorer"></div>
+                                                    </div>-->
+                            <div class="wfmRivenStats">
+                                <div v-if="item.stats!=undefined" v-for="stat in item.stats.positiveTraits" class="rivenTrait rivenPositiveTrait">
+                                    <span v-html="stat.description"></span>
+                                </div>
+                                <div v-if="item.stats!=undefined" v-for="stat in item.stats.negativeTraits" class="rivenTrait rivenNegativeTrait">
+                                    <span v-html="stat.description"></span>
+                                </div>
+                            </div>
+                            <div class="wfmItemButtons">
+                                <div class="wfmItemButton link" @click="openLink(item)"></div>
+                                <div class="wfmItemButton edit" @click="toggleEditMode(item)"></div>
+                                <div class="wfmItemButton remove" @click="removeOrder(item.randomID)"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+                <div class="hidden-flex-item wfmarket"></div>
+
+                <Transition name="fade">
+                    <div v-if="noItems" class="inventoryNoItemShown">
+                        <div><span class="inventoryNoItemShownSmall">No WFMarket contracts were found with those filters</span></div>
+                    </div>
+                </Transition>
+
+
+                <Transition name="fade">
+                    <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+                </Transition>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none">
+        <div id="tooltipFiltersWFMordersTemplate">
+            <div class="filtersInventoryHolder">
+                <div class="filterGroup">
+                    <div class="filterHeader">Order type</div>
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="changeWFMOrderFilter(event,'type','sell')">Sell</div>
+                        <div class="filterOption" onclick="changeWFMOrderFilter(event,'type','buy')">Buy</div>
+                    </div>
+                </div>
+                <div class="filterGroup">
+                    <div class="filterHeader">Missing items</div>
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="changeWFMOrderFilter(event,'missing','yes')">Yes</div>
+                        <div class="filterOption" onclick="changeWFMOrderFilter(event,'missing','no')">No</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none">
+        <div id="tooltipFiltersWFMcontractsTemplate">
+            <div class="filtersInventoryHolder">
+                <div class="filterGroup">
+                    <div class="filterHeader">Missing items</div>
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="changeWFMContractFilter(event,'missing','yes')">Yes</div>
+                        <div class="filterOption" onclick="changeWFMContractFilter(event,'missing','no')">No</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none">
+        <div id="tooltipFiltersWFMordersActionsTemplate">
+            <div class="filtersInventoryHolder">
+                <div class="filterGroup">
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="WFMarketConfirmButtonClick(event, wfmOrdersApp.setAllVisible)">
+                            <div class="wfmActionsImg visible"></div>Set all orders visible
+                            <div class="wfmFilterConfirmOverlay">Click again to confirm</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filterGroup">
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="WFMarketConfirmButtonClick(event, wfmOrdersApp.setAllInvisible)">
+                            <div class="wfmActionsImg invisible"></div>Set all orders invisible
+                            <div class="wfmFilterConfirmOverlay">Click again to confirm</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filterGroup">
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="WFMarketConfirmButtonClick(event, wfmOrdersApp.fixOrders)">
+                            <div class="wfmActionsImg fix"></div>Fix all missing items
+                            <div class="wfmFilterConfirmOverlay">Click again to confirm</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filterGroup">
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="WFMarketConfirmButtonClick(event,wfmOrdersApp.removeAll)">
+                            <div class="wfmActionsImg remove"></div>Remove all orders
+                            <div class="wfmFilterConfirmOverlay">Click again to confirm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none">
+        <div id="tooltipFiltersWFMcontractsActionsTemplate">
+            <div class="filtersInventoryHolder">
+                <div class="filterGroup">
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="WFMarketConfirmButtonClick(event, wfmContractsApp.setAllVisible)">
+                            <div class="wfmActionsImg visible"></div>Set all contracts visible
+                            <div class="wfmFilterConfirmOverlay">Click again to confirm</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filterGroup">
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="WFMarketConfirmButtonClick(event, wfmContractsApp.setAllInvisible)">
+                            <div class="wfmActionsImg invisible"></div>Set all contracts invisible
+                            <div class="wfmFilterConfirmOverlay">Click again to confirm</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filterGroup">
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="WFMarketConfirmButtonClick(event, wfmContractsApp.fixOrders)">
+                            <div class="wfmActionsImg fix"></div>Fix all missing items
+                            <div class="wfmFilterConfirmOverlay">Click again to confirm</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filterGroup">
+                    <div class="filterOptions">
+                        <div class="filterOption" onclick="WFMarketConfirmButtonClick(event, wfmContractsApp.removeAll)">
+                            <div class="wfmActionsImg remove"></div>Remove all contracts
+                            <div class="wfmFilterConfirmOverlay">Click again to confirm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wfmLoginOverlay">
+    <div class="inventoryWFMLoginModal">
+        <div class="inventoryWFMLoginTitle">
+            Login into
+            <div class="inventoryWFMLoginTitleIcon" @click="doWFMRegister()"></div>
+        </div>
+        <div class="inventoryWFMLoginField">
+            Email:
+            <input type="text" id="wfmLoginEmail" class="inventoryWFMemailInput" />
+        </div>
+        <div class="inventoryWFMLoginField">
+            Password:
+            <input type="password" id="wfmLoginPassword" class="inventoryWFMpasswordInput" />
+        </div>
+        <div class="inventoryWFMloginButtonGroup">
+            <button class="inventoryWFMregisterButton" onclick="doWFMRegister()">Sign up</button>
+            <button class="inventoryWFMloginButton" onclick="doWFMLogin();">Log in</button>
+        </div>
+        <div class="inventoryWFMloginTip">You login data is only used once and won't be stored</div>
+        <div class="inventoryWFMloginTip"><div class="wfmSteamIcon"></div><span>If you login to WFMarket with steam, please add an email/password to your WFMarket account (<a href="https://warframe.market/settings/account">Link</a>)</span></div>
+
+
+        <div id="wfmLoginLoadingOverlay" class="inventoryBuySellTabOverlayLoading hidden"></div>
+
+    </div>
+</div>
+
+<div class="wfmDownOverlay hidden">
+    <div class="inventoryWFMDownModal">
+        <div class="inventoryWFMLoginTitle">
+            Warframe.Market is down/very slow
+            <div class="inventoryWFMLoginTitleIcon" @click="doWFMRegister()"></div>
+        </div>
+        
+        <div class="inventoryWFMloginTip">Please try again later or check Discord for updates</div>
+    </div>
+</div>

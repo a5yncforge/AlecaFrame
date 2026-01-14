@@ -1,0 +1,474 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+    <title>TennoFinder - Squad search</title>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+    <script src="assets/js/external/jquery.min.js"></script>
+
+
+    <!-- JS files -->
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+    <script src="assets/js/squadmaking/signalr.js"></script>
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/main/foundry.css" />
+    <link rel="stylesheet" href="assets/css/main/inventory.css" />
+    <link rel="stylesheet" href="assets/css/main/modal.css" />
+    <link rel="stylesheet" href="assets/css/main/relicPlanner.css" />
+    <link rel="stylesheet" href="assets/css/main/rivenExplorer.css" />
+    <link rel="stylesheet" href="assets/css/main/wfmarket.css" />
+    <link rel="stylesheet" href="assets/css/public/stats.css" />
+
+    <link rel="stylesheet" href="assets/css/public/stats.css" />
+
+    <link rel="stylesheet" href="assets/css/squadmaking/shared.css" />
+    <link rel="stylesheet" href="assets/css/squadmaking/squadfinder.css" />
+
+</head>
+
+
+<body style="user-select: none;">
+    <div class="content" id="vueMain">
+
+        <header class="thin" onmousedown="dragMove(event);">
+
+            <div class="alecaframeNameTop sideways">
+                <div class="showMenuButton"></div>
+                TennoFinder - Squad search
+                <div class="betaFlare top">Beta</div>
+            </div>
+
+            <div class="topBarContainer" data-include="topBar"></div>
+
+
+            <div class="window-controls-group">
+
+                <a class="window-control discord-icon" target="_blank" href="https://discord.gg/Bc7PNNnnEZ">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/discord.svg#Layer_1" />
+                    </svg>
+                </a>
+
+                <button class="window-control" onclick="minimize()">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/sprite.svg#window-control_minimize" />
+                    </svg>
+                </button>
+
+                <button class="window-control" onclick="toggleMaximize()" onmousedown="event.stopPropagation()">
+                    <svg class="svg-icon-fill">
+                        <use id="maximizeImage" xlink:href="assets/img/svg/sprite.svg#window-control_maximize" />
+                    </svg>
+                </button>
+
+                <button class="window-control window-control-close" onclick="closeWindow()">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/sprite.svg#window-control_close" />
+                    </svg>
+                </button>
+            </div>
+
+            <button class="createSquadButton" :class="{disabled:squadWindowOpen}" onclick="availableSquadsApp.showCreateSquad()">Create squad</button>
+            <button class="createSquadButton rules" onclick="availableSquadsApp.showRules()">Rules</button>
+        </header>
+
+
+        <main>
+            <div class="background">
+                <div v-cloak v-if="isDataStale" class="refreshSuggestion">
+                    <div>The squad list hasn't been updated for a long time. Please use the <div class="refreshIconInMessage"></div> button to refresh it</div>
+                </div>
+                <div class="foundryTopSettings">
+                    <div class="foundryTopSettingsSide left">
+                        <div tabindex="0" class="categorySelectionDropDown">
+                            <div tabindex="0" class="squadModeIcon topPart" :style="{ backgroundImage: 'url(&quot;' + selectedCategory.image + '&quot;)' }"></div>
+                            {{selectedCategory.name}}
+
+                            <div tabindex="0" class="categorySelectionDownArrow"></div>
+
+                            <div tabindex="0" class="categorySelectionDropContainer">
+                                <div tabindex="0" v-for="category in gameModes" class="topSetting squadFinder" selectionData="all" @click.stop="selectedCategory = category; UnfocusElement();">
+                                    <div tabindex="0" class="squadModeIcon topPart" :style="{ backgroundImage: 'url(&quot;' + category.image + '&quot;)' }"></div>
+                                    {{category.name}} ({{category.internalName == "INTERNAL_ALL" ? squads.length : squads.reduce((n,item)=> item.gameMode == category.internalName ? n+1:n, 0)}})
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="foundryTopSettingsSide right">
+                        <div class="topSetting inventorySetting" :class="{forceOpen:selectedSearch!=''}">
+                            <div class="topSettingIcon search"></div>
+                            <input id="inventorySearch" placeholder="Search" v-model="selectedSearch" />
+                            <div class="topSettingIcon removeSearch" @click="selectedSearch = '';"></div>
+                        </div>
+                        <div class="topSetting notHoverOpen inventorySetting" @click="refreshSquadList()">
+                            <div class="topSettingIcon refresh"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="squadListContainer">
+                    <div v-for="squad in getFilteredSquads()" class="squadListItem" :key="squad.uniqueID">
+                        <div class="squadItemLine">
+                            {{squad.title}}
+                            <div class="squadItemTopRight">
+                                <span>{{squad.usedSlots}}/{{squad.maxSlots}}</span>
+                                <button class="squadItemJoin" @click="joinSquad(squad.uniqueID)" :class="{disabled:getUnableToJoinReason(squad)!=undefined}" :disable-reason="getUnableToJoinReason(squad)">Join squad</button>
+                            </div>
+                        </div>
+                        <div class="squadItemLine">
+                            <div class="squadMode">
+                                <div class="squadModeIcon" :style="{ backgroundImage: 'url(&quot;' + getGameMode(squad.gameMode).image + '&quot;)' }"></div>
+                                {{getDisplayGameModeName(squad.gameMode)}}
+                            </div>
+                            <div class="squadType" :class="[squad.level]">{{squad.level}}</div>
+                            <div class="squadUsername">
+                                <div class="squadModeIcon"></div>
+                                {{squad.ownerData.username}}
+                                <span class="reputation">{{squad.ownerData.reputation>0?'+':''}}{{squad.ownerData.reputation}}</span>
+                            </div>
+                        </div>
+                        <div class="squadItemLine requirements">
+                            <div v-for="req in squad.requirementsParsed" class="requirementItem mainList">
+                                <div class="reqImg" :style="{ backgroundImage: 'url(&quot;' + req.imageURL + '&quot;)' }"></div>
+                                {{req.name}}
+                            </div>
+                            <div v-if="squad.requirementsParsed==undefined || squad.requirementsParsed.length == 0" class="noExtraRequirementsText">
+                                No extra requirements
+                            </div>
+                        </div>
+                    </div>
+
+                    <Transition name="fade">
+                        <div v-if="getFilteredSquads().length==0" class="noSquadsFound">
+                            <div>
+                                No squads found
+                                <span>Try using different filters or create your own squad</span>
+                            </div>
+                        </div>
+                    </Transition>
+
+                    <Transition name="fade">
+                        <div v-if="squadListLoading" class="inventoryBuySellTabOverlayLoading"></div>
+                    </Transition>
+                </div>
+
+
+                <div id="modalCreateSquad" v-cloak>
+                    <Transition name="fade">
+                        <div v-show="createSquadVisible" class="modalSize" @click.self="createSquadVisible=false">
+                            <div class="innerModal createSquad">
+                                <div class="innerModalHeader">
+                                    <div v-if="squadCreationStep==0" class="innerModalHeaderTitle">Create a squad</div>
+                                    <div v-else class="innerModalHeaderTitle">Create a {{getDisplayGameModeName(createSquadCategory)}} squad</div>
+                                    <div class="innerModalClose" @click="createSquadVisible=false"></div>
+                                </div>
+                                <div class="innerModalContent">
+                                    <div v-if="squadCreationStep==0">
+                                        <div class="squadCreationEntryVertical">
+                                            <span class="squadCreationTitle squadTypeTitle big">Select the purpose of this squad:</span>
+                                            <div class="gameModeSelectionContainer">
+                                                <div v-for="category in gameModes.filter(p=>!p.internal)" class="creationGameType" selectionData="all" @click="createSquadCategoryChanged(category.internalName)">
+                                                    <div class="topSettingIcon" :class="[category.internalName.toLowerCase()]" :style="{ backgroundImage: 'url(&quot;' + category.image + '&quot;)' }"></div>
+                                                    {{category.name}}
+                                                    <div class="comingSoon" v-if="category.internalName=='RelicOpeningAdvanced'">Coming soon</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="squadCreationStep==1" class="squadCreationStep1">
+                                        <div class="squadCreationEntry">
+                                            <span class="squadCreationTitle">Room title:</span>
+                                            <input type="text" class="squadCreationInput" v-model="createSquadTitle" placeholder="(Optional)">
+                                        </div>
+                                        <div v-if="getCreateSquadSelectedMode().requirementsText!=undefined" class="squadCreationEntry">
+                                            <span class="squadCreationTitle">{{getCreateSquadSelectedMode().requirementsText}}</span>
+                                            <div class="relicSelectionContainer">
+                                                <div v-for="req in createSquadSelectedRequirements" @click="removeReqItemClicked(req)" class="requirementItem">
+                                                    <div class="reqImg" :style="{ backgroundImage: 'url(&quot;' + req.imageURL + '&quot;)' }"></div>
+                                                    {{req.name}}
+                                                </div>
+                                                <div class="requirementItem plus">
+                                                    +
+                                                    <input placeholder="Part or relic name" v-model="addReqSearchText" type="text" />
+                                                    <div tabindex="0" class="requirementAddItem">
+                                                        <div tabindex="0" v-for="req in filteredReqs()" @click="addReqItemClicked(req)">
+                                                            <div class="reqImg" :style="{ backgroundImage: 'url(&quot;' + req.imageURL + '&quot;)' }"></div>
+                                                            <div class="addingReqName">{{req.name}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div v-if="getCreateSquadSelectedMode().requirementsText!=undefined" class="squadCreationEntry tip"><span>Tip:</span>{{getCreateSquadSelectedMode().requirementsTip}}</div>
+                                        <div class="squadCreationEntry">
+                                            <span class="squadCreationTitle">Type:</span>
+                                            <select class="squadCreationInput" v-model="createSquadLevel">
+                                                <option value="casual">Casual</option>
+                                                <option value="optimized">Optimized</option>
+                                            </select>
+                                            <div v-if="createSquadLevel=='casual'" class="typeExplanation">Recommended. Nothing too serious, just respect the requirements and have fun.</div>
+                                            <div v-if="createSquadLevel=='optimized'" class="typeExplanation">This squad focused on speed and efficiency.</div>
+                                        </div>
+                                        <div class="squadCreationEntry">
+                                            <span class="squadCreationTitle">Max squad size:</span>
+                                            <input type="number" class="squadCreationInput" v-model="createSquadMaxSquadSize">
+                                        </div>
+                                        <button class="squadCreateButton" @click="createSquad()">Create squad</button>
+                                    </div>
+                                    <div v-if="squadCreationStep>0" class="createSquadStepButton" :class="{disabled:squadCreationStep<=0}" @click="squadCreationStep--"><div></div></div>
+                                </div>
+                            </div>
+                            <Transition name="fade">
+                                <div v-if="createSquadLoading" class="inventoryBuySellTabOverlayLoading"></div>
+                            </Transition>
+                        </div>
+                    </Transition>
+                </div>
+
+                <div id="modalReport" v-cloak>
+                    <Transition name="fade">
+                        <div v-show="reportUserVisible" class="modalSize" @click.self="reportUserVisible=false">
+                            <div class="innerModal createSquad">
+                                <div class="innerModalHeader">
+                                    <div class="innerModalHeaderTitle">Report a user</div>
+                                    <div class="innerModalClose" @click="reportUserVisible=false"></div>
+                                </div>
+                                <div class="innerModalContent">
+                                    <div class="reportUserModelInner">
+                                        <div class="squadCreationEntry">
+                                            <span class="squadCreationTitle">Player username:</span>
+                                            <span class="squadCreationTitle content">{{reportUsername}}</span>
+                                        </div>
+                                        <div class="squadCreationEntry vertical">
+                                            <span class="squadCreationTitle">Why are you reporting this user? (English only):</span>
+                                            <textarea class="squadCreationInput" v-model="reportText"></textarea>
+                                        </div>
+                                        <div class="squadCreationEntry">
+                                            <input type="checkbox" class="squadCreationInput" v-model="reportTermsAccepted">
+                                            <span class="squadCreationTitle">I confirm that my report is relevant and thruthful</span>
+                                        </div>
+                                        <button class="squadCreateButton" @click="sendReport()">Send report</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Transition>
+                </div>
+
+            </div>
+
+            <div class="staticRightColumn">
+                <div class="staticRightColumnTop">
+                    <div v-if="accountState" class="accountStateHolder">
+                        <span class="accountStateName">{{accountState.warframeName}}</span>
+                        <div class="accountStateReputation">
+                            <div>Reputation: <span>{{accountState.reputation>0?'+':''}}{{accountState.reputation}}</span></div>
+                            <div style="display:none" >Status:<span class="accountStatus" :class="{banned:accountState.banned}">{{accountState.banned ? "Banned" : "Good"}}</span></div>
+                        </div>
+                        <div class="accountStateTabHolder">
+                            <div class="mainTabHeader">
+                                <div class="tabHeaderOption selected" tabid="recentTab" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon recent"></div>Recent players</div>
+                                <div class="tabHeaderOption" tabid="blockedTab" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon blocked"></div>Blocked players</div>
+                            </div>
+                            <div class="mainTabBody">
+                                <div id="recentTab" class="userContainer shown">
+                                    <div v-for="player in accountState.lastPlayedUsernames" class="recentPlayer">
+                                        <div class="playerLeft">{{player.username}}</div>
+                                        <div class="playerRight">
+                                            <div v-if="!player.repGiven" class="playerRightButton reputation" @click="repPlayer(player.username)" title="Positive review"></div>
+                                            <div v-if="player.repGiven" class="playerRightButton unreputation" @click="unrepPlayer(player.username)" title="Remove positive review"></div>
+                                            <div v-if="!player.blocked" class="playerRightButton block" @click="blockPlayer(player.username)" title="Block user"></div>
+                                            <div v-if="!player.reportSent" class="playerRightButton report" @click="showReportUser(player.username)" title="Report user">!</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="blockedTab" class="userContainer">
+                                    <div v-for="player in accountState.blockedUsernames" class="recentPlayer">
+                                        <div class="playerLeft">{{player}}</div>
+                                        <div class="playerRight">
+                                            <div class="playerRightButton unblock" @click="unblockPlayer(player)" title="Unblock user"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="notLoggedInText">
+                        <div class="notLoggerTextInner">
+                            Please login or have your Warframe data recognized at least once to see your account information here
+                        </div>
+
+                    </div>
+
+                    <Transition name="fade">
+                        <div v-if="rightColumnLoading" class="inventoryBuySellTabOverlayLoading"></div>
+                    </Transition>
+
+                </div>
+
+                <div id="mainAD" class="mainAD"></div>
+
+                <div class="subscribeButton GoPremiumCallout">
+                    <div>Remove ads and support the developement</div>
+                    <button onclick="subscribeClick()">Subscribe</button>
+                </div>
+            </div>
+        </main>
+
+
+        <div id="loadingScreen" onmousedown="dragMove(event);">
+            <div v-show="bigModalConnectingVisible || bigModalErrorVisible" class="modalFULLSize">
+                <div class="innerModal loading">
+                    <div class="innerModalContent">
+                        <div v-if="bigModalConnectingVisible" class="loadingContainer" id="loadingContainerloading">
+                            <div class="loadingModalSpinner"></div>
+                            <div class="loadingModalText">Connecting to the matchmaking servers...</div>
+                        </div>
+
+                        <div v-if="bigModalErrorVisible" class="loadingContainer" id="loadingContainerError">
+                            <div class="loadingModalError"></div>
+                            <div class="loadingModalText">Failed to connect to the matchmaking servers.</div>
+                            <div class="loadingModalText">TennoFinder is probably down for maintenance, but if this error continues for a while, please ask for help on <a href="https://discord.gg/Bc7PNNnnEZ">Discord</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingScreen" onmousedown="dragMove(event);">
+            <div v-show="accountState!=undefined && accountState.banned" class="modalFULLSize">
+                <div class="innerModal loading">
+                    <div class="innerModalContent">
+                        <div class="loadingContainer" id="loadingContainerError">
+                            <div class="loadingModalError banned"></div>
+                            <div class="loadingModalText">Your account is currently banned from using TennoFinder.</div>
+                            <div class="loadingModalText"><strong>Reason:</strong> {{accountState?.banReason}}</div>
+                            <div class="loadingModalText">If you think this is a mistake or you want to appeal it, please do it on <a href="https://discord.gg/Bc7PNNnnEZ">Discord</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalFTUE" v-cloak>
+            <Transition name="fade">
+                <div v-show="FTUEvisible" class="modalFULLSize" onmousedown="if(event.target==event.currentTarget) dragMove(event);">
+                    <div class="innerModal ftue">
+                        <div class="innerModalHeader">
+                            <div class="innerModalHeaderTitle">
+                                Welcome to TennoFinder!
+                                <div class="betaFlare ftue">Beta</div>
+                            </div>
+                        </div>
+                        <div class="innerModalContent">
+                            <div class="ftueImageShowerContainer">
+                                <div v-if="FTUEprogress==0" class="ftueImageShower squad s1" :key="0">
+                                    <div class="ftueIcon tennoFinder"></div>
+                                    <div class="ftureTextBig">Welcome to TennoFinder</div>
+                                    <!--<div class="ftureText">AlecaFrame has a lot of features, lets explore them together!</div>-->
+                                </div>
+                                <div v-if="FTUEprogress==1" class="ftueImageShower squad s1" :key="0">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">On the left you can see a list of all squads that are looking for members.</div>
+                                    <div class="ftureText">Each squad shows what its purpose is, the reputation of its leader and the requirements/goals of the squad</div>
+                                </div>
+                                <div v-if="FTUEprogress==2" class="ftueImageShower squad s2" :key="1">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">You can filter the available squads by searching for any term (title, goals,...) or you can also create your own one</div>
+                                </div>
+                                <div v-if="FTUEprogress==3" class="ftueImageShower squad s3" :key="2">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">When creating your own squad, you can choose the goals and requirements of your squad.</div>
+                                    <div class="ftureText">If you are joining a squad, first make sure that you meet the requirements and have enough resources (relics,...) to complete the goals</div>
+                                </div>
+                                <div v-if="FTUEprogress==4" class="ftueImageShower squad s4" :key="3">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">On the right side you can see your current reputation and account status. If your reputation gets too low or are reported for breaking the rules, your account might get banned from using TennoFinder</div>
+                                    <div class="ftureText">If you had a good time with other players, you can increase their reputation with the + button.</div>
+                                    <div class="ftureText">If the opposite happens, you can block that user from joining your squads or send a report if they were breaking the rules</div>
+                                </div>
+                                <div v-if="FTUEprogress==5" class="ftueImageShower squad s5" :key="4">
+                                    <div class="ftueImage"></div>
+                                    <div class="ftureText">Once you join a squad, you can use the chat to talk to the other members</div>
+                                    <div class="ftureText">If you have a friend that isn't using AlecaFrame, you can add them as a Guest if there is a slot available</div>
+                                    <div class="ftureText">Remember that you are responsible for their actions, and you can also be reported for any rules your guests break</div>
+                                </div>
+                                <div v-if="FTUEprogress==6" class="ftueImageShower squad s7" :key="5">
+                                    <div class="ftureText title">TennoFinder rules and ToS</div>
+                                    <ol class="ftueRules">
+                                        <li class="ftureText">NSFW,  racial slurs, propaganda, politics, harassment, racism, discrimination, and other offensive behaviors are not allowed in squad titles and chat messages</li>
+                                        <li class="ftureText">Squads should be, by default, hosted in English. Similar to 1), this doesn't apply if all members are ok with something else</li>
+                                        <li class="ftureText">No spam or advertising in squad titles or chat messages</li>
+                                        <li class="ftureText">
+                                            When you join a squad, you are responsible for making sure you can complete the tasks listed in the title/requirements. Multiple offences will result in a ban.
+                                            If you are close to meeting the requirements, it is allowed to join the squad and ask in the chat if everyone is ok with your situation.
+                                        </li>
+                                        <li class="ftureText">Unless agreed otherwise, your main focus while on the squad should be to complete the objectives.  It is highly recommended that you set yourself to 'Offline' in WFMarket to avoid slowing down the other players of the squad.</li>
+                                        <li class="ftureText">If you meet someone your don't like, you can always block them from joining your squads. You should only report someone if they are breaking the rules listed here or their behaviour is clearly making everyone's experience worse.</li>
+                                        <li class="ftureText">Reports must be truthful and should contain enough information to make a decision on the case (screenshots, chat logs,...)</li>
+                                    </ol>
+                                    <div v-if="!rulesShown" class="settingsCheckBoxHolder" @click="ftueRulesAccepted=!ftueRulesAccepted">
+                                        <input class="settingsCheckBoxHolderBox" type="checkbox" v-model="ftueRulesAccepted">
+                                        I have read and agree to these rules
+                                    </div>
+                                </div>
+                                <!-- IF MORE PAGES ARE ADDED, showRules() needs to be updated with the right index -->
+                            </div>
+                            <div class="ftueImageControls">
+                                <button v-if="!rulesShown" @click="FTUEprogress--" class="ftueControl prev" :disabled="FTUEprogress<=0">Back</button>
+                                <button :disabled="FTUEprogress>=6 && !ftueRulesAccepted && !rulesShown" @click="FTUEprogress>=6 ? FTUEdone() : FTUEprogress++" class="ftueControl next">{{rulesShown? 'Close' :( FTUEprogress>=6?'Finish':'Next')}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </Transition>
+        </div>
+    </div>
+
+    <script>
+        function dragResize(edge) {
+            overwolf.windows.getCurrentWindow(function (result) {
+                if (result.status == "success") {
+                    overwolf.windows.dragResize(result.window.id, edge);
+                }
+            });
+        };
+    </script>
+
+    <div class="resize horizontal top" onmousedown="dragResize('Top');"></div>
+    <div class="resize vertical left" onmousedown="dragResize('Left');"></div>
+    <div class="resize vertical right" onmousedown="dragResize('Right');"></div>
+    <div class="resize horizontal bottom" onmousedown="dragResize('Bottom');"></div>
+
+    <div class="resize corner top-left" onmousedown="dragResize('TopLeft');"></div>
+    <div class="resize corner top-right" onmousedown="dragResize('TopRight');"></div>
+    <div class="resize corner bottom-left" onmousedown="dragResize('BottomLeft');"></div>
+    <div class="resize corner bottom-right" onmousedown="dragResize('BottomRight');"></div>
+
+
+    <!-- Post JS files -->
+    <script src="assets/js/squadmaking/shared.js"></script>
+    <script src="assets/js/squadmaking/squadfinder.js"></script>
+
+    <script src="https://content.overwolf.com/libs/ads/latest/owads.min.js" async onload="onOwAdReady()"></script>
+
+    <script src="assets/js/tilt.jquery.js"></script>
+</body>
+
+</html>

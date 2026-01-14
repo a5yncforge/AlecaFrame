@@ -1,0 +1,27 @@
+﻿:root {
+    --color-bg-1: #101623;
+    --color-bg-2: #171E30;
+    --color-bg-3: #20283E;
+    --color-card: #20283E;
+    --color-card-hover: #272F47;
+    --color-card-active: #313a58;
+    --color-tab: #432289;
+    --color-tab-hover: #5e44af;
+    --color-tab-active: #5923CB;
+    --color-tab-lighter: #b59dff;
+    --color-buy: #1c4d46;
+    --color-buy-hover: #24675d;
+    --color-buy-active: #11a64f;
+    --color-sell: #512939;
+    --color-sell-hover: #75314c;
+    --color-sell-active: #af2d2d;
+    --color-navigation: #8A8C95;
+    --color-navigation-hover: #CCCCCE;
+    --color-navigation-active: #FFFFFF;
+    --color-background-controls: #FFFFFF;
+    --color-text: #FFFFFF;
+    --color-text-bg: #FFFFFF;
+    --color-icons: #FFFFFF;
+    --color-icons-bg: #FFFFFF;
+    color: var(--color-text);
+}

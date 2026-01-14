@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>AlecaFrame Notification</title>
+
+    <!-- JS files -->
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>
+
+    <!--<script src="assets/js/vue.global.prod.js"></script>
+
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/external/popper.min.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>-->
+    <!-- CSS files -->
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/inGameNotifications.css" />
+</head>
+
+
+<body style="user-select: none;">
+    <div class="content">
+        <main>
+            <div class="mainGif">
+                <div class="divContentOverflower">
+                    <div id="divContentHolder" class="divContentHolder">
+                        <div id="notiIcon" class="notificationIcon"></div>
+                        <div id="notiSource"></div>
+                        <div id="notiText" class="notificationText"></div>
+                    </div>
+                </div>    
+            </div> 
+        </main>
+
+    </div>
+
+    <!-- Post JS files -->
+    <script>
+
+        setTimeout(() => {
+            overwolf.windows.getCurrentWindow((windowData) => {
+                overwolf.windows.close(windowData.window.id);
+            });
+        }, 6500);
+
+        var plugin = overwolf.windows.getMainWindow().plugin;
+        var mainWindow = overwolf.windows.getMainWindow();
+
+        overwolf.windows.getCurrentWindow((windowData) => {
+            var windowID = windowData.window.id;
+            overwolf.windows.changeSize({
+                "window_id": windowID,
+                "width": 320 * 1.1,
+                "height": 160 * 0.8,
+                "auto_dpi_resize": true
+            }, (a) => {
+                overwolf.games.getRunningGameInfo2((gameInfo) => {
+                    if (!gameInfo.success || gameInfo.gameInfo == null) {
+                        ExitQuietly("Failed to get running game info");
+                        return;
+                    }
+                    overwolf.windows.getCurrentWindow((windowData2) => {
+                        overwolf.windows.changePosition(windowID, gameInfo.gameInfo.logicalWidth - (windowData2.window.width) - 10, parseInt(gameInfo.gameInfo.logicalHeight*0.8) - (windowData2.window.height) - 20, (changePosArgs) => { });
+                    });
+
+                    document.getElementById("notiIcon").style.backgroundImage = "url("+mainWindow.lastInGameNotificationIcon + ")";
+                    document.getElementById("notiText").innerText = mainWindow.lastInGameNotificationText;
+                    document.getElementById("notiSource").innerText = mainWindow.lastInGameNotificationSource;
+                    document.getElementById("divContentHolder").classList.add("shown");
+
+                    console.log("Game size: width=" + gameInfo.gameInfo.logicalWidth + ", height=" + gameInfo.gameInfo.logicalHeight);                    
+                });
+            });
+        });
+
+    </script>
+    
+</body>
+
+
+
+</html>

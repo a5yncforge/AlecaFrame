@@ -1,0 +1,232 @@
+﻿
+<div class="foundryTopSettings">
+    <div class="foundryTopSettingsSide left">
+        <div v-for="category in topLeftCategories" class="topSetting relicPlanner" selectionData="all" :class="{selected: selectedCategory==category}" @click="changeSetting(category);">
+            <div class="topSettingIcon" :class="[category.toLowerCase()]"></div>
+            {{category}}
+        </div>
+    </div>
+    <div class="foundryTopSettingsSide right">
+        <div class="topSetting inventorySetting" :class="{forceOpen:selectedSearch!=''}">
+            <div class="topSettingIcon search"></div>
+            <input id="foundrySearch" placeholder="Search" @keyup="refresh();" v-model="selectedSearch" />
+            <div class="topSettingIcon removeSearch" @click="selectedSearch = ''; refresh();"></div>
+        </div>
+        <div class="topSetting notHoverOpen inventorySetting" :class="{forceOpen:Object.keys(yesnoFilters).length != 0}">
+            <div id="settingFilterExpandingFoundry" class="topSettingIcon filter"></div>
+            <div class="topSettingIcon removeSearch" @click="yesnoFilters = {}; refresh();" onclick="createFoundryFilterTippy();"></div>
+        </div>
+    </div>
+</div>
+<div class="foundryMainBody">
+    <div class="foundryObjectContainer">
+        <div v-for="item in items" class="foundryObject" :class="{owned:item.owned}">
+
+            <div class="foundryObjectName">
+                <div class="foundryObjectTopIcon fav" :class="{yes:item.isFav}" @click.stop="item.isFav=!item.isFav; setFavStatus(item.internalName, item.isFav);"></div>
+                <div>{{item.name}}</div>
+                <div v-if="item.mastered" class="foundryObjectTopIcon isMastered"></div>
+            </div>
+
+            <div class="foundryImageComponentRow">
+                <div class="foundryObjectImage" :style="{ backgroundImage: 'url(&quot;' + item.picture + '&quot;)' }" :class="[item.type]">
+                    <div v-if="item.archonShards && item.archonShards.length > 0" class="archonShardWarframesContainer">
+                        <div v-for="(shardGroup, index) in item.archonShards" :data-template="item.name + ' archonShardsTooltip' + index" class="foundryObjectTopIcon archonShards">
+                            <p class="archonShardsAmount">{{ shardGroup.length }}</p>
+                        </div>
+                    </div>                   
+                </div>
+                <div v-if="item.components!=undefined && item.components.length>0" class="foundryObjectComponents">
+                    <div v-for="component in item.components" :itemUID="component.uniqueName" :componentName="component.name" :class="{gotNeccessaryComponents:component.recipeNeccessaryComponents}" class="foundryObjectComponentsComponent" @click="openDetails(item.internalName, component.uniqueName)" :style="{ backgroundImage: 'url(&quot;' + component.picture + '&quot;)' }">
+                        <div v-if="component.quantityOwned!=0" class="foundryObjectComponentsComponentCount" :class="{limitWidth: component.anyRelicsOwned}">{{component.quantityOwned}}</div>
+                        <div v-if="component.isFavOnlyPart" class="relicPLannerMiniRewardParentOwned fav foundry"></div>
+                        <div v-if="component.anyRelicsOwned" class="relicPLannerMiniRewardParentOwned relic foundry"></div>                        
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="foundryObjectTopIcons">
+                <div v-if="item.extraVaultedInfo != undefined && item.extraVaultedInfo != '' && item.vualtedMakesSense" class="foundryVaultedHolder">
+                    <div class="foundryObjectTopIcon vaulted" :class="{yes:item.vaulted,no:!item.vaulted}"></div>
+                    {{item.vaulted?"Vaulted":"Unvaulted"}}
+                </div>
+
+                <div v-if="item.pendingInFoundry" class="foundryObjectTopIcon pending"></div>
+                <div v-if="item.owned" class="foundryObjectOwned">
+                    <div class="foundryObjectOwnedIcon"></div>
+                    Owned
+                </div>
+                <div v-if="item.incarnion" class="foundryIncarnionAttached">Incarnon</div>
+                <div v-if="item.type=='modular'" class="foundryObjectModular">
+                    {{item.modularType}}
+                </div>
+                <div v-if="item.minimumMastery > 1" class="foundryObjectTopIcon neccesaryLevel">MR: <div class="foundryBigger">{{item.minimumMastery}}</div></div>
+                <div v-if="item.neededForOtherStuff" class="foundryObjectTopIcon componentInSomething" :data-tippy-content="'&lt;center&gt;' + item.neededForOtherStuffInfo +'&lt;/center&gt;'"></div>
+                <div v-if="item.helminthDone" class="helminthHolder">
+                    <div class="foundryObjectTopIcon helminth"></div>
+                    Subsumed
+                </div>
+            </div>
+
+            <div style="display: none;">
+                <div v-if="item.archonShards" v-for="(shardGroup, index) in item.archonShards" :id="item.name + ' archonShardsTooltip' + index">
+                    <div class="archonShardsTooltip">
+                        <div v-for="shard in shardGroup" class="archonShard">
+                            <img :src="'/web/assets/img/archonShards/'+shard.type+'.webp'" :class="[shard.type]">
+                            <p v-html="shard.text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="foundryItemOverlay">
+                <div class="foundryItemOverlayMenuItem" @click="openDetails(item.internalName)">
+                    <div class="foundryItemActionIcon details"></div>
+                    Details
+                </div>
+
+                <div class="foundryItemOverlayMenuItem" @click="openCraftingTree(item.internalName)">
+                    <div class="foundryItemActionIcon tree"></div>
+                    Crafting tree
+                </div>
+            </div>
+        </div>
+
+        <div class="relicPlannerShowMore" v-if="items.length==100">
+            Only 100 results are shown. Try using different filters or click <span class="relicPlannerShowMoreButton" onclick="Refreshfoundry(true)">here</span> to show all of them. <br />
+        </div>
+    </div>
+    <Transition name="fade">
+        <div v-if="noItems" class="inventoryNoItemShown">
+            <div>Your inventory seems empty.<br /> <span class="inventoryNoItemShownSmall">Come back whenever you have something to sell or check that the connection to the game is working properly</span></div>
+        </div>
+    </Transition>
+
+    <Transition name="fade">
+        <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+    </Transition>
+</div>
+
+
+
+<div style="display:none">
+    <div id="tooltipFiltersFoundryTemplate">
+        <div class="filtersInventoryHolder">
+
+            <div class="filterGroup">
+                <div class="filterHeader">Type</div>
+                <div class="filterOptions">
+                    <div class="filterOption primePlaceholder" onclick="filterFoundryCheckboxClicked(event,'primeType','prime')">Prime</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'primeType','normal')">Normal</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Mastery</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'mastered','yes')">Mastered</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'mastered','no')">Unmastered</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Owned</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'owned','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'owned','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Vaulted</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'vaulted','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'vaulted','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Ready to build</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'ready2Build','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'ready2Build','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Enough mastery</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'enoughMastery','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'enoughMastery','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Prime resurgence</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'primeResurgence','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'primeResurgence','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Used for crafting</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'usedCrafting','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'usedCrafting','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Favorite</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'favorite','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'favorite','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Helminth done</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'helminth','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'helminth','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Contains archon shards</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'archonShards','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'archonShards','no')">No</div>
+                </div>
+            </div>
+
+            <div class="filterGroup">
+                <div class="filterHeader">Incarnon genesis</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'incarnon','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterFoundryCheckboxClicked(event,'incarnon','no')">No</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="foundryComponentTooltipTemplate" class="componentTooltipTemplate">
+        <div class="foundryComponentTooltip">
+            <div class="componentTooltipName">{{componentTippyData.componentName}}</div>
+
+            <div v-for="relic in componentTippyData.relics" class="foundryDetailsBottomRightDropItem" :onclick="'relicDetailsApp.open(\''+relic.relicUID+'\'); event.stopPropagation(); foundryApp.componentTippyInstance?.hide()'">
+                <div class="foundryDetailsBottomRightDropItemPicture" :style="{ backgroundImage: 'url(&quot;' + relic.imageURL + '&quot;)' }"></div>
+                <div class="foundryDetailsBottomRightDropItemDropName">{{relic.relicName}}</div>
+                <div class="foundryDetailsBottomRightDropItemDropOwned">
+                    <div class="foundryDetailsBottomRightDropItemDropOwnedIcon"></div>
+                    <div class="foundryDetailsBottomRightDropItemDropOwnedNumber">x{{relic.ownedAmount}}</div>
+                </div>
+                <div class="foundryDetailsBottomRightDropItemDropPercent">{{relic.percentDrop}}%</div>
+            </div>
+            <div v-if="!componentTippyData.showingAll" class="componentTooltipNotShowingAll">...</div>
+           
+        </div>      
+    </div>
+</div>

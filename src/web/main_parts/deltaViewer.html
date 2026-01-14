@@ -1,0 +1,96 @@
+﻿<Transition name="fade">
+    <div v-show="visible" class="modalSize" @mousedown.self="visible=false">
+        <div class="innerModal deltas">
+            <div class="innerModalHeader">
+                <div class="innerModalHeaderTitle">New items</div>
+                <div class="innerModalClose" @click="closeStuff()">
+                </div>
+            </div>
+            <div class="innerModalContent">
+                <div id="inventoryObjectContainer" class="inventoryObjectContainer">
+
+                    <div v-for="item in items" class="inventoryObject" :key="item.baseData.internalName">
+                        <div class="inventoryLeftPart">
+                            <div class="inventoryItemImage" :class="[item.baseData.modType,item.baseData.type]" :style="{ backgroundImage: 'url(&quot;' + item.baseData.picture + '&quot;)' }"></div>
+
+                            <div v-if="!useDucanator && item.baseData.ducats>0" class="inventoryItemDucatsHolder">
+                                <div class="inventoryItemDucats">{{item.baseData.ducats}}</div>
+                                <div class="inventoryItemDucatsIcon"></div>
+                            </div>
+                            <div v-if="useDucanator" class="inventoryItemDucatsHolder">
+                                <div class="inventoryItemDucats">{{Math.round((item.baseData.ducats/item.baseData.sellPrice)*100)/100}}</div>
+                                <div class="inventoryItemDucatsIcon ducanator"></div>
+                            </div>
+                        </div>
+
+                        <div class="inventoryRightPart">
+                            <div class="inventoryItemName" :rank="item.baseData.currentModRank"><span class="normalItem">{{item.baseData.name}}</span></div>
+
+                            <div v-if="item.baseData.type!='set'" class="inventoryItemExtraList">
+                                <div v-if="item.baseData.amountOwned>0" class="inventoryItemQuantity">x{{item.baseData.amountOwned}}</div>
+
+                                <div v-if="item.baseData.vualtedMakesSense" class="foundryVaultedHolder">
+                                    <div class="foundryObjectTopIcon vaulted" :class="{yes:item.baseData.vaulted,no:!item.baseData.vaulted}"></div>
+                                    {{item.baseData.vaulted?"Vaulted":"Unvaulted"}}
+                                </div>
+
+                                <div v-if="item.baseData.ordersPlaced" class="inventoryItemOrderPlaced"></div>
+                                <div v-if="item.baseData.goalItemOwned" class="inventoryTargetOwned"></div>
+                            </div>
+                                                                                                                
+
+                            <div class="inventoryBuySellContainer">
+                                <div v-if="item.baseData.type!='set'" class="inventoryItemButtonPostSell" @click.stop="onBuySellItemClickedVUE($event);">
+                                    SELL
+                                    <div class="inventoryItemSellRight">
+                                        <span class="inventorySellPrice">{{(item.baseData.sellPrice==undefined || item.baseData.sellPrice==0) ? '-' : item.baseData.sellPrice}}{{(item.baseData.shouldDisplayPlusInPrice)?'+':''}}</span>
+                                        <div class="inventoryItemSellPlatIcon"></div>
+                                    </div>
+                                </div>
+
+                                <div v-if="item.baseData.type!='set'" class="inventoryItemButtonInstaSell" @click.stop="onBuySellItemClickedVUE($event);">
+                                    BUY
+                                    <div class="inventoryItemSellRight">
+                                        <span class="inventoryBuyPrice">{{(item.baseData.buyPrice==undefined || item.baseData.buyPrice==0) ? '-' : item.baseData.buyPrice}}</span>
+                                        <div class="inventoryItemSellPlatIcon"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hidden-flex-item inventory"></div>
+                    <div class="hidden-flex-item inventory"></div>
+                    <div class="hidden-flex-item inventory"></div>
+                    <div class="hidden-flex-item inventory"></div>
+                    <div class="hidden-flex-item inventory"></div>
+                    <div class="hidden-flex-item inventory"></div>
+                    <div class="hidden-flex-item inventory"></div>
+                    <div class="hidden-flex-item inventory"></div>                 
+                </div>
+
+                <div class="deltaBottomRow">
+                    <div class="deltaComeBackLater filterOption" @click="visible=false">Continue later</div>
+                    <div class="deltaHarrow">Harrow chassis: <strong>{{harrowChassis}}</strong></div>
+                    <div class="deltaTotals">
+                        Total:
+                        <div class="inventorySummaryDatum">
+                            {{totalPlatinum}}
+                            <div class="inventorySummaryPlatinumIcon"></div>
+                        </div>
+                        <div class="inventorySummaryDatum">
+                            {{totalDucats}}
+                            <div class="inventorySummaryDucatsIcon"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <Transition name="fade">
+                    <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+                </Transition>
+            </div>
+
+            
+        </div>
+    </div>
+</Transition>

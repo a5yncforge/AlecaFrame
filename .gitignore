@@ -1,0 +1,23 @@
+# Build outputs
+src/NET/**/**/bin/
+src/NET/**/**/obj/
+
+*.user
+*.suo
+*.userprefs
+
+
+*.vs*
+.vscode/
+
+*.log
+*.tmp
+*.cache
+
+#*.exe
+#*.dll
+
+**/appsettings.*.json
+
+
+dist

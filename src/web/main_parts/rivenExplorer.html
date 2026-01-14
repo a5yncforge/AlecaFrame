@@ -1,0 +1,445 @@
+﻿   
+<div class="mainTabHeader">
+    <div class="tabHeaderOption" tabid="veiledStashTab" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon veiled"></div> Veiled stash</div>
+    <div class="tabHeaderOption selected" tabid="unveiledStashTab" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon unveiled"></div> Unveiled stash</div>
+    <div class="tabHeaderOption" tabid="rivenFinderTab" onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon search"></div>Finder</div>
+    <div class="tabHeaderOption" tabid="rivenSniperTab"  onclick="doTabHeaderWork(event)"><div class="tabHeaderIcon sniper"></div>Sniper</div>
+</div>
+
+<div class="mainTabBody">
+    <div id="veiledStashTab">
+        <div class="foundryTopSettings">
+            <div class="foundryTopSettingsSide left">
+                <div v-for="category in topLeftCategories" class="topSetting relicPlanner" selectionData="all" :class="{selected: selectedCategory==category}" @click="changeSetting(category);">
+                    <div class="topSettingIcon" :class="[category.toLowerCase()]"></div>
+                    {{category}}
+                </div>
+            </div>
+        </div>
+
+        <div class="foundryObjectContainer veiledRivens">
+            <div v-for="group in itemGroups" class="itemGroup">
+                <div class="itemGroupName">{{group.challengeDescription}}</div>
+                <div class="itemGroupSeparator"></div>
+                <div class="itemGroupItems">
+                    <div v-for="riven in group.rivens" class="veiledItem">
+                        <div class="rivenVeiledContent">
+                            <div class="veiledRivenName">{{riven.name.replace(' Mod','')}}</div>
+                            <div v-html="riven.challengeStringWithComplication" class="veiledRivenChallenge"></div>
+                            <div class="veiledProgressSection">
+                                <div v-if="riven.challengeMaxProgress!=-1" class="veiledProgressNumber">{{riven.challengeCurrentProgress + '/' + riven.challengeMaxProgress}}</div>
+                                <div v-else class="veiledProgressNumber amount">x{{riven.amountOwned}}</div>
+                                <div class="inventoryItemButtonPostSell riven" onclick="onBuySellItemClickedAttr(event);" :data-item-name="riven.name + ' (Veiled)'">
+                                    TRADE
+                                    <div class="inventoryItemSellRight">
+                                        <span class="inventorySellPrice">{{(riven.tradePrice==undefined || riven.tradePrice<=0) ? '-' : riven.tradePrice}}</span>
+                                        <div class="inventoryItemSellPlatIcon"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rivenVeiledOverlay"></div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <Transition name="fade">
+                <div v-if="noItems" class="inventoryNoItemShown">
+                    <div>No rivens were found with those filters<br /> <span class="inventoryNoItemShownSmall">Change your filters or make sure that the connection to the game is working properly.</span></div>
+                </div>
+            </Transition>
+
+
+
+        </div>
+
+        <Transition name="fade">
+            <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+        </Transition>
+
+    </div>
+    <div id="unveiledStashTab" class="shown">
+        <div class="foundryTopSettings">
+            <div class="foundryTopSettingsSide left">
+                <div v-for="category in topLeftCategories" class="topSetting relicPlanner" selectionData="all" :class="{selected: selectedCategory==category}" @click="changeSetting(category);">
+                    <div class="topSettingIcon" :class="[category.toLowerCase()]"></div>
+                    {{category}}
+                </div>
+            </div>
+
+            <div class="foundryTopSettingsSide right">
+                <div class="topSetting inventorySetting" :class="{forceOpen:selectedSearch!=''}">
+                    <div class="topSettingIcon search"></div>
+                    <input id="inventorySearch" placeholder="Search" @keyup="refresh(false);" v-model="selectedSearch" />
+                    <div class="topSettingIcon removeSearch" @click="selectedSearch = ''; refresh(false);"></div>
+                </div>
+
+                <div class="topSetting2 inventorySetting">
+                    <div title="Change order" class="topSettingIcon ordering" onclick="changeOrderingLargerOrSmallerFirst(event);" @click="selectedOrderingLargerToSmaller=!selectedOrderingLargerToSmaller; refresh(false);"></div>
+                    <select id="inventoryOrdering" @change="refresh()" v-model="selectedOrderingMode">
+                        <option value="name">Name</option>
+                        <option value="disposition">Disposition</option>
+                        <option value="requiredMR">Required MR</option>
+                        <option value="rerolls">Rerolls</option>
+                        <option value="perfectness" title="How perfect the random component for each stat is">Stat perfectness</option>
+                        <option value="grade">Riven grade</option>
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="foundryObjectContainer veiledRivens unveiled">
+
+            <div v-for="riven in items" class="veiledItem" :key="riven.randomID" @click="itemClicked(riven.randomID);">
+                <div class="rivenVeiledContent">
+                    <div class="veiledRivenName">
+                        <div class="rivenDispositionContainer" v-if="selectedOrderingMode=='disposition'">{{Math.round(10*riven.disposition)/10}}</div>
+                        <div class="rivenDispositionContainer" v-if="selectedOrderingMode=='rerolls'">{{riven.rerollCount}}</div>
+                        <div class="rivenWeaponNameWeapon"><div v-if="riven.listedInWFMarket" class="inventoryItemOrderPlaced"></div>{{riven.weaponName}}</div>{{riven.name}}
+                        <div class="rivenGradeSmall explorer" :class="[riven.grade]"></div>
+                    </div>
+                    <div class="veiledRivenChallenge unveiled">
+                        <div v-for="stat in riven.statsPerWeapon[0].byLevel[riven.currentImprovementLevel].positiveTraits" class="rivenTrait rivenPositiveTrait">
+                            <span v-html="stat.description"></span>
+                        </div>
+                        <div v-for="stat in riven.statsPerWeapon[0].byLevel[riven.currentImprovementLevel].negativeTraits" class="rivenTrait rivenNegativeTrait">
+                            <span v-html="stat.description"></span>
+                        </div>
+                    </div>
+                    <div class="veiledProgressSection">
+                        <div class="veiledProgressNumber unveiled">
+                            <div>{{riven.currentImprovementLevel}}/{{riven.maxImprovementLevel}}</div>
+                            <div class="unveiledRivenCostGroup">
+                                <div>{{riven.currentCost}}</div>
+                                <div class="foundryDetailsCustomGeneralEntryValueIcon polarity riven" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + riven.polarity + '.png&quot;)' }"></div>
+                            </div>
+                        </div>
+                        <div class="inventoryItemButtonPostSell riven unveiled" :class="{disabled:riven.listedInWFMarket}">
+                            TRADE
+                        </div>
+                        <div class="unveiledMR">MR: {{riven.minimumMastery}}</div>
+                    </div>
+                </div>
+                <div class="rivenVeiledOverlay"></div>
+            </div>
+
+            <Transition name="fade">
+                <div v-if="noItems" class="inventoryNoItemShown">
+                    <div>No rivens were found with those filters<br /> <span class="inventoryNoItemShownSmall">Change your filters or make sure that the connection to the game is working properly.</span></div>
+                </div>
+            </Transition>
+        </div>
+
+        <div class="rivenDetailsSeparator"></div>
+
+        <div id="WFMexplorerTab">
+            WFMarket riven lookup:            
+            <div class="wfmExplorerBottom">
+                <input id="rivenWFMlookupURL" type="text" class="textInput rivenWindow" placeholder="Enter a WFMarket riven ID or URL here"/>
+                <div class="rivenExplorerFinalButton wfmExplorer" onclick="rivenDetailsApp.openFromWFM($('#rivenWFMlookupURL')[0].value)">Go!</div>
+            </div>
+        </div>
+
+        <Transition name="fade">
+            <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+        </Transition>
+    </div>
+    
+    
+    <div id="rivenFinderTab">
+        <div class="rivenFinderLeft">
+            <div class="rivenFinderDetailsTop">
+                <div class="rivenDetailsImage" :style="{ backgroundImage: 'url(&quot;' + weaponData?.weaponImage + '&quot;)' }"></div>
+                <div class="rivenFinderSearchContainer" :class="{open:weaponSearchOpen}">
+                    <div class="rivenFinderSearchTopPart" @click="weaponSearchOpen=!weaponSearchOpen">
+                        {{weaponData?.weaponName??"Select a weapon"}}
+                        <div class="rivenFinderSearchIcon dropdown"></div>
+                    </div>
+                    <div v-if="weaponSearchOpen" class="rivenFinderSelectOverlay">
+                        <div class="rivenFinderSearchBar">
+                            <input v-model="weaponSearchString" @input="refreshWeaponSearch()" />
+                            <div class="rivenFinderSearchIcon"></div>
+                        </div>
+                        <div class="rivenFinderSuggestions">
+                            <div v-for="guess in weaponSearchData" @click="weaponSelected(guess.uniqueID)">
+                                <div class="wfmSuggestionPicture" :style="{ backgroundImage: 'url(&quot;' + guess.image + '&quot;)' }"></div>
+                                <span>{{guess.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rivenFinderLeftOther">
+                <div class="goodAttributesContainer">
+                    <div class="rivenDetailsHeader">
+                        Best attributes:
+                        <div class="goodAttrLegend">
+                            <div class="goodAttrMandatory">Mandatory</div>
+                            <div class="goodAttrItemOptionalGroup">Optional</div>
+                        </div>
+                    </div>
+                    <div class="goodAttrsBody">
+                        <div class="bestAttributesContainer">
+                            <div v-for="goodRoll in weaponData?.goodRollData?.goodAttrs" class="goodAttrItem">
+                                <div v-for="mandatoryAttr in goodRoll.mandatory" class="goodAttrMandatory" :class="{matches:mandatoryAttr.matches}">{{mandatoryAttr.text}}</div>
+                                <div v-if="goodRoll.optional?.length > 0" class="goodAttrItemOptionalGroup">
+                                    <div v-for="optionalAttr in goodRoll.optional" class="goodAttrOptional" :class="{matches:optionalAttr.matches}">{{optionalAttr.text}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="badAttributesContainer">
+                            Best bad attrs:
+                            <div class="goodAttrsBody">
+                                <div class="goodAttrItemOptionalGroup">
+                                    <div class="badAttrItem" v-for="badAttrs in weaponData?.goodRollData?.acceptedBadAttrs" :class="{matches:badAttrs.matches}">{{badAttrs.text}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rivenFinderLowestPrice">
+                    Lowest WFMarket price: 
+                    <span>{{weaponData?.lowestPrice}}</span>
+                    <div class="inventoryItemSellPlatIcon rivenFinder"></div>
+                </div>
+
+                <div class="statsChart">
+                    <div class="statsChartTop">
+                        <div class="statsChartTopLeft">
+                            Average riven price
+                            <div class="statsChartIcon platinum"></div>
+                        </div>
+                    </div>
+                    <div class="statsChartContainer">
+                        <canvas id="rivenFinderPrice" class="statsChartChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="rivenFinderValuedAttrs">
+                    <div class="rivenFinderHeader">
+                        Attribute price and popularity:
+                        <div class="subscriberIcon tooltip" data-tippy-content="Subscribe to see exact prices for each attribute" onclick="overwolf.utils.openUrlInDefaultBrowser('https://www.patreon.com/AlecaFrame')"></div>
+                    </div>
+                    <div class="rivenFinderValuedAttrsContainer">
+                        <div v-for="attr in weaponData.attrData">
+                            <span class="attrName" v-html="attr.name"></span>
+                            <div class="similarPrice">{{attr.price}} <div class="inventoryItemSellPlatIcon rivenFinder"></div></div>
+                            <span>{{Math.round(attr.usage*100)}}%</span>
+                        </div>
+                    </div>
+                </div>
+                <Transition name="fade">
+                    <div v-if="weaponData?.weaponName==undefined" class="inventoryNoItemShown">
+                        <div><span class="overlayTextSmall">Please select a weapon first</span></div>
+                    </div>
+                </Transition>
+                <Transition name="fade">
+                    <div v-if="weaponLoading" class="inventoryBuySellTabOverlayLoading"></div>
+                </Transition>
+            </div>
+            
+        </div>
+        <div class="rivenDetailsSeparator vertical"></div>
+        <div class="rivenFinderRight">
+            <div class="rivenFinderRightTop">
+                <div class="rivenFinderAttrSelection">
+                    <div class="rivenFinderAttrSelectAttr header">
+                        <div class="rivenFinderAttrLeft">
+                            <span>Attribute</span>
+                            <span>Required</span>
+                        </div>
+                        <div class="rivenFinderAttrRight">
+                            <span>Range</span>
+                        </div>
+                    </div>
+                    <div v-for="attr in attrsToSelect" class="rivenFinderAttrSelectAttr" :class="{positive:attr.positive, negative:!attr.positive}">
+                        <div class="rivenFinderAttrLeft">
+                            <select v-model="attr.selectedAttrUID" @change="selectedAttrsChanged()">
+                                <option value="">-</option>
+                                <option v-for="possibleAttr in weaponData?.attrs?.filter(p=>attrsToSelect?.find(k=>k.selectedAttrUID==p.internalName)==undefined || attr.selectedAttrUID == p.internalName)" :value="possibleAttr.internalName" v-html="possibleAttr.name"></option>
+                            </select>
+                            <label class="switch small">
+                                <input type="checkbox" v-model="attr.required" @change="selectedAttrsChanged();">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div v-if="attr.selectedAttrUID!=''" class="rivenFinderAttrLeft">
+                            <div class="rivenFinderStatRange">
+                                <span>{{getPossibleAttrDataByUID(attr.selectedAttrUID)?.isMultiplier?'x':''}}{{getPossibleAttrDataByUID(attr.selectedAttrUID)?.min}}{{getPossibleAttrDataByUID(attr.selectedAttrUID)?.isPercentage?'%':''}}</span> &lt;-&gt; <span>{{getPossibleAttrDataByUID(attr.selectedAttrUID)?.isMultiplier?'x':''}}{{getPossibleAttrDataByUID(attr.selectedAttrUID)?.max}}{{getPossibleAttrDataByUID(attr.selectedAttrUID)?.isPercentage?'%':''}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rivenFinderSearchFilterContainer">
+                        <div class="rivenFinderSearchGroup">
+                            Price:
+                            <input placeholder="-" type="number" v-model="minPrice" @change="selectedAttrsChanged()" />
+                            <div class="inventoryItemSellPlatIcon rivenFinder"></div>
+                            -
+                            <input placeholder="∞" type="number" v-model="maxPrice" @change="selectedAttrsChanged()" />
+                            <div class="inventoryItemSellPlatIcon rivenFinder"></div>
+                        </div>
+                        <div class="rivenFinderSearchGroup">
+                            Minimum similarity %:
+                            <input placeholder="-" type="number" v-model="minSimilarity" @change="selectedAttrsChanged()" />
+                        </div>
+                        <div class="rivenFinderSearchGroup">
+                            Rerolls:
+                            <input placeholder="-" type="number" v-model="minRerolls" @change="selectedAttrsChanged()" />
+                            -
+                            <input placeholder="∞" type="number" v-model="maxRerolls" @change="selectedAttrsChanged()" />
+                        </div>
+                        <div class="rivenFinderSearchGroup">
+                            Req. negative:
+                            <label class="switch small">
+                                <input type="checkbox" v-model="negativeRequired" @change="selectedAttrsChanged();">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="rivenDetailsSeparator"></div>
+            <div class="rivenDetailsMiddle">
+                <div class="rivenDetailsHeader">
+                    Similar rivens:
+                    <div class="newEasyFilter">
+                        <div class="newEasyFilterItem" :class="{selected:similarMode=='all'}" @click="similarMode='all'">
+                            <div class="newEasyFilterIcon topSettingIcon all"></div>
+                            All
+                        </div>
+                        <div class="newEasyFilterItem" :class="{selected:similarMode=='WFMarket'}" @click="similarMode='WFMarket'">
+                            <div class="newEasyFilterIcon topSettingIcon wfmarket"></div>
+                            WFMarket
+                        </div>
+                        <div class="newEasyFilterItem" :class="{selected:similarMode=='RivenMarket'}" @click="similarMode='RivenMarket'">
+                            <div class="newEasyFilterIcon topSettingIcon rivenmarket"></div>
+                            Riven.Market
+                        </div>
+                    </div>
+                </div>
+                <div class="similarRivenContainers scroll">
+                    <div v-for="similar in similarRivens?.filter(p=>p.source==similarMode || similarMode=='all')" class="similarRiven">
+                        <div class="similarHeader">
+                            <div class="similarRivenSourceIcon" :class="[similar.source]"></div>
+                            <div class="similarPercentEqual">{{Math.round(similar.similarity*100)}}%</div>
+                            <div class="similarPrice">{{similar.price}} <div class="inventoryItemSellPlatIcon rivenExplorer"></div></div>
+                        </div>
+                        <div class="similarBody">
+                            <div class="similarRivenAttr" :class="{positive:attr.positive, notMatching: !attr.matches}" v-for="attr in similar.attrs" v-html="attr.text"></div>
+                        </div>
+                        <div v-if="similar.link!=''" class="similarRivenOverlayLinks">
+                            <div v-if="similar.source=='WFMarket'" class="similarLink af" @click="openAFRivenClicked(similar.source, similar.link)"></div>
+                            <div class="similarLink web" @click="openWebRivenClicked(similar.link)"></div>
+                        </div>
+                        <div class="rivenGradeSmall similar" :class="[similar?.grade]"></div>
+                    </div>
+                    <Transition name="fade">
+                        <div v-if="similarRivens?.findIndex(p=>p.source==similarMode || similarMode=='all')==-1" class="inventoryNoItemShown">
+                            <div><span class="overlayTextSmall">No similar rivens found</span></div>
+                        </div>
+                    </Transition>
+                    <Transition name="fade">
+                        <div v-if="similarLoading" class="inventoryBuySellTabOverlayLoading"></div>
+                    </Transition>
+                </div>
+            </div>
+            <div class="rivenDetailsSeparator"></div>
+            <div class="rivenFinderAddToSniper">
+                <div class="rivenFinderAddSniperGroup left">
+                    <div class="rivenDetailsHeader">
+                        Add to Sniper:
+                    </div>
+                    <div class="rivenFinderSearchGroup">
+                        <input style="width: 183px; text-transform: none;" placeholder="Enter a name for the config" type="text" v-model="sniperConfigName" />
+                    </div>
+
+                </div>
+
+                <div class="rivenFinderAddSniperGroup">
+                    <div class="rivenFinderSearchGroup">
+                        Slots used:
+                        <span class="rivenFinderSlotsUsed">{{currentConfigCount}}/{{maxConfigCount}}</span>
+                        <div class="subscriberIcon tooltip" data-tippy-content="Subscribe to get more config slots" onclick="overwolf.utils.openUrlInDefaultBrowser('https://www.patreon.com/AlecaFrame')"></div>
+                    </div>
+                    <div class="rivenExplorerFinalButton" @click="addSniperConfig()">Add sniper config</div>
+                </div>
+
+                <Transition name="fade">
+                    <div v-if="sniperAddLoading" class="inventoryBuySellTabOverlayLoading"></div>
+                </Transition>
+            </div>
+
+            <Transition name="fade">
+                <div v-if="weaponData?.weaponName==undefined" class="inventoryNoItemShown">
+                    <div><span class="overlayTextSmall">Please select a weapon first</span></div>
+                </div>
+            </Transition>
+        </div>
+    </div>
+   
+    <div id="rivenSniperTab">
+        <div class="rivenDetailsMiddle">
+            <div class="rivenDetailsHeader">
+                Your notification slots:
+                <div class="rivenFinderSearchGroup">
+                    Slots used:
+                    <span class="rivenFinderSlotsUsed">{{accountData?.notifications?.length}}/{{accountData?.maxSubscriptions}}</span>
+                    <div class="subscriberIcon tooltip" data-tippy-content="Subscribe to get more config slots" onclick="overwolf.utils.openUrlInDefaultBrowser('https://www.patreon.com/AlecaFrame')"></div>
+                </div>
+            </div>
+            <div class="sniperNotificationContainer">
+                <div v-for="notification in accountData?.notifications" class="sniperNotificationSlot">
+                    <div class="sniperWeapon">
+                        <div class="rivenDetailsImage" :style="{ backgroundImage: 'url(&quot;' + notification?.weaponImage + '&quot;)' }"></div>
+                        <div class="removeSniperButton" @click="removeNotification(notification.id)"></div>
+                        <div class="sniperEnableSwitch">
+                            <label class="switch">
+                                <input type="checkbox" v-model="notification.enabled" @change="toggleNotificationEnabled(notification.id, notification.enabled)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="sniperText">
+                        <span class="sniperWeaponName">{{notification.name}} <span>({{notification.weaponName}})</span></span>
+                        <div class="sniperNotifGroup">
+                            Price: <span>{{notification.filters.minPrice??0}} - {{notification.filters.maxPrice >= 10000000 ? '∞' : notification.filters.maxPrice}}</span>
+                            <div class="inventoryItemSellPlatIcon rivenFinder small"></div>
+                        </div>
+                        <div class="sniperNotifGroup">
+                            Min similar %: <span>{{notification.filters.minSimilarity}}</span>
+                        </div>
+                        <div class="sniperNotifGroup">
+                            Rerolls: <span>{{notification.filters.minRerolls}} - {{notification.filters.maxRerolls >= 10000000 ? '∞' : notification.filters.maxRerolls}}</span>
+                        </div>
+                    </div>
+                    <div class="similarBody sniperAttrs">
+                        <div class="similarRivenAttr" :class="{positive:attr.positive}" v-for="attr in notification.attrs" v-html="attr.text"></div>
+                        <div v-if="notification.attrs.length==0" class="similarRivenAttr none">-</div>
+                    </div>
+                </div>
+                <div class="similarRivensEmpty" v-if="accountData?.notifications?.length == 0">No sniper configurations found <br /> You can create custom configurations in the 'Finder' tab</div>
+            </div>
+        </div>
+        <div class="rivenDetailsSeparator"></div>
+        <div class="rivenDetailsMiddle dontGrow">
+            <div class="rivenDetailsHeader">
+                Sniper settings:
+            </div>
+            <div class="rivenSniperSettingsGroup">
+                Discord webhook URL:
+                <input type="text" v-model="accountData.notificationDiscordWebhook" @change="notificationSettingsChanged()" />
+            </div>
+        </div>
+        <Transition name="fade">
+            <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+        </Transition>
+    </div>
+</div>

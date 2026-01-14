@@ -1,0 +1,1715 @@
+header.thin {
+    align-items: center;
+    gap: 10px;
+    height: 38px;
+    padding-right: 7px;
+    padding-left: 9px;
+    background-color: #ffffff0d;
+}
+
+.topAlecaFrameIcon {
+    width: 30px;
+    /* background-color: white; */
+    height: 30px;
+    background-image: url(../../img/AlecaFrame.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.topBarContainer {
+    display: flex;
+    gap: 11px;
+    margin-right: auto;
+}
+
+body {
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.buildSectionItemSelector {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.buildSectionBuild {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 5px;
+}
+
+.buildSectionBuildContainer {
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    overflow: hidden;
+    /* width: 1px; */
+    padding: 7px;
+    padding-left: 8px;
+    gap: 8px;
+    background-color: var(--color-bg-2);
+    border-radius: 10px;
+}
+
+.buildSectionUsageOverlay {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-color: black;
+    padding: 2px 5px;
+    border-radius: 0px 0px 9px 0px;
+    font-weight: 400;
+}
+
+.buildModContainer {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    flex-grow: 1;
+    grid-template-areas:
+        "empty auraOrStance exilus empty2"
+        "mod0 mod1 mod2 mod3"
+        "mod4 mod5 mod6 mod7";
+    gap: 8px;
+    place-items: center;
+    flex-grow: 1;
+}
+
+.buildModSingle {
+    padding: 6px;
+    border-radius: 10px;
+    height: 63px;
+    min-height: 63px;
+    position: relative;
+    max-width: 300px;
+    min-width: 190px;
+    width: -moz-available; /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    width: stretch;
+    place-self: center;
+    background-color: #ffffff17;
+    box-shadow: inset 0 0 3px 0px white;
+    cursor: pointer;
+    transition: 0.12s linear;
+}
+
+    .buildModSingle.stance {
+        grid-area: auraOrStance;
+    }
+
+.buildResultsStats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
+    padding: 3px;
+    padding-top: 5px;
+    padding-right: 5px;
+    background-color: var(--color-bg-2);
+}
+
+.buildSection {
+    display: flex;
+    flex-direction: revert;
+    gap: 7px;
+    height: 301px;
+}
+
+.workingArea {
+    padding: 10px;
+    padding-top: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-grow: 1;
+    gap: 7px;
+    font-weight: 300;
+    overflow: hidden;
+}
+
+.buildResultSingleStat {
+    display: flex;
+    gap: 4px;
+    font-weight: 300;
+    font-size: 15px;
+    align-items: center;
+}
+
+.buildResultStatName {
+    margin-right: auto;
+}
+
+.buildResultStatIcon {
+    width: 20px;
+    height: 20px;
+    background-size: 85%;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: -2px;
+}
+
+.buildArcaneContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 137px;
+}
+
+.buildModBottomSingleStat {
+    display: flex;
+    gap: 3px;
+    font-size: 15px;
+    align-items: center;
+}
+
+.buildModTop {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.buildModTopName {
+    margin-right: auto;
+}
+
+.buildModSingle.mod0 {
+    grid-area: mod0;
+}
+
+.buildModSingle.mod1 {
+    grid-area: mod1;
+}
+
+.buildModSingle.mod2 {
+    grid-area: mod2;
+}
+
+.buildModSingle.mod3 {
+    grid-area: mod3;
+}
+
+.buildModSingle.mod4 {
+    grid-area: mod4;
+}
+
+.buildModSingle.mod5 {
+    grid-area: mod5;
+}
+
+.buildModSingle.mod6 {
+    grid-area: mod6;
+}
+
+.buildModSingle.mod7 {
+    grid-area: mod7;
+}
+
+
+.buildModBottomStatContainer {
+    display: flex;
+    gap: 11px;
+    overflow: hidden;
+    margin-right: 4px;
+}
+
+.buildModTopRight {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.buildModTopRightPolarity {
+    width: 16px;
+    height: 16px;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    background-color: white;
+}
+
+.itemRight {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.buildSectionResultsPanel {
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    flex-shrink: 0;
+    background-color: black;
+    border-radius: 10px;
+}
+
+.buildModFull {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border: 2px solid white;
+    border-radius: 10px;
+    background-color: var(--color-bg-2);
+    overflow: hidden;
+    transition: 0.12s linear;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #383E4B;
+    margin: 8px 0px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #e4e4e4db;
+    border-radius: 10px;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #98cff5;
+    }
+
+
+.buildResultsNeededThings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    column-gap: 10px;
+    row-gap: 1px;
+    padding: 4px 2px;
+    background-color: var(--color-bg-3);
+}
+
+.buildResultThingIcon {
+    width: 23px;
+    height: 23px;
+    /* background-color: white; */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.buildNeededThing {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.buildModBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.buildModTopName {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.buildArcane {
+    width: 120px;
+    height: 73px;
+    position: relative;
+    cursor: pointer;
+}
+
+    .buildArcane:not(.used) {
+        background-image: url(../../img/builds/arcaneEmpty.webp);
+        background-size: 81%;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+.buildResultThingIcon.orokinCatalyst {
+    background-image: url(../../img/builds/orokinCatalyst.webp);
+    background-size: 109%;
+    margin-left: -2px;
+}
+
+.buildResultThingIcon.orokinReactor {
+    background-image: url(../../img/builds/orokinReactor.webp);
+    background-size: 109%;
+    margin-left: -2px;
+}
+
+.buildResultThingIcon.forma {
+    background-image: url(../../img/builds/Forma.webp);
+}
+
+.buildResultThingIcon.endo {
+    background-image: url(../../img/endo.png);
+    background-size: 160%;
+    margin-left: -1px;
+}
+
+.buildResultThingIcon.arcanes {
+    background-image: url(../../img/arcane.png);
+}
+
+.buildResultStatIcon.armor {
+    background-image: url(../../img/builds/armor.png);
+}
+
+.buildResultStatIcon.energymax {
+    background-image: url(../../img/builds/energy.png);
+}
+
+.buildResultStatIcon.health {
+    background-image: url(../../img/builds/heart.png?);
+}
+
+.buildResultStatIcon.shield {
+    background-image: url(../../img/builds/shield.png);
+}
+
+.buildResultStatIcon.duration {
+    background-image: url(../../img/builds/duration.png);
+}
+
+.buildResultStatIcon.range {
+    background-image: url(../../img/builds/distance.png);
+}
+
+.buildResultStatIcon.strength {
+    background-image: url(../../img/builds/muscle.png);
+}
+
+.buildResultStatIcon.regeneration {
+    background-image: url(../../img/builds/healing.png);
+}
+
+.buildResultStatIcon.sprintspeed {
+    background-image: url(../../img/builds/boot.png);
+}
+
+.buildResultStatIcon.efficiency {
+    background-image: url(../../img/builds/efficiency.png);
+}
+
+.topBarButton {
+    padding: 4px 6px;
+    background-color: var(--color-card-active);
+    border-radius: 7px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.topBarButtonIcon {
+    width: 20px;
+    height: 20px;
+    background-color: #ffffffb5;
+    border-radius: 4px;
+}
+
+    .topBarButtonIcon.new {
+    }
+
+    .topBarButtonIcon.load {
+    }
+
+    .topBarButtonIcon.save {
+    }
+
+    .topBarButtonIcon.link {
+    }
+
+.buildModFull.Gold {
+    border-color: #ffd100;
+}
+
+.buildModFull.Silver {
+    border-color: silver;
+}
+
+.buildModFull.Primed {
+    border-color: white;
+}
+
+.buildModFull.Bronze {
+    border-color: brown;
+}
+
+.itemPicture {
+    width: 65px;
+    height: 65px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+}
+
+.buildSectionItem {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #2d2147;
+    padding: 4px 5px;
+    padding-right: 9px;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.12s linear;
+    padding-top: 5px;
+}
+
+.itemBuildSource {
+    width: 19px;
+    height: 15px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+    .itemBuildSource.AlecaFrame {
+        background-image: url(../../img/AlecaFrame.png);
+    }
+
+.buildModSingle.exilus {
+    grid-area: exilus;
+    background-image: url(../../img/builds/exilus.webp);
+    background-size: 45px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.buildModSingle.aura {
+    grid-area: auraOrStance;
+    background-image: url(../../img/builds/aura.webp);
+    background-size: 45px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.buildModSingle.stance {
+    grid-area: auraOrStance;
+}
+
+.modNotFullPolarity {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 18px;
+    height: 18px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.buildArcaneFull {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 63%;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    cursor: all-scroll;
+}
+
+.itemPictureOwned {
+    width: 15px;
+    height: 15px;
+    background-image: url(../../img/tick.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 1px;
+    right: 6px;
+}
+
+.buildModTopOwned {
+    background-image: url(../../img/tick.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+}
+
+span.buildCapacityUsageCurrent.Red {
+    color: #ff4f4f;
+}
+
+span.buildCapacityUsageCurrent.Green {
+    color: #5cda5c;
+}
+
+.buildArcane.used.Bronze {
+    background-image: url(../../img/arcanes/bronze.webp);
+}
+
+.buildArcane.used.Silver {
+    background-image: url(../../img/arcanes/silver.webp);
+}
+
+.buildArcane.used.Gold {
+    background-image: url(../../img/arcanes/gold.webp);
+}
+
+.buildArcane.used.Primed {
+    background-image: url(../../img/arcanes/primed.webp);
+}
+
+.buildArcane.used {
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.buildArcaneLevel {
+    position: absolute;
+    padding: 3px 8px;
+    background-color: #000000c7;
+    border-radius: 13px;
+    bottom: 6px;
+    right: 6px;
+    font-weight: 400;
+}
+
+.White > .buildModTopRightPolarity {
+    background-color: white;
+}
+
+.Green > .buildModTopRightPolarity {
+    background-color: #36ff00;
+}
+
+.Red > .buildModTopRightPolarity {
+    background-color: red;
+}
+
+.workingAreaLeft {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.modBrowser {
+    width: 250px;
+    min-width: 250px;
+    /* background-color: #00000069; */
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.simSection {
+    flex-grow: 1;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+main#buildAppHolder {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+}
+
+.background {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionTitle {
+    background-color: var(--color-bg-3);
+    padding: 3px 3px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.sectionBody {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 5px;
+    padding-top: 5px;
+    overflow: hidden;
+    gap: 4px;
+    background-color: #00000069;
+}
+
+.modBrowserListingContiner {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    gap: 4px;
+    height: 100px;
+    padding: 2px 0px;
+    padding-right: 4px;
+}
+
+.modBrowserFilterRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.categorySelectorHolder {
+    width: 30px;
+    height: 30px;
+    background-color: var(--color-bg-2);
+    border-radius: 8px;
+    transition: 0.12s linear;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .categorySelectorHolder.selected {
+        background-color: var(--color-card-active);
+    }
+
+    .categorySelectorHolder:hover:not(.selected) {
+        background-color: var(--color-card-hover);
+    }
+
+.modSearchBar {
+    padding: 3px 4px;
+    background-color: var(--color-bg-3);
+    display: flex;
+    align-items: center;
+    border-radius: 11px;
+}
+
+.topSettingIcon.search.builds {
+    margin-right: 2px;
+    margin-left: 0px;
+    width: 20px;
+    height: 20px;
+}
+
+input.modSearchInput {
+    background-color: var(--color-card-hover);
+    color: white;
+    border: unset;
+    outline: none;
+    padding: 3px 8px;
+    width: 206px;
+    border-radius: 10px;
+}
+
+.modBrowserFilters {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.categoryIcon {
+    -webkit-mask-size: 80%;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    background-color: var(--color-icons);
+    width: 30px;
+    height: 30px;
+}
+
+    .categoryIcon.mod {
+        -webkit-mask-image: url(../../img/mods.png);
+    }
+
+    .categoryIcon.exilus {
+        -webkit-mask-image: url(../../img/builds/exilus.webp);
+    }
+
+    .categoryIcon.aura {
+        -webkit-mask-image: url(../../img/builds/aura.webp);
+    }
+
+    .categoryIcon.stance {
+        -webkit-mask-image: url(../../img/builds/stance.webp);
+    }
+
+    .categoryIcon.arcane {
+        -webkit-mask-image: url(../../img/arcane.png);
+    }
+
+    .categoryIcon.shard {
+        -webkit-mask-image: url(../../img/archonShards/ArchonShard.webp);
+    }
+
+    .categoryIcon.incarnon {
+        -webkit-mask-image: url(../../img/world.png);
+        -webkit-mask-size: 66%;
+    }
+
+.modBrowserSingleMod {
+    background-color: var(--color-bg-2);
+    padding: 5px 6px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    cursor: pointer;
+    transition: 0.12s linear;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.modBrowserModPreview {
+    position: absolute;
+    background-color: var(--color-bg-3);
+    right: 267px;
+    top: calc(50% - 172px);
+    border: 1px solid #ffffff6e;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 226px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    padding: 6px 6px;
+    box-shadow: 0 0 7px 2px black;
+}
+
+.modBrowserPreviewImage {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 208px;
+    height: 300px;
+}
+
+.modBrowserPreviewDescription {
+    text-align: center;
+    font-weight: 300;
+    font-size: 15px;
+    /* display: flex; */
+    align-items: center;
+    flex-direction: revert;
+}
+
+    .modBrowserPreviewDescription > .iicon {
+        margin-bottom: -4px;
+    }
+
+.buildResultStatValue {
+    font-weight: 400;
+}
+
+.modBrowserSingleMod:hover {
+    background-color: var(--color-bg-3);
+}
+
+.mod > .buildModFull {
+    cursor: all-scroll;
+}
+
+.itemBuildCreatedBy {
+    font-size: 14px;
+}
+
+.itemName {
+    font-weight: 400;
+}
+
+.buildSectionItem:hover {
+    background-color: #3f3060;
+}
+
+.buildSectionItem.selected {
+    background-color: #442a7a;
+}
+
+.buildResultThingIcon.mods {
+    background-image: url(../../img/mods.png);
+    margin-left: -3px;
+}
+
+.buildResultThingIcon.stanceForma {
+    background-image: url(../../img/builds/StanceForma.webp);
+}
+
+.buildResultThingIcon.exilusAdapter {
+    background-image: url(../../img/builds/ExilusWarframeAdapter.webp);
+}
+
+.buildResultThingIcon.arcaneAdapter {
+    background-image: url(../../img/builds/SecondaryArcaneAdapter.webp);
+}
+
+.buildModBottomLevel {
+    font-size: 14px;
+}
+
+.buildResultStatIcon.criticalchance {
+    background-image: url(../../img/builds/explosion.png);
+}
+
+.buildResultStatIcon.statuschance {
+    background-image: url(../../img/builds/StatusChanceBuff.webp);
+    background-size: 120%;
+    background-image: url(../../img/builds/statusChanceAlt.png);
+    /* background-image: url(../../img/builds/statusEffectAlt2.png?); */
+}
+
+.buildResultStatIcon.criticalmultiplier {
+    background-image: url(../../img/builds/critDamage.png);
+}
+
+.buildResultStatIcon.damage {
+    background-image: url(../../img/builds/sword.png);
+}
+
+.buildResultStatIcon.multishot {
+    background-image: url(../../img/builds/multishot.png);
+}
+
+.buildResultStatIcon.damagetocorpus {
+    background-image: url(../../img/builds/corpus.webp);
+    background-size: 100%;
+}
+
+.buildResultStatIcon.damagetosentients {
+    background-image: url(../../img/builds/sentient.webp);
+}
+
+.buildResultStatIcon.damagetomurmur {
+    background-image: url(../../img/builds/murmur.webp);
+}
+
+.buildResultStatIcon.damagetocorrupted {
+    background-image: url(../../img/builds/corrupted.png);
+}
+
+.buildResultStatIcon.damagetoinfested {
+    background-image: url(../../img/builds/infested.png);
+}
+
+.buildResultStatIcon.damagetogrineer {
+    background-image: url(../../img/builds/grineer.webp);
+}
+
+.buildResultStatIcon.toxindamage {
+    background-image: url(../../img/damageTypes/toxin.webp);
+}
+
+.buildResultStatIcon.electricitydamage {
+    background-image: url(../../img/damageTypes/electricity.webp);
+    margin-left: -2px;
+}
+
+.buildResultStatIcon.heatdamage {
+    background-image: url(../../img/damageTypes/heat.webp);
+}
+
+.buildResultStatIcon.colddamage {
+    background-image: url(../../img/damageTypes/cold.webp);
+}
+
+.buildResultStatIcon.slashdamage {
+    background-image: url(../../img/damageTypes/slash.webp);
+}
+
+.buildResultStatIcon.blastdamage {
+    background-image: url(../../img/damageTypes/blast.webp);
+}
+
+.buildResultStatIcon.impactdamage {
+    background-image: url(../../img/damageTypes/impact.webp);
+}
+
+.buildResultStatIcon.radiationdamage {
+    background-image: url(../../img/damageTypes/radiation.webp);
+}
+
+.buildResultStatIcon.gasdamage {
+    background-image: url(../../img/damageTypes/gas.webp);
+}
+
+.buildResultStatIcon.magneticdamage {
+    background-image: url(../../img/damageTypes/magnetic.webp);
+}
+
+.buildResultStatIcon.corrosivedamage {
+    background-image: url(../../img/damageTypes/corrosive.webp);
+}
+
+.buildResultStatIcon.viraldamage {
+    background-image: url(../../img/damageTypes/viral.webp);
+}
+
+.buildResultStatIcon.firerate {
+    background-image: url(../../img/builds/attackSpeed.webp);
+}
+
+.buildResultStatIcon.punchthrough {
+    background-image: url(../../img/builds/wall.png);
+}
+
+.buildResultStatIcon.reloadtime {
+    background-image: url(../../img/builds/reload.png);
+}
+
+.buildResultStatIcon.falloffstart {
+    background-image: url(../../img/builds/falloff.png);
+}
+
+.buildResultStatIcon.magazinecapacity {
+    background-image: url(../../img/builds/magazine.png);
+}
+
+.buildResultStatIcon.ammomax {
+    background-image: url(../../img/builds/ammo.png);
+}
+
+.buildResultStatIcon.puncturedamage {
+    background-image: url(../../img/damageTypes/puncture.webp)
+}
+
+.buildResultStatIcon.statustime {
+    background-image: url(../../img/builds/statusTime.png?);
+}
+
+.itemSelectorHolder {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.newEasyFilter.small {
+    border: 1px solid #ffffff2b;
+}
+
+.statsViewSelectorContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.statsViewSelectorItem {
+    flex-grow: 1;
+    text-align: center;
+    padding: 2px;
+    font-size: 14px;
+}
+
+.statsViewSelectorItem {
+    background-color: var(--color-bg-3);
+    cursor: pointer;
+}
+
+    .statsViewSelectorItem:hover {
+        background-color: var(--color-card-hover);
+    }
+
+    .statsViewSelectorItem.selected {
+        background-color: var(--color-card-active);
+    }
+
+.modBrowserSingleMod.incompatible {
+    cursor: no-drop;
+}
+
+.nonCompatibleOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #000000c4;
+    border: 1px solid #2340924f;
+    border-radius: inherit;
+}
+
+.simSection > .sectionBody {
+    flex-direction: row;
+    justify-content: center;
+}
+
+.simRight {
+    display: flex;
+    flex-direction: column;
+}
+
+.simCenter {
+    flex-grow: 1;
+    background-color: #14465d;
+}
+
+.simLeftColumn {
+    width: 255px;
+    display: flex;
+    flex-direction: column;
+}
+
+.simResults {
+    flex-grow: 1;
+    width: 245px;
+}
+
+.simSmallTitle {
+    font-weight: 400;
+    background-color: #292970;
+    text-align: center;
+    padding: 4px 7px;
+}
+
+.simSettings {
+    flex-grow: 1;
+}
+
+.presetLine {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.simSmallBody {
+    display: flex;
+    flex-direction: column;
+    padding: 7px 4px;
+    gap: 11px;
+}
+
+.buildButton {
+    flex-grow: 1;
+    text-align: center;
+    background-color: var(--color-bg-2);
+    border-radius: 19px;
+    padding: 6px 7px;
+    cursor: pointer;
+    transition: 0.12s linear;
+}
+
+.simEnemySetup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.buildButton.relevant {
+    background-color: purple;
+}
+
+.buildButton:hover {
+    background-color: var(--color-bg-3);
+}
+
+.buildButton.relevant:hover {
+    background-color: #a817a8;
+}
+
+select {
+    padding: 3px;
+}
+
+.innerModal.buildsEnemyEditor {
+    width: 83%;
+    height: 82%;
+}
+
+.buildsEnemyEditor > .innerModalContent {
+    flex-direction: revert;
+    flex-grow: 1;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.enemyCreatorRight {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    overflow: hidden;
+}
+
+.enemyCreatorLeft {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.enemyCreatorTitle {
+    text-align: center;
+    font-weight: 500;
+    font-size: 19px;
+}
+
+.enemyCreatorListBody {
+    display: grid;
+    flex-grow: 1;
+    overflow: auto;
+    background-color: var(--color-bg-2);
+    border-radius: 10px;
+    padding: 9px;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    align-content: flex-start;
+}
+
+.enemyCreatorLeft > .enemyCreatorListBody {
+}
+
+.enemyCreatorLeft > .enemyCreatorListBody {
+}
+
+.enemyCreatorBody {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.enemyCreatorListItem {
+    width: auto;
+    height: 72px;
+    background-color: var(--color-bg-3);
+    border-radius: 10px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    cursor: all-scroll;
+    transition: 0.12s linear;
+}
+
+.enemyCreatorListItemPicture {
+    width: 65px;
+    height: 65px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 3px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.enemyCreatorListItemName {
+}
+
+.enemyCreatorListItemName {
+    background-color: var(--color-bg-1);
+    height: 30px;
+    text-align: center;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0px 10px;
+    white-space: nowrap;
+    width: auto;
+    padding-top: 5px;
+    font-size: 17px;
+}
+
+.enemyCreatorListItemRight {
+    flex-grow: 1;
+    display: flex;
+    flex-shrink: 1;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #0000001f;
+}
+
+.enemyCreatorListItemIcon {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.enemyCreatorListItemIcons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.enemyCreatorListItemIcon.armor {
+    background-image: url(../../img/builds/armor.png)
+}
+
+.enemyCreatorListItemIcon.eximus {
+    background-image: url(../../img/star2.png)
+}
+
+.enemyCreatorListItemIcon.shield {
+    background-image: url(../../img/builds/shield.png)
+}
+
+.enemyCreatorListItemIcon.boss {
+    background-image: url(../../img/builds/evil.png)
+}
+
+.enemyCreatorListEximusOverlay {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    box-shadow: inset 0px 0px 2px 1px #4597bf;
+    pointer-events: none;
+}
+
+.enemyCreatorListItem:hover {
+    filter: brightness(1.2);
+}
+
+.squadModeIcon.All {
+    background-image: url(../../img/infinity.png);
+}
+
+.squadModeIcon.Infested {
+    background-image: url(../../img/builds/infested.png);
+}
+
+.squadModeIcon.Grineer {
+    background-image: url(../../img/builds/grineer.webp);
+    background-size: 80%;
+}
+
+.squadModeIcon.Corpus {
+    background-image: url(../../img/builds/corpus.webp);
+}
+
+.squadModeIcon.Corrupted {
+    background-image: url(../../img/builds/corrupted.png);
+}
+
+.squadModeIcon.Sentient {
+    background-image: url(../../img/builds/sentient.webp);
+}
+
+.squadModeIcon.Amalgam {
+    background-image: url(../../img/builds/amalgam.webp);
+}
+
+.squadModeIcon.Narmer {
+    background-image: url(../../img/builds/narmer.webp?);
+}
+
+.squadModeIcon.Orokin {
+    background-image: url(../../img/builds/orokin.webp?);
+}
+
+.squadModeIcon.Duviri {
+    background-image: url(../../img/builds/duviri.png);
+    background-size: 80%;
+}
+
+.squadModeIcon.Murmur {
+    background-image: url(../../img/builds/murmur.webp?);
+}
+
+.squadModeIcon.Other {
+    background-image: url(../../img/question.png);
+    background-size: 72%;
+}
+
+.squadModeIcon.enemyList {
+    position: absolute;
+    background-color: #0000006b;
+    border: 2px solid #0000006b;
+    width: 31px;
+    height: 31px;
+    bottom: -4px;
+    left: -4px;
+    border-radius: 0px 9px 0px 0px;
+}
+
+.squadModeIcon {
+    background-size: 80%;
+}
+
+    .squadModeIcon.enemyList.Corpus {
+        background-size: 97%;
+    }
+
+.enemyCreatorListFilters {
+    display: flex;
+    justify-content: space-between;
+}
+
+.enemyCreatorCurrentSetupContainer {
+    flex-grow: 1;
+    background-color: var(--color-bg-2);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+    padding: 8px;
+    overflow-x: hidden;
+    align-content: flex-start;
+    overflow-y: scroll;
+}
+
+
+.currentEnemySetupEnemy {
+    /* width: 100px; */
+    height: 240px;
+    /* padding: 10px; */
+    background-color: var(--color-bg-3);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.currentEnemySetupEnemyPicture {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    position: relative;
+    background-size: contain;
+    background-position: 0px 40px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.currentEnemySetupEnemyData {
+    display: flex;
+    background-color: #050508eb;
+    position: absolute;
+    bottom: 0px;
+    height: 64px;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+    padding: 7px 11px;
+    align-items: stretch;
+    flex-direction: column;
+    /* overflow: hidden; */
+}
+
+.currentEnemySetupEnemyName {
+    text-align: center;
+    font-weight: 400;
+    font-size: 17px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 3px;
+}
+
+.currentEnemySetupEnemyAmountHolder {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 7px;
+    background-color: #0000006b;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-radius: 0px 0px 10px 0px;
+    font-weight: 400;
+}
+
+.buildsNumericUpDownButton {
+    background-color: var(--color-card);
+    border-radius: 15px;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    padding-top: 1px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.currentEnemySetupEnemyLevelHolder {
+    display: flex;
+    gap: 2px;
+    padding: 3px 8px;
+    background-color: #0000006b;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 32px;
+    border-radius: 0px 0px 0px 10px;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.currentEnemySetupEnemyLevelHolder {
+}
+
+    .currentEnemySetupEnemyLevelHolder > input[type="number"] {
+        width: 61px;
+        font-size: 14px;
+        margin-left: 3px;
+        font-size: 14px;
+        padding: 1px 6px;
+        padding-top: 2px;
+        padding-right: 3px;
+        background-color: var(--color-bg-2);
+        color: var(--color-text);
+        border: 1px solid #ffffff30;
+        border-radius: 6px;
+        outline: none;
+        text-align: end;
+    }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+    margin-left: 3px;
+}
+
+.currentEnemySetupEnemyData > .squadModeIcon.enemyList {
+    top: -30px;
+}
+
+.currentEnemySetupSingleStat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.currentEnemySetupEnemyStats {
+    display: flex;
+    justify-content: space-around;
+    gap: 6px;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.enemyCreatorListItemIcon.health {
+    background-image: url(../../img/builds/heart.png);
+}
+
+.currentEnemySetupSingleStat > .enemyCreatorListItemIcon {
+    width: 18px;
+    height: 18px;
+}
+
+.simFinishedIn {
+    font-size: 15px;
+    font-weight: 300;
+    text-align: center;
+}
+
+.simResultsGroupWithTitle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.simResultsBarWithPercentages {
+    /* border: 1px solid #ffffff87; */
+    display: flex;
+    /* padding: 3px 5px; */
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.simResultsBarWithPercentagesItem {
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    padding: 2px 7px;
+}
+
+    .simResultsBarWithPercentagesItem.direct {
+        background-color: #323d67;
+    }
+
+    .simResultsBarWithPercentagesItem.aoe {
+        background-color: #7f3b33;
+    }
+
+    .simResultsBarWithPercentagesItem.status {
+        background-color: #186418;
+    }
+
+    .simResultsBarWithPercentagesItem > span {
+        font-weight: 300;
+        font-size: 15px;
+    }
+
+.simResultsGroupWithTitleTitle {
+    font-weight: 500;
+}
+
+.simResultsDataGroup {
+    display: grid;
+    flex-direction: row;
+    flex-wrap: wrap;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+}
+
+.simResultsDataSingle {
+    text-align: center;
+}
+
+    .simResultsDataSingle > span {
+        font-weight: 400;
+    }
+
+    .simResultsDataSingle.important {
+        color: #dc9eff;
+    }
+
+span.importantPurple {
+    color: #ff94f6;
+}
+
+.simResultsDamageType {
+    display: flex;
+}
+
+    .simResultsDamageType > span {
+        margin-left: 4px;
+    }
+
+.simResultsDamageTypeGroup.horizontal {
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.simResultsDamageTypeGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+span.bolderText {
+    font-weight: 400;
+}
+
+.buildModDPS.negative {
+    color: #ff5d5d;
+}
+
+.buildModDPS {
+    color: #56f456;
+    font-weight: 400;
+    margin-left: auto;
+}
+
+    .buildModDPS.nothing {
+        color: white;
+    }
+
+.buildModSingle.slotSelected {
+    box-shadow: 0 0 4px 3px #8335f7, inset 0 0 3px 0px white;
+    /* border: 2px solid #d981ff; */
+}
+
+.buildArcane.slotSelected {
+    border-radius: 10px;
+    /* border: 1px solid #e273f68f; */
+    box-shadow: inset 0px 0px 4px 1px #da5eff;
+}
+
+.slotSelected > .buildModFull {
+    background-color: var(--color-bg-3);
+}
+
+.modBrowserProgress {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 1px 3px;
+}
+
+.modBrowserProgressBar {
+    flex-grow: 1;
+    background-color: var(--color-bg-3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modBrowserProgressBarInner {
+    height: 6px;
+    background-color: var(--color-navigation-hover);
+    border-radius: 0px 10px 10px 0px;
+}
+
+.modBrowserProgressLoading {
+    width: 24px;
+    height: 23px;
+    background-image: url(../../img/loading.svg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: -3px;
+}
+
+.modBrowserError {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 4px 5px;
+    margin-top: 1px;
+    background-color: #b735356e;
+    border-radius: 10px;
+    font-weight: 400;
+    align-items: center;
+    text-align: center;
+    font-size: 15px;
+}
+
+.modBrowserErrorIcon {
+    background-image: url(../../img/error.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 21px;
+    height: 20px;
+    /* margin-top: -1px; */
+    margin-bottom: 1px;
+    min-width: 21px;
+}
+
+.buildResultStatIcon.poisondamage {
+    background-image: url(../../img/damageTypes/toxin.webp);
+}
+
+.modBrowserErrorIcon.info {
+    background-image: url(../../img/info.png);
+}

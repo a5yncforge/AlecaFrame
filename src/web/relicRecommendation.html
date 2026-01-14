@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>AlecaFrame relic</title>
+
+    <!-- JS files -->
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>
+
+    <!--<script src="assets/js/vue.global.prod.js"></script>
+
+    <script src="assets/js/external/jquery.min.js"></script>
+
+    <script src="assets/js/external/popper.min.js"></script>
+    <script src="assets/js/external/tippy-bundle.umd.js"></script>-->
+    <!-- CSS files -->
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/relicRecommendation/base.css" />
+</head>
+
+
+<body style="user-select: none;">
+    <div class="content">
+        <main>
+           <div class="relicRecommendationContainer" id="vueContainer">
+               <div class="recommendedRelicsTitle">
+                   <div class="recommendedRelicsTitleTraces">
+                       <div class="recommendedRelicsTitleTracesIcon"></div>
+                       {{traceCount}}
+                   </div>
+                   <div class="recommendedRelicsTitleText">Recommended relics</div>
+                   <div class="closeIcon" onmousedown="closeNow();"></div>
+               </div>
+            
+               <div class="recommendedRelicsContainer">
+                   <div v-for="item in items.slice(0,32)" class="recommendedRelic" :class="{fav:item.custom.isFav}">
+                       <div class="relicTop">
+                           <div v-if="item.normalData.vaulted" class="relicVaulted"></div>
+                           <div class="relicCount">{{item.normalData.amountOwned}}x</div>
+                           <div class="relicTitle">{{item.normalData.name}}</div>
+                       </div>
+                       <div class="relicBottom">
+                           <div class="relicDetailsBLTopExpectedTitle">E. profits:</div>
+                           <div class="relicDetailsBLTopExpectedCoins">
+                               <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                   {{item.custom.expectedPlat}}
+                                   <div class="relicDetailsBLTopExpectedCoinsCoinIcon plat"></div>
+                               </div>
+                               <div class="relicDetailsBLTopExpectedCoinsCoin">
+                                   {{item.custom.expectedDucats}}
+                                   <div class="relicDetailsBLTopExpectedCoinsCoinIcon ducats"></div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <Transition name="fade">
+                       <div v-if="inProgress" class="relicPlannerUpdateNeeded">
+                           <div class="relicPlannerLoadingOuterDiv">
+                               <div class="relicPlannerLoadingInnerDiv" :style="{width: progress + '%'}"></div>
+                           </div>
+                           <div class="relicPlannerLoadingText">{{loadingProgressText}}</div>
+                       </div>
+                   </Transition>
+                   <Transition name="fade">
+                       <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+                   </Transition>
+                   <Transition v-cloak name="fade">
+                       <div v-if="error" class="inventoryBuySellTabOverlayLoading error"></div>
+                   </Transition>
+               </div>
+               <div class="footer">Press Ctrl + Tab to interact with the overlay</div>
+           </div>
+                
+        </main>
+
+    </div>
+
+    <!-- Post JS files -->
+    <script src="assets/js/relicRecommendation/main.js"></script>
+    
+</body>
+
+
+
+</html>

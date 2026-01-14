@@ -1,0 +1,860 @@
+/* Fonts */
+@font-face {
+    font-family: 'Spiegel';
+    src: url('../fonts/Spiegel-Regular.woff2') format('woff2'), url('../fonts/Spiegel-Regular.woff') format('woff'), url('../fonts/Spiegel-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Beaufort';
+    src: url('../fonts/Beaufort-Regular.woff2') format('woff2'), url('../fonts/Beaufort-Regular.woff') format('woff'), url('../fonts/Beaufort-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Beaufort';
+    src: url('../fonts/Beaufort-Bold.woff2') format('woff2'), url('../fonts/Beaufort-Bold.woff') format('woff'), url('../fonts/Beaufort-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Beaufort';
+    src: url('../fonts/Beaufort-Italic.woff2') format('woff2'), url('../fonts/Beaufort-Italic.woff') format('woff'), url('../fonts/Beaufort-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Medium.woff2') format('woff2'), url('../fonts/Roboto-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Thin.woff2') format('woff2'), url('../fonts/Roboto-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.woff2') format('woff2'), url('../fonts/Roboto-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Light.woff2') format('woff2'), url('../fonts/Roboto-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Bold.woff2') format('woff2'), url('../fonts/Roboto-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+
+body, .modal {
+    height: 100%;
+    cursor: default;
+    padding: 0;
+    margin: 0;
+    background-color: rgba(0, 13, 51, 0.71);
+    background-size: cover;
+    overflow: hidden;
+    /* border: solid 1px #ffffffa1; */
+    font-family: 'Roboto', sans-serif;
+}
+
+
+
+button {
+    border: none;
+    font-family: inherit;
+    background-color: inherit;
+}
+
+    button:focus {
+        outline: none;
+    }
+
+button,
+i, .discord-icon {
+    position: relative;
+    width: var(--size, 30px);
+    height: var(--size, 30px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    cursor: default;
+    transition: 0.15s;
+}
+
+    button svg,
+    i svg {
+        width: 100%;
+        height: 100%;
+        flex: 0 0 auto;
+        pointer-events: none;
+        user-select: none;
+    }
+
+.svg-icon-fill {
+    fill: currentcolor;
+    height: 100%;
+}
+
+.svg-icon-stroke {
+    fill: none;
+    stroke: currentcolor;
+}
+
+.discord-icon {
+    padding: 4px;
+    padding-top: 5px;
+}
+
+.toggle-icons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+    .toggle-icons ~ svg:first-of-type {
+        display: block;
+    }
+
+    .toggle-icons ~ svg:nth-of-type(2) {
+        display: none;
+    }
+
+    .toggle-icons:checked ~ svg:first-of-type {
+        display: none;
+    }
+
+    .toggle-icons:checked ~ svg:nth-of-type(2) {
+        display: block;
+    }
+
+.window-controls-group {
+    min-width: 120px;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+    .window-controls-group button {
+        --size: 30px;
+    }
+
+.window-control {
+    color: #ffffff;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+    .window-control:hover {
+        color: #dedede;
+        background-color: var(--color-bg-2);
+    }
+
+.window-control-close:hover {
+    background-color: #c21913;
+}
+
+.content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    /* gap: 3px; */
+    /* background: radial-gradient(428px 215px at 1.57% 7.61%, #3556b31a 0%, #60d7df00 100%), radial-gradient(428px 215px at 101.57% 107.61%, #3556b32e 0%, #60d7df00 100%); */
+}
+
+    .content:before {
+        position: absolute;
+        border: 1px solid #333333;
+        /* top: -1px; */
+        /* left: -1px; */
+        /* right: -1px; */
+        /* bottom: -1px; */
+        pointer-events: none;
+    }
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+    .btn-group .btn {
+        flex: 1 1 140px;
+        min-width: 140px;
+    }
+
+    .btn-group > * {
+        margin: 5px 10px;
+    }
+
+.btn {
+    position: relative;
+    font-size: 15px;
+    text-transform: capitalize;
+    padding: 0 10px;
+    min-width: 120px;
+    height: 30px;
+    color: white;
+    background-color: #c21913;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.15s;
+    cursor: default;
+    -webkit-user-select: none;
+}
+
+    .btn:hover {
+        background-color: red;
+    }
+
+    .btn:active {
+        background-color: #c21913;
+    }
+
+header, .modal-header {
+    flex-shrink: 0;
+    display: flex;
+}
+
+.center {
+    position: fixed;
+    top: 43px;
+    left: 434px;
+    height: 550px;
+}
+
+
+main > * + * {
+    margin-top: 20px;
+}
+
+main > h1 + p {
+    margin-top: 3px;
+}
+
+/* General Styles */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+.newHeader {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.backgroundColor1 {
+    background-color: #00398e6b;
+}
+
+.backgroundColor2 {
+    background-color: #113263bf;
+}
+
+
+.settingsCheckBoxHolder {
+    display: flex;
+    /* height: 45px; */
+    font-size: 15px;
+    align-items: center;
+    font-weight: 300;
+    display: flex;
+    padding-bottom: -1px;
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    padding: 5px 1px;
+}
+
+    .settingsCheckBoxHolder.indent {
+        margin-left: 50px;
+    }
+
+        .settingsCheckBoxHolder.indent.small {
+            font-size: 14px;
+            font-weight: 200;
+            /* text-align: center; */
+            place-content: center;
+            margin-top: -6px;
+        }
+
+.settingsTextField {
+    height: 23px;
+    margin-left: 8px;
+    width: 275px;
+    padding: 1px 5px;
+    outline: none;
+}
+
+.settingsCheckBoxHolderBox {
+    width: 16px;
+    height: 16px;
+    margin-right: 11px;
+    margin-top: -1px;
+    cursor: pointer;
+    filter: hue-rotate(36deg);
+}
+
+#customScalingValue {
+    width: 63px;
+    height: 29px;
+    font-size: 15px;
+    padding: 4px 7px;
+    padding-right: 10px;
+    background-color: var(--color-bg-3);
+    border: none;
+    outline: none;
+    margin-left: 8px;
+    color: white;
+    /* border: 1px solid #ffffff75; */
+    border-radius: 20px;
+    filter: hue-rotate(0deg);
+}
+
+.smallSetting {
+    margin-left: 9px;
+    font-size: 19px;
+    margin-top: 4px;
+}
+
+.settingsSelect {
+    padding: 3px 5px;
+    margin-left: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    width: auto;
+}
+
+select {
+    border: none;
+    padding: 0 3px 0 0;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    outline: none;
+    border-radius: 13px;
+    color: black;
+    color: var(--color-text);
+    background-color: var(--color-bg-3);
+}
+
+
+
+.resize {
+    position: fixed;
+    z-index: 1000;
+    opacity: .5;
+}
+
+html.maximized .resize {
+    display: none;
+}
+
+.resize.top {
+    top: 0px;
+    cursor: n-resize;
+}
+
+.resize.bottom {
+    bottom: 0px;
+    cursor: s-resize;
+}
+
+.resize.left {
+    left: 0px;
+    cursor: e-resize;
+}
+
+.resize.right {
+    right: 0px;
+    cursor: w-resize;
+    z-index: 1;
+}
+
+.resize.horizontal {
+    left: 15px;
+    right: 15px;
+    height: 5px;
+    bottom: 0px;
+}
+
+.resize.vertical {
+    top: 15px;
+    bottom: 15px;
+    width: 5px;
+    z-index: 150;
+}
+
+.resize.corner {
+    width: 9px;
+    height: 9px;
+}
+
+.resize.top-left {
+    top: 0px;
+    left: 0px;
+    cursor: nw-resize;
+}
+
+.resize.top-right {
+    top: 0px;
+    right: 0px;
+    cursor: ne-resize;
+}
+
+.resize.bottom-left {
+    bottom: 0px;
+    left: 0px;
+    cursor: sw-resize;
+}
+
+.resize.bottom-right {
+    bottom: 0px;
+    right: 0px;
+    cursor: se-resize;
+}
+
+.hidden-flex-item {
+    content: "";
+    /* padding: 5px; */
+    /* margin-top: 10px; */
+    margin-right: 6px;
+    margin-left: 6px;
+    visibility: hidden;
+}
+
+    .hidden-flex-item.foundry {
+        flex: 1 0 270px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .hidden-flex-item.inventory {
+        flex: 1 0 355px;
+    }
+
+    .hidden-flex-item.relicPlanner {
+        flex: 1 0 458px;
+    }
+
+.settings-icon {
+    background-image: url('../img/settings.png');
+    background-size: 62%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.startTroubleshoot {
+    width: auto;
+    height: auto;
+    padding: 4px 10px;
+    background: var(--color-tab);
+    font-size: 15px;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid #ffffffad;
+    cursor: pointer;
+    transition: 0.15s linear;
+    margin-bottom: 3px;
+}
+
+    .startTroubleshoot:hover {
+        background: var(--color-tab-hover);
+    }
+
+.staticRightColumnTop {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-2);
+    border-radius: 10px;
+    padding-top: 2px;
+}
+
+[v-cloak] {
+    display: none
+}
+
+input#customScalingValue[type=number]::-webkit-inner-spin-button,
+input#customScalingValue[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+
+#aboutVersion {
+    margin-right: 16px;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+
+.mainTabHeader {
+    display: flex;
+    flex-direction: row;
+    height: 33px;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ffffff17;
+    margin: 0px 7px;
+}
+
+.tabHeaderOption {
+    flex-grow: 0;
+    text-align: center;
+    height: 100%;
+    font-weight: 300;
+    font-size: 17px;
+    padding: 6px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    width: auto;
+    color: var(--color-navigation);
+}
+
+.alecaframeNameTop.sideways {
+    flex-direction: row;
+    gap: 8px;
+}
+
+.tabHeaderOption:hover {
+    color: var(--color-navigation-hover);
+    border-bottom: 3px solid var(--color-navigation-hover);
+}
+
+.tabHeaderOption.selected {
+    color: var(--color-navigation-active);
+    border-bottom: 3px solid var(--color-navigation-active);
+}
+
+
+.mainTabBody {
+    flex-grow: 1;
+    padding: 4px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+    .mainTabBody > div {
+        display: none;
+    }
+
+        .mainTabBody > div.shown {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+.iicon {
+    width: 18px;
+    height: 18px;
+    margin-bottom: -5px;
+    margin-left: 2px;
+    margin-right: 3px;
+}
+
+.filterGroup.dontExpand {
+    width: auto;
+}
+
+.menuItem.settings {
+    margin-top: auto;
+}
+
+
+
+.settings > div > .mainTabHeader {
+    /* background-color: red; */
+}
+
+
+.statusCacheTooltipHolder {
+    display: flex;
+    white-space: nowrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+}
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-card-active);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 13px;
+        width: 13px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+input:checked + .slider {
+    background-color: var(--color-tab-active);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+.buttonUpdate {
+    padding: 7px 8px;
+    background-color: var(--color-tab);
+    position: absolute;
+    bottom: 21px;
+    right: 21px;
+    border-radius: 20px;
+    font-weight: 400;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.12s linear;
+    min-width: 149px;
+    text-align: center;
+}
+
+    .buttonUpdate:hover {
+        background-color: var(--color-tab-hover);
+    }
+
+.aboutAlternateDiscordLink {
+    font-weight: 400;
+}
+
+    .aboutAlternateDiscordLink > a {
+        color: var(--color-text);
+    }
+
+
+.buttonUpdate.inErrorTab {
+    position: initial;
+    width: 38%;
+    margin: auto;
+    margin-top: 12px;
+    margin-bottom: -10px;
+}
+
+
+.newEasyFilter {
+    display: flex;
+    gap: 2px;
+    font-size: 13px;
+    font-weight: 300;
+    background-color: var(--color-bg-3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.newEasyFilterItem {
+    /* padding: 3px 4px; */
+    padding: 3px 7px;
+    /* border-radius: 10px; */
+    transition: 0.1s linear;
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+    .newEasyFilterItem.selected {
+        background-color: var(--color-card-active);
+    }
+
+    .newEasyFilterItem:hover:not(.selected) {
+        background-color: var(--color-card-hover);
+    }
+
+.newEasyFilterIcon.newEasyFilterIcon {
+    width: 20px;
+    min-width: inherit;
+    height: 20px;
+    margin-right: 0px;
+}
+
+.patreonBigIcon {
+    width: 86px;
+    height: 22px;
+    background-image: url(../img/patreon.png);
+    background-size: 95%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #ff424d;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+span.overlayTextSmall {
+    font-size: 17px;
+}
+
+
+
+.categorySelectionDropDown {
+    padding: 4px 10px;
+    font-size: 15px;
+    border-radius: 16px;
+    background-color: var(--color-card);
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 0px;
+    transition: 0.25s ease-in-out;
+    white-space: nowrap;
+    gap: 6px;
+    margin-top: 0px;
+    padding-right: 11px;
+    width: 210px;
+    position: relative;
+}
+
+    .categorySelectionDropDown:hover {
+        background-color: var(--color-card-hover);
+    }
+
+.categorySelectionDropContainer {
+    position: absolute;
+    top: 35px;
+    left: 0px;
+    width: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    max-height: 197px;
+    gap: 1px;
+    padding: 4px 4px;
+    border-radius: 15px;
+    background-color: var(--color-bg-2);
+    box-shadow: inset 0 0 2px 0px #ffffff45;
+    display: none;
+    z-index: 1;
+}
+
+.topSetting.squadFinder {
+    max-width: initial;
+    flex-shrink: 0;
+    background: transparent;
+    gap: 7px;
+}
+
+.categorySelectionDownArrow {
+    width: 15px;
+    height: 15px;
+    -webkit-mask-image: url(../img/arrow-small.png);
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    background-color: var(--color-icons);
+    transform: rotate(90deg);
+    margin-left: auto;
+}
+
+.categorySelectionDropDown:focus-within > .categorySelectionDropContainer {
+    display: flex;
+}
+
+.squadModeIcon {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.relicPlannerShowMore {
+    width: 100%;
+    padding: 10px 10px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 17px;
+    background-color: #ffffff0d;
+    border-radius: 0px 0px 15px 15px;
+    grid-column: 1/-1;
+}
+
+.relicPlannerShowMoreButton {
+    color: #aac3ea;
+    font-weight: 500;
+    cursor: pointer;
+}

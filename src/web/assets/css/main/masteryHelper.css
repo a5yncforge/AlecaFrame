@@ -1,0 +1,311 @@
+﻿.masteryHelperTop {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px;
+}
+
+.masteryHelperIcon {
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 60px;
+    height: 60px;
+}
+
+.masteryHelperLevel {
+    font-size: 51px;
+    font-weight: 300;
+}
+
+.masteryHelperBarTop {
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.masteryHelperBar {
+    flex-grow: 1;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.masteryHelperBarBar {
+    border-radius: 10px;
+    height: 19px;
+    background-color: var(--color-bg-3);
+    overflow: hidden;
+    display: flex;
+}
+
+.masteryHelperBarInner {
+    background-color: var(--color-tab-active);
+    height: 100%;
+    border-radius: inherit;
+    transition: 0.17s ease-in-out;
+    z-index: 2;
+}
+
+.masteryHelperMid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+}
+
+.masteryHelperMidRect {
+    background-color: var(--color-bg-3);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.masteryHelperMidTop {
+    border-radius: 10px 10px 0px 0px;
+    background-color: var(--color-card-active);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 5px 10px;
+    align-items: center;
+    font-weight: 400;
+    font-size: 17px;
+}
+
+.masteryHelperMidBottom {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    white-space: nowrap;
+    column-gap: 7px;
+    row-gap: 5px;
+    margin: 10px;
+    flex-grow: 1;
+    align-content: space-evenly;
+    justify-items: center;
+    font-size: 15px;
+    font-weight: 300;
+    align-items: baseline;
+}
+
+.masteryHelperMidItemTitle {
+    font-weight: 400;
+    justify-self: right;
+    font-size: 16px;
+}
+
+.masteryHelperMidIcon {
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: -2px;
+}
+
+    .masteryHelperMidIcon.contentIcon {
+        background-image: url(../../img/build.png);
+        margin-right: -5px;
+    }
+
+    .masteryHelperMidIcon.starChart {
+        background-image: url(../../img/galaxy.png);
+        background-size: 80%;
+    }
+
+    .masteryHelperMidIcon.intrinsics {
+        background-image: url(../../img/IntrinsicPoint.webp);
+        background-size: 100%;
+    }
+
+.masteryHelperMidPercent {
+    font-weight: 400;
+    color: var(--color-tab-lighter);
+}
+
+.masteryHelperBottomTopPart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 11px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.masteryHelperBottom {
+    margin: 10px;
+    padding: 7px;
+    background: var(--color-bg-1);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border-radius: 15px;
+    overflow: hidden;
+    gap: 8px;
+    position: relative;
+}
+
+.masteryHelperBestItemsContainer {
+    flex-grow: 1;
+    display: flex;
+    align-content: flex-start;
+    align-items: flex-start;
+    overflow: auto;
+    border-radius: 10px;
+    margin: 0px 1px;
+    gap: 6px;
+    position: relative;
+    display: grid;
+    padding-right: 4px;
+    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+}
+
+.masteryHelperBestItem {
+}
+
+.inventoryNoItemShown.masteryHelper > div {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+
+.masteryHelperItem {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    background-color: var(--color-card);
+    /* width: 370px; */
+    height: 83px;
+    border-radius: 15px;
+    padding: 4px 8px;
+    overflow: hidden;
+    flex-grow: 1;
+    cursor: pointer;
+    transition: 0.12s linear;
+}
+
+    .masteryHelperItem:hover {
+        background-color: var(--color-card-hover);
+    }
+
+.masteryHelperItemMid {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 2px;
+    align-items: center;
+}
+
+.masteryHelperObjectName {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+}
+
+.masteryHelperItemImage {
+    width: 72px;
+    height: 100%;
+    position: relative;
+    background-position: center;
+    background-size: 90%;
+    background-repeat: no-repeat;
+}
+
+.masteryHelperPotentialXP {
+    position: absolute;
+    bottom: 3px;
+    font-size: 14px;
+    width: 100%;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #0000008a;
+}
+
+.foundryObjectComponents.mastery {
+    gap: 4px;
+}
+
+.foundryObjectComponentsComponent.mastery {
+    width: 30px;
+    height: 30px;
+}
+
+.masteryHelperObjectName {
+    font-weight: 400;
+    font-size: 17px;
+}
+
+.foundryImageComponentRow.mastery {
+    width: 109px;
+}
+
+.masteryHelperMiniIcon {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 32px;
+    height: 32px;
+}
+
+    .masteryHelperMiniIcon.relic {
+        background-image: url(../../img/axi-intact.png);
+    }
+
+    .masteryHelperMiniIcon.platinum {
+        background-image: url(../../img/platinum.png);
+        background-size: 73%;
+    }
+
+
+.masteryHelperIconGroup {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.masteryHelperIcons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 27px;
+}
+
+.masteryHelperItemLevel > span {
+    font-weight: 400;
+}
+
+.masteryHelperItemLevel {
+    font-size: 15px;
+    margin-top: 4px;
+    font-weight: 300;
+}
+
+.hidden-flex-item.masteryHelper {
+    width: 370px;
+    margin: 0px;
+    flex-grow: 1;
+}
+
+.masteryHelperBarInner.hover {
+    background-color: var(--color-tab-hover);
+    border-radius: 0px 10px 10px 0px;
+    margin-left: -11px;
+    z-index: 0;
+}
+
+.masteryHelperBarInner:not(.hover):last-child {
+    border-radius: inherit;
+}
+
+.masteryHelperBarInner.fav {
+    background-color: #cfb14d;
+    border-radius: 0px 10px 10px 0px;
+    margin-left: -14px;
+    z-index: 1;
+}

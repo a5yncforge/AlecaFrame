@@ -1,0 +1,222 @@
+﻿<div class="foundryTopSettings">
+    <div class="foundryTopSettingsSide left">
+        <div class="topSetting relicPlanner selected" selectionData="all" onclick="changedRelicPlannerSetting1(event);">
+            <div class="topSettingIcon all"></div>
+            All
+        </div>
+        <div class="topSetting relicPlanner" selectionData="lith" onclick="changedRelicPlannerSetting1(event);">
+            <div class="topSettingIcon lith"></div>
+            Lith
+        </div>
+        <div class="topSetting relicPlanner" selectionData="meso" onclick="changedRelicPlannerSetting1(event);">
+            <div class="topSettingIcon meso"></div>
+            Meso
+        </div>
+        <div class="topSetting relicPlanner" selectionData="neo" onclick="changedRelicPlannerSetting1(event);">
+            <div class="topSettingIcon neo"></div>
+            Neo
+        </div>
+        <div class="topSetting relicPlanner" selectionData="axi" onclick="changedRelicPlannerSetting1(event);">
+            <div class="topSettingIcon axi"></div>
+            Axi
+        </div>
+    </div>
+
+    <div class="foundryTopSettingsSide right">
+        <div class="topSetting relicPlanner">
+            <div class="topSettingIcon search"></div>
+            <input id="relicPlannerSearch" placeholder="Search" onkeyup="changedRelicPlannerSettingSearch(event);" />
+            <div class="topSettingIcon removeSearch" onclick="removeRelicPlannerSearch()"></div>
+        </div>
+        <div class="topSetting notHoverOpen relicPlanner">
+            <div id="settingFilterExpandingRelicPlanner" class="topSettingIcon filter"></div>
+            <div class="topSettingIcon removeSearch" onclick="removeRelicPlannerFilters()"></div>
+        </div>
+        <div class="topSetting2 relicPlanner">
+            <div title="Change order" id="relicOrderSetting" class="topSettingIcon ordering" onclick="changeRelicPlannerOrderingLargerOrSmallerFirst(event);"></div>
+            <select id="relicPlannerOrdering" onchange="RefreshRelicPlanner();">
+                <option value="plat">Platinum profit</option>
+                <option value="ducats">Ducats profit</option>
+                <option value="missingItems">Missing items (Best for MR)</option>
+                <option value="name">Name</option>
+                <option value="amount">Amount</option>
+                <option value="improvementPlat" title="Platinum vs void traces efficiency (To radiant)">Best to upgrade - Platinum</option>
+                <option value="improvementDucat" title="Ducats vs void traces efficiency (To radiant)">Best to upgrade - Ducats</option>
+            </select>
+        </div>
+        <div class="topSetting2 relicPlanner">
+            Squad:
+            <select id="relicPlannerSquadSize" onchange="RefreshRelicPlanner();">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option selected value="4">4</option>
+            </select>
+        </div>
+        <div class="topSetting2 relicPlanner" id="pushToRelicRecommendationOverlay">
+            <div class="relicPlannerSettingPushToOverlay"></div>
+        </div>
+    </div>
+</div>
+<div id="relicPlannerMainBody" class="foundryMainBody">
+    <div id="inventoryObjectContainer" class="inventoryObjectContainer">
+
+        <div v-for="item in items" class="inventoryObject relicPlanner" :class="{fav:item.custom.isFav}" :key="item.normalData.internalName" @click="openRelic(item.normalData.internalName)">
+
+            <div class="inventoryItemImage" :style="{ backgroundImage: 'url(&quot;' + item.normalData.picture + '&quot;)' }">
+                <div v-if="item.normalData.amountOwned>0 || true" class="inventoryItemQuantity absolute">x{{item.normalData.amountOwned}}</div>
+                <div v-if="item.normalData.ordersPlaced" class="inventoryItemOrderPlaced absolute"></div>
+                <div class="foundryObjectTopIcon vaulted" :class="{yes:item.normalData.vaulted,no:!item.normalData.vaulted}"></div>
+            </div>
+
+
+            <!--<div class="relicPlannerMiddle">
+                <div class="inventoryItemName"><div class="foundryObjectTopIcon vaulted" :class="{yes:item.normalData.vaulted,no:!item.normalData.vaulted}"></div><span>{{item.normalData.name}}</span></div>
+                <div class="relicDetailsBLTopExpected relicPlanner">
+                    <div class="relicDetailsBLTopExpectedTitle">Profits:</div>
+                    <div class="relicDetailsBLTopExpectedCoins">
+                        <div class="relicDetailsBLTopExpectedCoinsCoin">
+                            {{item.custom.expectedPlat}}
+                            <div class="relicDetailsBLTopExpectedCoinsCoinIcon plat"></div>
+                        </div>
+                        <div class="relicDetailsBLTopExpectedCoinsCoin">
+                            {{item.custom.expectedDucats}}
+                            <div class="relicDetailsBLTopExpectedCoinsCoinIcon ducats"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+        <div class="relicPlannerMiddle" :class="{smallText: item.custom.groupedDetails.length>=4}">
+            <div class="relicDetailsTop">
+                <div class="inventoryItemName"><span>{{item.normalData.name}}</span></div>
+                <div class="inventoryRelicIcons">
+                    <div class="relicDetailsBLTopExpectedCoinsCoinIcon plat"></div>
+                    <div class="relicDetailsBLTopExpectedCoinsCoinIcon ducats"></div>
+                </div>
+            </div>           
+            <div class="relicPlannerRarityHolder">
+                <div v-for="rarity in item.custom.groupedDetails" class="relicDetailsBLTopExpected relicPlanner" :class="{smallText: item.custom.groupedDetails.length>=4}">
+                    <div class="relicDetailsBLTopExpectedTitle">{{rarity.num}}x {{rarity.tier}}: </div>
+                    <div class="relicDetailsBLTopExpectedCoins">
+                        <div class="relicDetailsBLTopExpectedCoinsCoin relicPlanner">
+                            {{rarity.expectedPlat}}
+                        </div>
+                        <div class="relicDetailsBLTopExpectedCoinsCoin relicPlanner">
+                            {{rarity.expectedDucats}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div class="relicPlannerRewardContainer">
+                <div v-for="reward in item.custom.rewards" class="foundryObjectComponentsComponent" :class="{gotNeccessaryComponents: reward.recipeNeccessaryComponents, search: reward.recipeHighlightedComponent}" :data-tippy-content="reward.name">
+                    <div class="relicPlannerRewardInnerImage" :style="{ backgroundImage: 'url(&quot;' + reward.picture + '&quot;)' }"></div>
+                    <div v-if="reward.parentOwned" class="relicPLannerMiniRewardParentOwned"></div>
+                    <div v-if="reward.isFav" class="relicPLannerMiniRewardParentOwned fav"></div>
+                </div>
+            </div>
+        </div>
+     
+        <div class="relicPlannerShowMore" v-if="items.length==50">
+            50 results shown. Use different filters or click <span class="relicPlannerShowMoreButton" onclick="lastRelicPlannerFilter = undefined; RefreshRelicPlanner(false,true)">here</span> to show everything.</div>
+
+        <Transition name="fade">
+            <div v-if="noItems" class="inventoryNoItemShown">
+                <div>No relics could be found in your inventory<br /> <span class="inventoryNoItemShownSmall">Come back whenever the connection to the game is working properly</span></div>
+            </div>
+        </Transition>
+        <Transition name="fade">
+            <div v-if="updatedRecommended" class="relicPlannerUpdateRecommended">
+                <div>Updated data is available</div><div class="relicPlannerReloadButton" onclick="RefreshRelicPlanner(true)">Reload everything</div>
+            </div>
+        </Transition>
+        <Transition name="fade">
+            <div v-if="updateNeeded" class="relicPlannerUpdateNeeded">
+                <div>Analyzing your relics might take some time depending on the size of your inventory.</div><!--<div>Please dont't close the app while it loads.</div>--><div onclick="RefreshRelicPlanner(true)" class="relicPlannerStartNowButton">Start now</div>
+            </div>
+        </Transition>
+        <Transition name="fade">
+            <div v-if="inProgress" class="relicPlannerUpdateNeeded">
+                <div class="relicPlannerLoadingOuterDiv">
+                    <div class="relicPlannerLoadingInnerDiv" :style="{width: progress + '%'}"></div>
+                </div>
+                <div class="relicPlannerLoadingText">{{loadingProgressText}}</div>
+            </div>
+        </Transition>
+
+        <Transition name="fade">
+            <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+        </Transition>
+    </div>
+</div>
+
+<div class="inventorySummary" v-if="!inProgress && !updateNeeded  && items.length>0">
+    <div class="settingsCheckBoxHolder relicPlanner">
+        <input class="settingsCheckBoxHolderBox" type="checkbox" v-model="onlyOwned" @change="refresh()">
+        Only owned
+    </div>
+    <div class="inventorySummaryDatum">
+        {{summaryTraces}}
+        <div class="inventorySummaryPlatinumIcon traces"></div>
+    </div>
+</div>
+
+<div style="display:none">
+    <div id="tooltipFiltersRelicPlannerTemplate">
+        <div class="filtersInventoryHolder">
+            <div class="filterGroup">
+                <div class="filterHeader">Vaulted</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'vaulted','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'vaulted','no')">No</div>
+                </div>
+            </div>
+            <div class="filterGroup">
+                <div class="filterHeader">All rewards owned</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'allRewardsOwned','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'allRewardsOwned','no')">No</div>
+                </div>
+            </div>
+            <div class="filterGroup">
+                <div class="filterHeader">All items mastered/owned</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'allItemsOwned','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'allItemsOwned','no')">No</div>
+                </div>
+            </div>
+            <div class="filterGroup">
+                <div class="filterHeader">>= 10 copies</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'moreThan10copies','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'moreThan10copies','no')">No</div>
+                </div>
+            </div>
+            <div class="filterGroup">
+                <div class="filterHeader">Relic tier</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'relicTier','intact')" title="Intact">Int.</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'relicTier','exceptional')" title="Exceptional">Exc.</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'relicTier','flawless')" title="Flawless">Fla.</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'relicTier','radiant')" title="Radiant">Rad.</div>
+                </div>
+            </div>
+            <!--<div class="filterGroup">
+                <div class="filterHeader">Show relics as radiant</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'asRadiant','yes')" title="Intact">Yes</div>
+                </div>
+            </div>-->
+            <div class="filterGroup">
+                <div class="filterHeader">Favorite</div>
+                <div class="filterOptions">
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'fav','yes')">Yes</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'fav','no')">No</div>
+                    <div class="filterOption" onclick="filterRelicPlannerCheckboxClicked(event,'fav','order')">Order first</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

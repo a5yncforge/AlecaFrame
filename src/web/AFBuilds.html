@@ -1,0 +1,520 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+    <title>AFBuilds</title>
+
+    <script src="assets/js/external/vue.global.prod.js"></script>
+    <script src="assets/js/external/jquery.min.js"></script>
+
+
+    <!-- JS files -->
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/sharedOverwolfStuff.js"></script>
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/ga.js"></script>
+
+    <script src="assets/js/tippy/popper.min.js"></script>
+    <script src="assets/js/tippy/tippy-bundle.umd.js"></script>
+
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="assets/css/toastify.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+    <link rel="stylesheet" href="assets/css/main/foundry.css">
+    <link rel="stylesheet" href="assets/css/main/modal.css" />
+    <link rel="stylesheet" href="assets/css/public/builds.css">
+
+</head>
+
+
+<body style="user-select: none;">
+    <div class="content" id="vueMain">
+
+        <header class="thin" onmousedown="dragMove(event);">
+
+            <div class="topAlecaFrameIcon"></div>
+
+            <div class="topBarContainer" data-include="topBar">
+                <div class="topBarButton">
+                    <div class="topBarButtonIcon new"></div>
+                    New build
+                </div>
+                <div class="topBarButton">
+                    <div class="topBarButtonIcon load"></div>
+                    Load build
+                </div>
+                <div class="topBarButton">
+                    <div class="topBarButtonIcon save"></div>
+                    Save build
+                </div>
+                <div class="topBarButton">
+                    <div class="topBarButtonIcon link"></div>
+                    Get sharing link
+                </div>
+            </div>
+
+
+            <div class="window-controls-group">
+                <a class="window-control discord-icon" target="_blank" href="https://discord.gg/Bc7PNNnnEZ">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/discord.svg#Layer_1" />
+                    </svg>
+                </a>
+
+                <button class="window-control" onclick="minimize()">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/sprite.svg#window-control_minimize" />
+                    </svg>
+                </button>
+
+                <button class="window-control" onclick="toggleMaximize()" onmousedown="event.stopPropagation()">
+                    <svg class="svg-icon-fill">
+                        <use id="maximizeImage" xlink:href="assets/img/svg/sprite.svg#window-control_maximize" />
+                    </svg>
+                </button>
+
+                <button class="window-control window-control-close" onclick="CloseModalApp.CloseRequested()">
+                    <svg class="svg-icon-fill">
+                        <use xlink:href="assets/img/svg/sprite.svg#window-control_close" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+
+        <main id="buildAppHolder">
+            <div class="background">
+                <div class="workingArea">
+                    <div class="workingAreaLeft">
+                        <div class="buildSection">
+                            <div class="buildSectionResultsPanel">
+                                <div class="buildResultsNeededThings">
+                                    <div v-for="thing in buildStatus.buildResults.neededThings" :title="thing.tooltip" class="buildNeededThing">
+                                        <div class="buildResultThingAmount">{{thing.amount}}</div>
+                                        <div class="buildResultThingIcon" :class="[thing.internalName]"></div>
+                                    </div>
+                                </div>
+                                <div class="buildResultsStats">
+                                    <div v-for="stat in buildStatus.buildResults.stats" class="buildResultSingleStat">
+                                        <div class="buildResultStatIcon" :class="[stat.internalName.toLowerCase()]"></div>
+                                        <div class="buildResultStatName">{{stat.name}}</div>
+                                        <div class="buildResultStatValue">{{stat.value}}</div>
+                                    </div>
+                                </div>
+                                <div class="statsViewSelectorContainer">
+                                    <div v-for="(view, index) in buildStatus.buildResults.views" class="statsViewSelectorItem" :class="{selected:statViewIndexSelected==index}" @click="statViewIndexSelected=index; refreshBuildState();">
+                                        {{view.name}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="buildSectionBuild">
+                                <div class="buildSectionItemSelector">
+                                    <div v-for="(item, index) in buildStatus.items" class="buildSectionItem" @click.stop="buildSelectedItemIndex=index; refreshBuildState(); selectedModSlotIndex=-1; refreshModBrowser();" :class="{selected: buildSelectedItemIndex==index}">
+                                        <div class="itemPicture" :style="{ backgroundImage: 'url(&quot;' + item?.picture + '&quot;)' }">
+                                            <div v-if="item.owned" class="itemPictureOwned"></div>
+                                        </div>
+                                        <div class="itemRight">
+                                            <div class="itemName">{{item.name}}</div>
+                                            <div v-if="item.modes!=undefined" class="itemSelectorHolder">
+                                                Mode:
+                                                <div class="newEasyFilter small">
+                                                    <div v-for="mode in item.modes" class="newEasyFilterItem" :class="{selected:mode.selected}" @click.stop="selectedWeaponModeID=mode.modeID; buildSettingsChanged()">
+                                                        <!--<div class="newEasyFilterIcon topSettingIcon easy"></div>-->
+                                                        {{mode.name}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="item.zoomLevels!=undefined" class="itemSelectorHolder">
+                                                Zoom:
+                                                <div class="newEasyFilter small">
+                                                    <div v-for="zoom in item.zoomLevels" class="newEasyFilterItem" :class="{selected:zoom.selected}" @click.stop="selectedWeaponZoomID=zoom.modeID; buildSettingsChanged()">
+                                                        <!--<div class="newEasyFilterIcon topSettingIcon easy"></div>-->
+                                                        {{zoom.name}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="buildSectionBuildContainer">
+                                    <div class="buildModContainer">
+                                        <div v-for="mod in buildModList" class="buildModSingle" :class="[mod.type, mod.extraClassName, {slotSelected: selectedModSlotIndex==mod.index && mod.type==selectedModBrowserCategory}]"
+                                             :draggable="mod.type=='mod' && mod.data.used" @dragstart="dragUpgradeStart($event,mod.index,mod.type)" @dragover="dragUpgradeOver($event,mod.index, mod.type)" @drop="dragUpgradeDrop($event, mod.index, mod.type)"
+                                             @click="clickUpgrade($event, mod.index, mod.data, mod.type)" @contextmenu="rightClickUpgrade($event, mod.index, mod.data,mod.type)">
+                                            <div v-if="mod.data.used" class="buildModFull" :class="[mod.data.modType]">
+                                                <div class="buildModTop">
+                                                    <div class="buildModTopName">{{mod.data.name}}</div>
+                                                    <div v-if="!mod.data.modUnderstood" class="buildModTopNotUnderstood"></div>
+                                                    <div v-if="mod.data.owned" class="buildModTopOwned"></div>
+                                                    <div class="buildModTopRight" :class="[mod.data.polarityColor]">
+                                                        {{mod.data.drain}}
+                                                        <div class="buildModTopRightPolarity" :style="{ maskImage: 'url(&quot;assets/img/polarities/' + mod.data.modPolarity?.toLowerCase() + '.png&quot;)' }"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="buildModBottom">
+                                                    <div class="buildModBottomStatContainer">
+                                                        <div v-for="stat in mod.data.stats" class="buildModBottomSingleStat" :class="{conditional: stat.conditional}">
+                                                            {{stat.value}}
+                                                            <div class="buildResultStatIcon" :class="[stat.stat.toLowerCase()]"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="buildModBottomLevel">{{mod.data.currentLevel}}/{{mod.data.maxLevel}}</div>
+                                                </div>
+                                            </div>
+                                            <div v-else class="modNotFullPolarity" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + mod.data.slotPolarity?.toLowerCase() + '.png&quot;)' }"></div>
+                                        </div>
+                                    </div>
+                                    <div class="buildArcaneContainer">
+                                        <div v-for="(arcane, index) in buildStatus.mods.arcanes" class="buildArcane" :class="[{used:arcane.used}, arcane.modType,{slotSelected: selectedModSlotIndex==index && selectedModBrowserCategory=='arcane'}]"
+                                             :draggable="arcane.used" @dragstart="dragUpgradeStart($event,index,'arcane')" @dragover="dragUpgradeOver($event, index,'arcane')" @drop="dragUpgradeDrop($event, index,'arcane')"
+                                             @click="clickUpgrade($event, index, arcane, 'arcane')" @contextmenu="rightClickUpgrade($event, index, arcane,'arcane')">
+                                            <div v-if="arcane.used" class="buildArcaneFull" :style="{ backgroundImage: 'url(&quot;' + arcane?.picture + '&quot;)' }">
+                                                <div class="buildArcaneLevel">
+                                                    {{arcane.currentLevel}}/{{arcane.maxLevel}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="buildSectionUsageOverlay">
+                                        <span class="buildCapacityUsageCurrent" :class="[buildStatus.mods.capacityColor]">{{buildStatus.mods.modCapacity}}</span>/{{buildStatus.mods.totalCapacity}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="simSection">
+                            <div class="sectionTitle">Build Simulator</div>
+                            <div class="sectionBody">
+                                <div class="simLeftColumn">
+                                    <div class="simSettings">
+                                        <div class="simSmallTitle">Settings</div>
+                                        <div class="simSmallBody">
+
+                                        </div>
+                                    </div>
+                                    <div class="simEnemySetup">
+                                        <div class="simSmallTitle">Enemy setup</div>
+                                        <div class="simSmallBody">
+                                            <div class="presetLine">
+                                                Preset:
+                                                <select v-model="selectedEnemyPreset" @change="selectEnemyPreset()">
+                                                    <option v-for="preset in availableEnemyPresets?.availablePresetNames">
+                                                        {{preset}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="presetLine buttons">
+                                                <div class="buildButton">Save preset</div>
+                                                <div class="buildButton relevant" @click="openEnemyEditor()">Edit enemies</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="simCenter">
+                                    OWOWOWOWOWWOWO
+                                </div>
+                                <div class="simRight">
+                                    <div class="simResults">
+                                        <div class="simSmallTitle">Results</div>
+                                        <div class="simSmallBody">
+                                            <!--<div class="simFinishedIn">Simulation finished in <span>{{toTime(simResults?.elapsedRealTime)}}</span></div>-->
+                                            <div class="simResultsGroupWithTitle">
+                                                <div class="simResultsGroupWithTitleTitle">TTK (Time To Kill):</div>
+                                               
+                                                <div class="simResultsDataGroup">
+                                                    <div class="simResultsDataSingle">
+                                                        Setup: <span class="importantPurple">{{toTime(simResults?.setupTTK)}}</span>
+                                                    </div>
+                                                    <div class="simResultsDataSingle">
+                                                        Avg: <span>{{toTime(simResults?.averageTTK)}}</span>
+                                                    </div>
+                                                    <div class="simResultsDataSingle">
+                                                        Min: <span>{{toTime(simResults?.minTTK)}}</span>
+                                                    </div>
+                                                    <div class="simResultsDataSingle">
+                                                        Max: <span>{{toTime(simResults?.maxTTK)}}</span>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                            <div class="simResultsGroupWithTitle">
+                                                <div class="simResultsGroupWithTitleTitle">Damage source:</div>
+
+                                                <div class="simResultsBarWithPercentages">
+                                                    <div class="simResultsBarWithPercentagesItem direct" :style="{flexBasis:simResults?.damageDistributionDirect+'px'}">Direct<span>{{simResults?.damageDistributionPercentDirect}}%</span> </div>
+                                                    <div class="simResultsBarWithPercentagesItem aoe" :style="{flexBasis:simResults?.damageDistributionAOE+'px'}">AOE<span>{{simResults?.damageDistributionPercentAOE}}%</span> </div>
+                                                    <div class="simResultsBarWithPercentagesItem status" :style="{flexBasis:simResults?.damageDistributionStatus+'px'}">Status<span>{{simResults?.damageDistributionPercentStatus}}%</span> </div>
+                                                </div>
+                                            </div>
+                                            <div class="simResultsGroupWithTitle">
+                                                <div class="simResultsGroupWithTitleTitle">Damage mitigation:</div>
+                                                <div class="simResultsDamageTypeGroup">
+                                                    <div v-for="dmgType in Object.entries(simResults?.damageByType ?? {})" class="simResultsDamageType">
+                                                        <div class="buildResultStatIcon" :class="[dmgType[0].toLowerCase()+'damage']"></div>: <span>{{toSI(dmgType[1].preMitigationDamage)}} -> {{toSI(dmgType[1].postMitigationDamage)}} <span class="bolderText">({{roundTo(dmgType[1].mitigationPercentage,1, true)}}%)</span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simResultsGroupWithTitle">
+                                                <div class="simResultsGroupWithTitleTitle">Status effects:</div>
+                                                <div class="simResultsDamageTypeGroup horizontal">
+                                                    <div v-for="sattusEffect in Object.entries(simResults?.statusEffectsAdded ?? {})" class="simResultsDamageType">
+                                                         <div class="buildResultStatIcon" :class="[sattusEffect[0].toLowerCase()+'damage']"></div>:<span>{{toSI(sattusEffect[1])}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="adCointainerWithSubscribe adHideable" v-if="adsShown">
+                                        <div id="mainAD" class="mainAD adHideable">
+                                            <div id="mainADinner" class="adAttr400x300 adHideable"></div>
+                                        </div>
+
+                                        <div class="subscribeButton GoPremiumCallout adHideable">
+                                            <div class="subscriberIcon"></div>
+                                            <div>Remove ads and support the developement</div>
+                                            <div class="patreonBigIcon" onclick="overwolf.utils.openUrlInDefaultBrowser('https://www.patreon.com/AlecaFrame')"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                                <Transition name="fade">
+                                    <div v-show="enemyEditorVisible" class="modalSize" @click.self="enemyEditorVisible=false">
+                                        <div class="innerModal buildsEnemyEditor">
+                                            <div class="innerModalHeader">
+                                                <div class="innerModalHeaderTitle">Enemy setup editor</div>
+                                                <div class="innerModalClose" @click="enemyEditorVisible=false">
+                                                </div>
+                                            </div>
+                                            <div class="innerModalContent">
+                                                
+                                                <div class="enemyCreatorLeft">
+                                                    <div class="enemyCreatorTitle">
+                                                        Game NPCs
+                                                    </div>
+                                                    <div class="enemyCreatorBody">
+                                                        <div class="enemyCreatorListFilters">
+                                                            <div class="foundryTopSettingsSide enemyTop">
+                                                                <div tabindex="0" class="categorySelectionDropDown">
+                                                                    <div tabindex="0" class="squadModeIcon topPart" :class=[enemyEditorSelectedFilter]></div>
+                                                                    {{enemyEditorSelectedFilter}}
+
+                                                                    <div tabindex="0" class="categorySelectionDownArrow"></div>
+
+                                                                    <div tabindex="0" class="categorySelectionDropContainer">
+                                                                        <div tabindex="0" v-for="category in enemyEditorFilteringGroups" class="topSetting squadFinder" selectionData="all" @click.stop="enemyEditorSelectedFilter = category; UnfocusElement(); refreshEnemySelectionList(); ">
+                                                                            <div tabindex="0" class="squadModeIcon topPart" :class="[category]"></div>
+                                                                            {{category}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="foundryTopSettingsSide right">
+                                                                <div class="topSetting inventorySetting forceOpen" :class="{forceOpen:enemyEditorSearch!=''}">
+                                                                    <div class="topSettingIcon search"></div>
+                                                                    <input id="foundrySearch" placeholder="Search" @keyup="refreshEnemySelectionList();" v-model="enemyEditorSearch" />
+                                                                    <div class="topSettingIcon removeSearch" @click="enemyEditorSearch = ''; refreshEnemySelectionList();"></div>
+                                                                </div>
+                                                                <!--<div class="topSetting notHoverOpen inventorySetting" :class="{forceOpen:Object.keys(yesnoFilters).length != 0}">
+                                                                    <div id="settingFilterExpandingFoundry" class="topSettingIcon filter"></div>
+                                                                    <div class="topSettingIcon removeSearch" @click="yesnoFilters = {}; refresh();" onclick="createFoundryFilterTippy();"></div>
+                                                                </div>-->
+                                                            </div>
+                                                        </div>
+                                                        <div class="enemyCreatorListBody">
+                                                            <div v-for="enemy in sourceEnemyList?.enemies" class="enemyCreatorListItem" :class="{eximus:enemy.isEximus}" draggable="true" @dragstart="enemySetupDragStart($event, enemy.uniqueName)">
+                                                                <div class="enemyCreatorListItemPicture" :style="{ backgroundImage: 'url(&quot;' + enemy?.picture + '&quot;)' }">
+                                                                    <div class="squadModeIcon enemyList" :class="[enemy.faction]"></div>
+                                                                </div>
+                                                                <div class="enemyCreatorListItemRight">
+                                                                    <div class="enemyCreatorListItemName">
+                                                                        {{enemy.name}}
+                                                                    </div>
+                                                                    <div class="enemyCreatorListItemIcons">
+                                                                        <div v-if="enemy.hasArmor" class="enemyCreatorListItemIcon armor"></div>
+                                                                        <div v-if="enemy.hasShield" class="enemyCreatorListItemIcon shield"></div>
+                                                                        <div v-if="enemy.isBoss" class="enemyCreatorListItemIcon boss"></div>
+                                                                        <div v-if="enemy.isEximus" class="enemyCreatorListItemIcon eximus"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div v-if="enemy.isEximus" class="enemyCreatorListEximusOverlay"></div>
+                                                            </div>
+                                                            <div class="relicPlannerShowMore" v-if="sourceEnemyList?.enemies?.length==100">
+                                                                Only 100 results are shown. Try using different filters or click <span class="relicPlannerShowMoreButton" @click="refreshEnemySelectionList(true)">here</span> to show all of them. <br />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="enemyCreatorRight">
+                                                    <div class="enemyCreatorTitle">
+                                                        Enemy setup
+                                                    </div>
+                                                    <div class="enemyCreatorBody">
+                                                        <div class="enemyCreatorCurrentSetupContainer" 
+                                                             @dragover="enemySetupDragOver($event)" 
+                                                             @drop="enemySetupDragDrop($event)">
+                                                            <div v-for="(enemy, index) in currentEnemySetupStatus?.enemies" class="currentEnemySetupEnemy" :class="{eximus: enemy.isEximus}" @contextmenu="changeEnemySettings(index, enemy.level, 0)">
+                                                                <div class="currentEnemySetupEnemyPicture" :style="{ backgroundImage: 'url(&quot;' + enemy?.picture + '&quot;)' }"></div>
+                                                                <div class="currentEnemySetupEnemyAmountHolder">
+                                                                    <div class="buildsNumericUpDownButton" @click="changeEnemySettings(index, enemy.level, enemy.amount - 1)">-</div>
+                                                                    <span>{{enemy.amount}}</span>
+                                                                    <div class="buildsNumericUpDownButton" @click="changeEnemySettings(index, enemy.level, enemy.amount + 1)">+</div>
+                                                                </div>
+                                                                <div class="currentEnemySetupEnemyLevelHolder">
+                                                                    Level:
+                                                                    <input type="number" v-model="enemy.level" @change="changeEnemySettings(index, enemy.level, enemy.amount)" />
+                                                                </div>
+                                                                <div class="squadModeIcon info"></div>
+                                                                
+                                                                <div class="currentEnemySetupEnemyData">
+                                                                    <div class="currentEnemySetupEnemyName">{{enemy.name}}</div>
+                                                                    <div class="currentEnemySetupEnemyStats">
+                                                                        <div v-if="enemy.health!='0'" class="currentEnemySetupSingleStat">
+                                                                            <div class="enemyCreatorListItemIcon health"></div>
+                                                                            {{enemy.health}}
+                                                                        </div>
+                                                                        <div v-if="enemy.shield!='0'" class="currentEnemySetupSingleStat">
+                                                                            <div class="enemyCreatorListItemIcon shield"></div>
+                                                                            {{enemy.shield}}
+                                                                        </div>
+                                                                        <div v-if="enemy.armor!='0'" class="currentEnemySetupSingleStat">
+                                                                            <div class="enemyCreatorListItemIcon armor"></div>
+                                                                            {{enemy.armor}}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="squadModeIcon enemyList" :class="[enemy.faction]"></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--<Transition name="fade">
+                                                    <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+                                                </Transition>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Transition>
+                            
+                        </div>
+                    </div>
+                    <div class="modBrowser">
+                        <div class="sectionTitle">Mod browser</div>
+                        <div class="sectionBody">
+                            <div class="modBrowserFilters">
+                                <div class="modBrowserFilterRow">
+                                    <div v-for="category in modBrowserCategories" :title="category" class="categorySelectorHolder" :class="{selected: selectedModBrowserCategory==category}" @click="selectedModBrowserCategory=category; selectedModSlotIndex=-1; refreshModBrowser()">
+                                        <div class="categoryIcon" :class="[category.toLowerCase()]"></div>
+                                    </div>
+                                </div>
+                                <div class="modBrowserFilterRow">
+                                    <div class="modSearchBar" :class="{forceOpen:selectedSearch!=''}">
+                                        <div class="topSettingIcon search builds"></div>
+                                        <input class="modSearchInput" placeholder="Search" v-model="modBrowserSearch" />  <!--@keyup="refreshModBrowser();"-->
+                                    </div>
+                                </div>
+                                <div class="modBrowserProgress" v-if="modBrowserData.status=='Calculating'">
+                                    <div class="modBrowserProgressLoading"></div>
+                                    <div class="modBrowserProgressBar">
+                                        <div class="modBrowserProgressBarInner" :style="{ width: modBrowserData.progressPercent+'%'}"></div>
+                                    </div>
+                                    <div class="modBrowserProgres">{{Math.round(modBrowserData.progressPercent)}}%</div>
+                                </div>
+                                <div class="modBrowserError" v-if="modBrowserData.status=='TooEasy'">
+                                    <div class="modBrowserErrorIcon"></div>
+                                    Enemy setup too easy
+                                </div>
+                                <div class="modBrowserError" v-if="modBrowserData.status=='TooHard'">
+                                    <div class="modBrowserErrorIcon"></div>
+                                    Enemy setup too hard
+                                </div>
+                                <div class="modBrowserError info" v-if="modBrowserData.status=='NoEnemySelected'">
+                                    <div class="modBrowserErrorIcon info"></div>
+                                    Add at least one enemy to see the damage comparison
+                                </div>
+                                <div class="modBrowserError info" v-if="modBrowserData.status=='NoModSelected'">
+                                    <div class="modBrowserErrorIcon info"></div>
+                                    Select a mod slot to see the damage comparison
+                                </div>
+                            </div>
+                            <div class="modBrowserListingContiner">
+                                <div v-for="mod in filteredModBrowserMods" class="modBrowserSingleMod" :class="[mod.type, mod.extraClassName, {incompatible: !mod.compatible}]" :key="mod.uniqueName"
+                                     :draggable="mod.compatible" @dragstart="dragModBrowserUpgradeStart($event,mod)"
+                                     @mouseenter="modBrowserMouseEnter(mod)" @mouseleave="modBrowserMouseLeave()">
+
+                                    <div class="buildModTop">
+                                        <div class="buildModTopName">{{mod.name}}</div>
+                                        <div v-if="!mod.modUnderstood" class="buildModTopNotUnderstood"></div>
+                                        <div v-if="mod.owned" class="buildModTopOwned"></div>
+                                        <div class="buildModTopRight">
+                                            <div class="buildModTopRightPolarity" :style="{ maskImage: 'url(&quot;assets/img/polarities/' + mod.modPolarity?.toLowerCase() + '.png&quot;)' }"></div>
+                                        </div>
+                                    </div>
+                                    <div class="buildModBottom">
+                                        <div v-if="mod.stats.length > 0" class="buildModBottomStatContainer">
+                                            <div v-for="stat in mod.stats" class="buildModBottomSingleStat" :class="{conditional: stat.conditional}">
+                                                {{stat.value}}
+                                                <div class="buildResultStatIcon" :class="[stat.stat.toLowerCase()]"></div>
+                                            </div>
+                                        </div>
+                                        <div class="buildModDPS" v-if="mod.dps!=undefined && Math.abs(mod.dps) > 0" :class="{negative: mod.dps < 0, positive: mod.dps > 0}">{{(mod.dps > 0 ? "+":"") + mod.dps + "%"}}</div>
+                                        <div class="buildModDPS nothing" v-else>-</div>
+                                    </div>
+
+                                    <div v-if="!mod.compatible" class="nonCompatibleOverlay"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-show="modBrowserPreview.visible" class="modBrowserModPreview">
+                        <div v-if="modBrowserPreview.picture?.length>0" class="modBrowserPreviewImage" :style="{ backgroundImage: 'url(&quot;' + modBrowserPreview.picture + '&quot;)' }"></div>
+                        <div class="modBrowserPreviewDescription" v-html="modBrowserPreview.description"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function dragResize(edge) {
+            overwolf.windows.getCurrentWindow(function (result) {
+                if (result.status == "success") {
+                    overwolf.windows.dragResize(result.window.id, edge);
+                }
+            });
+        };
+    </script>
+
+    <div class="resize horizontal top" onmousedown="dragResize('Top');"></div>
+    <div class="resize vertical left" onmousedown="dragResize('Left');"></div>
+    <div class="resize vertical right" onmousedown="dragResize('Right');"></div>
+    <div class="resize horizontal bottom" onmousedown="dragResize('Bottom');"></div>
+
+    <div class="resize corner top-left" onmousedown="dragResize('TopLeft');"></div>
+    <div class="resize corner top-right" onmousedown="dragResize('TopRight');"></div>
+    <div class="resize corner bottom-left" onmousedown="dragResize('BottomLeft');"></div>
+    <div class="resize corner bottom-right" onmousedown="dragResize('BottomRight');"></div>
+
+
+    <!-- Post JS files -->
+    <script src="assets/js/tilt.jquery.js"></script>
+
+    <script src="assets/js/public/builds.js"></script>
+
+    <script src="https://content.overwolf.com/libs/ads/latest/owads.min.js" async onload="onOwAdReady()"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="./src/NET/AF_DamageCalculatorLib/AF_DamageCalculatorLib/AF_DamageCalculatorLib.csproj" />
+  <Project Path="./src/NET/AlecaFrameClientLib/AlecaFrameClientLib/AlecaFrameClientLib.csproj" />
+  <Project Path="./src/NET/AlecaFramePublicLib/AlecaFramePublicLib/AlecaFramePublicLib.csproj" />
+</Solution>

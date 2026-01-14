@@ -1,0 +1,234 @@
+﻿<Transition name="fade">
+    <div v-show="visible" class="modalSize" @mousedown.self="visible=false">
+        <div class="innerModal rivenDetails">
+            <div class="innerModalHeader">
+                <div class="innerModalHeaderTitle">Riven details</div>
+                <div class="innerModalClose" @click="visible=false">
+                </div>
+            </div>
+            <div class="innerModalContent">
+                <div class="rivenDetailsTop">
+                    <div class="rivenDetailsImage" :style="{ backgroundImage: 'url(&quot;' + riven?.weaponPicture + '&quot;)' }"></div>
+                    <div class="rivenDetailsTopRight">
+                        <div class="rivenDetailsName">
+                            <span class="rivenWeaponNameWeapon">{{riven?.weaponName}}</span>
+                            {{riven?.name}}
+                            <div class="rivenGradeSmall modalView" :class="[riven?.grade]"></div>
+                        </div>
+                        <div class="rivenDetailsTopGrid">
+                            <div class="rivenDetailsTopGridItem">Level:<span class="rivenDetailsTopGridItemHighlight">{{riven?.currentImprovementLevel}}/{{riven?.maxImprovementLevel}}</span></div>
+                            <div class="rivenDetailsTopGridItem">Rerolls:<span class="rivenDetailsTopGridItemHighlight">{{riven?.rerollCount}}</span></div>
+                            <div class="rivenDetailsTopGridItem">
+                                Drain:<span class="rivenDetailsTopGridItemHighlight">{{riven?.currentCost}}</span>
+                                <div class="foundryDetailsCustomGeneralEntryValueIcon polarity riven" :style="{ backgroundImage: 'url(&quot;assets/img/polarities/' + riven?.polarity + '.png&quot;)' }"></div>
+                            </div>
+                            <div class="rivenDetailsTopGridItem">Min. MR:<span class="rivenDetailsTopGridItemHighlight">{{riven?.minimumMastery}}</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rivenDetailsSeparator"></div>
+                <div class="rivenDetailsMiddle">
+                    <div class="rivenDetailsHeader">
+                        Modifiers:
+                        <div v-if="riven?.statsPerWeapon!=undefined" class="rivenDetailsHeaderRight">
+                            <div class="rivenSelectGroup">
+                                Weapon:
+                                <select v-model="selectedWeaponIndex" class="rivenSelect">
+                                    <option v-for="(weapon,index) in riven?.statsPerWeapon" :value="index">{{weapon.weaponName}}</option>
+                                </select>
+                            </div>
+
+                            <div class="rivenSelectGroup">
+                                Level:
+                                <select v-model="selectedModLevel" class="rivenSelect">
+                                    <option v-for="(item,index) in riven?.statsPerWeapon[0].byLevel" :value="index">{{index}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="riven?.statsPerWeapon!=undefined" class="rivenDetailesModifierList">
+                        <div class="rivenDetailsStat positive" v-for="stat in riven?.statsPerWeapon[selectedWeaponIndex].byLevel[selectedModLevel].positiveTraits">
+                            <div class="rivenGradeDescripitionHolder">
+                                <div class="rivenRollGrade" :class="[stat.rollGrade]"></div>
+                                <div v-html="stat.description" class="rivenDetailsStatText"></div>
+                            </div>
+                            <div class="rivenDetailsBarGroup">
+                                <span class="rivenDetailsGrade">{{stat.grade}}</span>
+                                <span class="rivenDetailsBarGroupSide">{{stat.worstCaseText}}</span>
+                                <div class="rivenDetailsBar">
+                                    <div class="rivenDetailsBarInner" :style="{ width: (stat.rawRandomValue*100)+'%' }"></div>
+                                </div>
+                                <span class="rivenDetailsBarGroupSide">{{stat.bestCaseText}}</span>
+                            </div>
+                        </div>
+                        <div class="rivenDetailsStat negative" v-for="stat in riven?.statsPerWeapon[selectedWeaponIndex].byLevel[selectedModLevel].negativeTraits">
+                            <div class="rivenGradeDescripitionHolder">
+                                <div class="rivenRollGrade" :class="[stat.rollGrade]"></div>
+                                <div v-html="stat.description" class="rivenDetailsStatText"></div>
+                            </div>
+                            <div class="rivenDetailsBarGroup">
+                                <span class="rivenDetailsGrade">{{stat.grade}}</span>
+                                <span class="rivenDetailsBarGroupSide">{{stat.worstCaseText}}</span>
+                                <div class="rivenDetailsBar">
+                                    <div class="rivenDetailsBarInner" :style="{ width: (stat.rawRandomValue*100)+'%' }"></div>
+                                </div>
+                                <span class="rivenDetailsBarGroupSide">{{stat.bestCaseText}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rivenDetailsSeparator"></div>
+                <div class="rivenDetailsMiddle">
+                    <div class="rivenDetailsHeader">
+                        Similar rivens:
+                        <div class="newEasyFilter">
+                            <div class="newEasyFilterItem" :class="{selected:similarMode=='all'}" @click="selectSimilarMode('all')">
+                                <div class="newEasyFilterIcon topSettingIcon all"></div>
+                                All
+                            </div>
+                            <div class="newEasyFilterItem" :class="{selected:similarMode=='WFMarket'}" @click="selectSimilarMode('WFMarket')">
+                                <div class="newEasyFilterIcon topSettingIcon wfmarket"></div>
+                                In WFMarket
+                            </div>
+                            <div class="newEasyFilterItem" :class="{selected:similarMode=='RivenMarket'}" @click="selectSimilarMode('RivenMarket')">
+                                <div class="newEasyFilterIcon topSettingIcon rivenmarket"></div>
+                                In Riven.Market
+                            </div>
+                            <!--<div class="newEasyFilterItem" :class="{selected:similarMode=='Trade'}" @click="selectSimilarMode('Trade')">
+                                <div class="newEasyFilterIcon topSettingIcon trade"></div>
+                                Completed trades
+                            </div>-->
+                        </div>
+                    </div>
+                    <div class="similarRivenContainers">
+                        <div v-for="similar in riven?.similarRivens?.filter(p=>p.source==similarMode || similarMode=='all')" class="similarRiven">
+                            <div class="similarHeader">
+                                <div class="similarRivenSourceIcon" :class="[similar.source]"></div>
+                                <div class="similarPercentEqual">{{Math.round(similar.similarity*100)}}%</div>
+                                <div class="similarPrice">{{similar.price}} <div class="inventoryItemSellPlatIcon rivenExplorer"></div></div>
+                            </div>
+                            <div class="similarBody">
+                                <div class="similarRivenAttr" :class="{positive:attr.positive, notMatching: !attr.matches}" v-for="attr in similar.attrs" v-html="attr.text"></div>
+                            </div>
+                            <div v-if="similar.link!=''" class="similarRivenOverlayLinks">
+                                <div v-if="similar.source=='WFMarket'" class="similarLink af" @click="openAFRivenClicked(similar.source, similar.link)"></div>
+                                <div class="similarLink web" @click="openWebRivenClicked(similar.link)"></div>
+                            </div>
+                            <div class="rivenGradeSmall similar" :class="[similar?.grade]"></div>
+                        </div>
+                        <div class="similarRivensEmpty" v-if="riven?.similarRivens?.findIndex(p=>p.source==similarMode || similarMode=='all')==-1">No similar rivens found</div>
+                    </div>
+                </div>
+                <div class="rivenDetailsSeparator"></div>
+                <div class="rivenDetailsMiddle goodAttributes">
+
+                    <div class="goodAttributesContainer">
+                        <div class="rivenDetailsHeader">
+                            Best attributes:
+                            <div class="goodAttrLegend">
+                                <div class="goodAttrMandatory">Mandatory</div>
+                                <div class="goodAttrItemOptionalGroup">Optional</div>
+                            </div>
+                        </div>
+                        <div class="goodAttrsBody">
+                            <div class="bestAttributesContainer">
+                                <div v-for="goodRoll in riven?.goodRollData?.goodAttrs" class="goodAttrItem">
+                                    <div v-for="mandatoryAttr in goodRoll.mandatory" class="goodAttrMandatory" :class="{matches:mandatoryAttr.matches}">{{mandatoryAttr.text}}</div>
+                                    <div v-if="goodRoll.optional?.length > 0" class="goodAttrItemOptionalGroup">
+                                        <div v-for="optionalAttr in goodRoll.optional" class="goodAttrOptional" :class="{matches:optionalAttr.matches}">{{optionalAttr.text}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="badAttributesContainer">
+                                Best bad attrs:
+                                <div class="goodAttrsBody">
+                                    <div class="goodAttrItemOptionalGroup">
+                                        <div class="badAttrItem" v-for="badAttrs in riven?.goodRollData?.acceptedBadAttrs" :class="{matches:badAttrs.matches}">{{badAttrs.text}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rivenDetailsSeparator" v-if="isSelling || isEditing"></div>
+                <div class="rivenDetailsBottom" v-if="isSelling || isEditing">
+                    <div class="rivenDetailsHeader">
+                        List on WFMarket:
+                        <div class="settingsCheckBoxHolder rivenExplorer"><input class="settingsCheckBoxHolderBox" v-model="useLvl8Stats" type="checkbox">Use lvl. 8 stats</div>
+                    </div>
+                    <div class="rivenDetailsListLine">
+                        <div class="filterGroup">
+                            <div class="filterHeader">Type:</div>
+                            <div class="filterOptions">
+                                <div class="filterOption" @click="listType='direct'" :class="{pulsed: listType=='direct'}">Direct sale</div>
+                                <div class="filterOption" @click="listType='auction'" :class="{pulsed: listType=='auction'}">Auction</div>
+                            </div>
+                        </div>
+                        <div class="filterGroup">
+                            <div class="filterHeader">Visibility:</div>
+                            <div class="filterOptions">
+                                <div class="filterOption" @click="listVisibility='public'" :class="{pulsed: listVisibility=='public'}">Public</div>
+                                <div class="filterOption" @click="listVisibility='private'" :class="{pulsed: listVisibility=='private'}">Private</div>
+                            </div>
+                        </div>
+                        <div class="filterGroup">
+                            <div class="filterHeader">Description (Optional):</div>
+                            <div class="filterOptions">
+                                <input class="textInput rivenWindow" v-model="WFMdescription" type="text" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="listType=='direct'" class="rivenDetailsListLine">
+                        <div class="filterGroup dontExpand">
+                            <div class="filterHeader">Selling price:</div>
+                            <div class="filterOptions">
+                                <div class="inventoryItemSellPlatIcon rivenExplorer"></div>
+                                <input class="inventoryBuySellInput rivenWindow" v-model="WFMsellingPrice" type="number" />
+                            </div>
+                        </div>
+                        <div class="rivenExplorerFinalButton" @click="listOnWFM()">{{isEditing? 'Edit contract':'List on WFMarket'}}</div>
+                    </div>
+
+                    <div v-if="listType=='auction'" class="rivenDetailsListLine">
+                        <div class="filterGroup dontExpand">
+                            <div class="filterHeader">Starting price:</div>
+                            <div class="filterOptions">
+                                <div class="inventoryItemSellPlatIcon rivenExplorer"></div>
+                                <input class="inventoryBuySellInput rivenWindow" v-model="WFMstartingPrice" type="number" />
+                            </div>
+                        </div>
+                        <div class="filterGroup dontExpand">
+                            <div class="filterHeader">Buyout price:</div>
+                            <div class="filterOptions">
+                                <div class="inventoryItemSellPlatIcon rivenExplorer"></div>
+                                <input class="inventoryBuySellInput rivenWindow" v-model="WFMbuyoutPrice" type="number" />
+                            </div>
+                        </div>
+                        <div class="filterGroup dontExpand">
+                            <div class="filterHeader">Min. reputation:</div>
+                            <div class="filterOptions">
+                                <input class="inventoryBuySellInput rivenWindow" v-model="WFMminReputation" type="number" />
+                            </div>
+                        </div>
+                        <div class="rivenExplorerFinalButton" @click="listOnWFM()">{{isEditing? 'Edit contract':'List on WFMarket'}} </div>
+                    </div>
+                </div>
+
+                <div class="rivenDetailsSeparator" v-if="isSelling || isEditing"></div>
+                <div class="rivenDetailsBottom" v-if="isSelling || isEditing">
+                    <div class="rivenDetailsHeader">
+                        List on Riven.Market:
+                        <button class="buttonSettingsTest importCode" @click="createRivenMarketImportString(riven.randomID)">Import to Riven.market</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <Transition name="fade">
+                <div v-if="loading" class="inventoryBuySellTabOverlayLoading"></div>
+            </Transition>
+        </div>
+    </div>
+</Transition>
